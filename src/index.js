@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App.jsx';
 import playGame from './phaser/scene';
+import SceneTwo from './phaser/sceneTwo';
 
 //console.log(App);
 
@@ -18,7 +19,7 @@ export const config = {
       gravity: { y: 0 }
     }
   },
-  scene: playGame
+  scene: [playGame, SceneTwo]
 };
 
 const game = new Phaser.Game(config);

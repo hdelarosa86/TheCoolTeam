@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="30" height="20" tilewidth="50" tileheight="50" infinite="0" nextlayerid="5" nextobjectid="4">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="30" height="20" tilewidth="50" tileheight="50" infinite="0" nextlayerid="6" nextobjectid="5">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
@@ -3058,4 +3058,7 @@
 571,572,573,574,575,576,577,578,579,580,581,582,583,584,585,586,587,588,589,590,591,592,593,594,595,596,597,598,599,600
 </data>
  </layer>
+ <objectgroup id="5" name="houseOne">
+  <object id="4" name="gym" x="151.03" y="304.805" width="43.9359" height="43.9359"/>
+ </objectgroup>
 </map>
