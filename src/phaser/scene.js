@@ -44,6 +44,8 @@ class playGame extends Phaser.Scene {
     this.load.image('shopLevel', shopImg);
     this.load.image('homeLevel', HomeImg);
     this.load.image('mansionLevel', mansionImg);
+    this.load.image('dragonblue', GreenManImg);
+    this.load.image('dragonorrange', GreenManImg);
     this.load.tilemapTiledJSON('mansion', mansionMap);
     this.load.tilemapTiledJSON('home', HomeMap);
     this.load.tilemapTiledJSON('shop', shopMap);
@@ -150,7 +152,7 @@ class playGame extends Phaser.Scene {
       this.physics.pause();
       this.dialogue.setVisible(true);
       this.input.keyboard.once('keydown_A', () => {
-        this.scene.start('scene2');
+        this.scene.switch('BattleScene');
         this.dialogue.setVisible(false);
       });
       this.input.keyboard.once('keydown_SPACE', () => {
