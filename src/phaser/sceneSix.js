@@ -1,105 +1,42 @@
-import Phaser, { Game } from 'phaser';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {
-  gymOneImg,
-  HomeImg,
-  HomeMap,
-  gymOneMap,
-  mansionImg,
-  mansionMap,
-  houseOneImg,
-  houseOneMap,
-  pokeImg,
-  pokeMap,
-  pokeStudent,
-  pokeStudentJSON,
-  Home,
-  Lounge,
-  shopImg,
-  shopMap
-} from './assets'
+import React from 'react'
+import Phaser from 'phaser';
+import pokeStudent from '../assets/student/student.png';
+import pokeStudentJSON from '../assets/student/student_atlas.json';
 
+let controls;
 let cursors;
+let player;
 let music;
-let roomOne;
-let roomTwo;
-let roomThree;
-let roomFour;
-let roomFive;
-let player = {x:100, y: 364};
+let tile;
 let showDebug = false;
 
-class playGame extends Phaser.Scene {
+class SceneSix extends Phaser.Scene {
   constructor() {
-    super('PlayGame');
+    super('scene6');
   }
   preload() {
-    this.load.image('firstLevel', pokeImg);
-    this.load.image('houseLevel', houseOneImg);
-    this.load.image('libraryLevel', gymOneImg);
-    this.load.image('shopLevel', shopImg);
-    this.load.image('homeLevel', HomeImg);
-    this.load.image('mansionLevel', mansionImg);
-    this.load.tilemapTiledJSON('mansion', mansionMap);
-    this.load.tilemapTiledJSON('home', HomeMap);
-    this.load.tilemapTiledJSON('shop', shopMap);
-    this.load.tilemapTiledJSON('library', gymOneMap);
-    this.load.tilemapTiledJSON('house', houseOneMap);
-    this.load.tilemapTiledJSON('level', pokeMap);
     this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
-    this.load.audio('levelOne', [Home]);
-    this.load.audio('lounge', [Lounge])
   }
 
   create() {
-    const map = this.make.tilemap({ key: 'level' });
-    const tileset = map.addTilesetImage('poke', 'firstLevel');
-    const belowLayer = map.createStaticLayer('Below', tileset, 0, 0);
-    const worldLayer = map.createStaticLayer('World', tileset, 0, 0);
-    worldLayer.setCollisionByProperty({ collides: true });
+    const map = this.make.tilemap({ key: 'mansion' });
+    const tileset = map.addTilesetImage('mansion', 'mansionLevel');
+    const mansionLayer = map.createStaticLayer('mansion', tileset, 0, 0);
 
-      music = this.sound.add('levelOne', { loop: true });
-      music.play();
-      console.log(this.data)
-  roomOne = map.setTileIndexCallback(154, () => {
-      player.x = 170
-      player.y = 370
-      music.stop()
-      this.scene.start('scene2')
-  }, this);
-  roomTwo = map.setTileIndexCallback(163, () => {
-    player.x = 630
-    player.y = 320
-    music.stop()
-    this.scene.start('scene3')
-}, this);
-  roomThree = map.setTileIndexCallback(275, () => {
-    player.x = 220
-    player.y = 520
-    music.stop()
-    this.scene.start('scene4')
-  }, this);
-  roomFour = map.setTileIndexCallback(169, () => {
-    player.x = 930
-    player.y = 320
-    music.stop()
-    this.scene.start('scene5')
-  }, this);
-  roomFive = map.setTileIndexCallback(38, () => {
-    player.x = 930
-    player.y = 320
-    music.stop()
-    this.scene.start('scene6')
-  }, this);
+    music = this.sound.add('lounge', { loop: true });
+    music.play();
 
-// and the second one 
-    const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
+    tile = map.setTileIndexCallback(585, () => {
+      music.stop();
+      this.scene.start('PlayGame')
+    }, this);
+
+    mansionLayer.setCollisionByProperty({ collides: true });
+    const spawnPoint = map.findObject('SpawnPoint', obj => obj.name === 'spawn');
     player = this.physics.add
-    .sprite(player.x, player.y, 'atlas', 'student-front')
+    .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'student-back')
     .setSize(30, 40)
     .setOffset(0, 24);
-
 
   const anims = this.anims;
   anims.create({
@@ -126,9 +63,9 @@ class playGame extends Phaser.Scene {
     frameRate: 10,
     repeat: -1
   });
-  player.touchesArea = false
 
-  this.physics.add.collider(player, worldLayer);
+  this.physics.add.collider(player,  mansionLayer);
+
   const camera = this.cameras.main;
   camera.startFollow(player);
   cursors = this.input.keyboard.createCursorKeys();
@@ -155,17 +92,12 @@ class playGame extends Phaser.Scene {
           .graphics()
           .setAlpha(0.75)
           .setDepth(20);
-        worldLayer.renderDebug(graphics, {
-          tileColor: null, // Color of non-colliding tiles
-          collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-          faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        });
       });
   })
-
 }
 
   update(time, delta) {
+    
     // Runs once per frame for the duration of the scene
     const speed = 175;
     const prevVelocity = player.body.velocity.clone();
@@ -198,7 +130,6 @@ class playGame extends Phaser.Scene {
       else if (prevVelocity.y > 0) player.setTexture('atlas', 'student-front');
     }
   }
-
 }
 
-export default playGame;
+export default SceneSix;
