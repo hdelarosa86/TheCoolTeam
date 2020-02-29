@@ -2,6 +2,8 @@ import houseOneImg from '../assets/tilesets/insideHouse.png';
 import houseOneMap from '../assets/pokeInside.json';
 import HomeImg from '../assets/tilesets/home.png';
 import HomeMap from '../assets/home.json';
+import GreenManImg from '../assets/student/GreenMan.png';
+import GreenManJSON from '../assets/student/GreenMan_atlas.json';
 import shopImg from '../assets/tilesets/shop.png';
 import shopMap from '../assets/shop.json';
 import gymOneImg from '../assets/tilesets/houseTwo.png';
@@ -19,6 +21,8 @@ import Lounge from '../assets/lounge.mp3'
 export {
     HomeImg,
     HomeMap,
+    GreenManImg,
+    GreenManJSON,
     gymOneImg,
     gymOneMap,
     mansionImg,

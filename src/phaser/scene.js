@@ -5,6 +5,8 @@ import {
   gymOneImg,
   HomeImg,
   HomeMap,
+  GreenManImg,
+  GreenManJSON,
   gymOneMap,
   mansionImg,
   mansionMap,
@@ -27,7 +29,8 @@ let roomTwo;
 let roomThree;
 let roomFour;
 let roomFive;
-let player = {x:100, y: 364};
+let colliderActivated = true;
+let player = {x: 100, y: 364};
 let showDebug = false;
 
 class playGame extends Phaser.Scene {
@@ -48,6 +51,7 @@ class playGame extends Phaser.Scene {
     this.load.tilemapTiledJSON('house', houseOneMap);
     this.load.tilemapTiledJSON('level', pokeMap);
     this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
+    this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.audio('levelOne', [Home]);
     this.load.audio('lounge', [Lounge])
   }
@@ -93,12 +97,21 @@ class playGame extends Phaser.Scene {
     this.scene.start('scene6')
   }, this);
 
-// and the second one 
+// and the second one
     const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
     player = this.physics.add
     .sprite(player.x, player.y, 'atlas', 'student-front')
     .setSize(30, 40)
     .setOffset(0, 24);
+
+    this.NPCs = this.physics.add.staticGroup();
+    this.npcOne = this.NPCs.create(350, 350, 'greenman', 'student-front-walk.000')
+      .setSize(0, 38)
+      .setOffset(0, 23);
+    this.npcOne.text = 'Hello Fullstacker, do you want to pair program?';
+    this.npcTwo = this.NPCs.create(300, 150, 'greenman', 'student-left')
+      .setSize(0, 38)
+      .setOffset(0, 23);
 
 
   const anims = this.anims;
@@ -129,6 +142,24 @@ class playGame extends Phaser.Scene {
   player.touchesArea = false
 
   this.physics.add.collider(player, worldLayer);
+
+  this.dialogue = this.add
+      .text(this.npcOne.x - 10, this.npcOne.y - 10, this.npcOne.text)
+      .setVisible(false);
+    this.physics.add.collider(player, this.npcOne, () => {
+      this.physics.pause();
+      this.dialogue.setVisible(true);
+      this.input.keyboard.once('keydown_A', () => {
+        this.scene.start('scene2');
+        this.dialogue.setVisible(false);
+      });
+      this.input.keyboard.once('keydown_SPACE', () => {
+        this.physics.resume();
+        this.dialogue.setVisible(false);
+      });
+      return colliderActivated;
+    });
+
   const camera = this.cameras.main;
   camera.startFollow(player);
   cursors = this.input.keyboard.createCursorKeys();
