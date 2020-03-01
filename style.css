@@ -9,3 +9,7 @@
   #phaser>canvas {
     border-radius: 5px;
   }
+  body{
+      background: black;
+      color: white;
+  }
