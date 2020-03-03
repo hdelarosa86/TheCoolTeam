@@ -1,9 +1,5 @@
 import React from 'react'
 import Phaser from 'phaser';
-import pokeStudent from '../assets/student/student.png';
-import pokeStudentJSON from '../assets/student/student_atlas.json';
-import { shopObj } from './assets'
-
 
 let controls;
 let cursors;
@@ -12,29 +8,26 @@ let music;
 let tile;
 let showDebug = false;
 
-class SceneFour extends Phaser.Scene {
+class SceneSix extends Phaser.Scene {
   constructor() {
-    super('scene4');
-  }
-  preload() {
-    this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
+    super('scene6');
   }
 
   create() {
-    const map = this.make.tilemap({ key: 'shop' });
-    const tileset = map.addTilesetImage('shop', 'shopLevel');
-    const shopLayer = map.createStaticLayer('shop', tileset, 0, 0);
+    const map = this.make.tilemap({ key: 'mansion' });
+    const tileset = map.addTilesetImage('mansion', 'mansionLevel');
+    const mansionLayer = map.createStaticLayer('mansion', tileset, 0, 0);
 
-    music = this.sound.add('shop', { loop: true });
+    music = this.sound.add('mansion', { loop: true });
 
     music.play();
 
-    tile = map.setTileIndexCallback(434, () => {
+    tile = map.setTileIndexCallback(585, () => {
       music.stop();
       this.scene.start('PlayGame')
     }, this);
 
-    shopLayer.setCollisionByProperty({ collides: true });
+    mansionLayer.setCollisionByProperty({ collides: true });
     const spawnPoint = map.findObject('SpawnPoint', obj => obj.name === 'spawn');
     player = this.physics.add
     .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'student-back')
@@ -67,7 +60,7 @@ class SceneFour extends Phaser.Scene {
     repeat: -1
   });
 
-  this.physics.add.collider(player, shopLayer);
+  this.physics.add.collider(player,  mansionLayer);
 
   const camera = this.cameras.main;
   camera.startFollow(player);
@@ -135,4 +128,4 @@ class SceneFour extends Phaser.Scene {
   }
 }
 
-export default SceneFour;
+export default SceneSix;

@@ -21,13 +21,14 @@ import {
   Home,
   Lounge,
   Library,
+  battleOne,
   shopImg,
   shopMap,
   shopObj,
   Mansion,
   House,
   Shop
-} from './assets'
+} from '../assets'
 
 let cursors;
 let music;
@@ -78,6 +79,7 @@ class playGame extends Phaser.Scene {
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.atlas('pinkman', PinkManImg, PinkManJSON);
     this.load.audio('levelOne', [Home]);
+    this.load.audio('battleOne', [battleOne]);
     this.load.audio('lounge', [Lounge])
     this.load.audio('Library', [Library])
     this.load.audio('mansion', [Mansion])
@@ -141,9 +143,9 @@ class playGame extends Phaser.Scene {
     .sprite(player.x, player.y, 'atlas', 'student-front')
     .setSize(30, 40)
     .setOffset(0, 24);
-    
+
     this.physics.add.collider(player, worldLayer);
-    
+
     const anims = this.anims;
   anims.create({
     key: 'student-left-walk',
@@ -170,7 +172,7 @@ class playGame extends Phaser.Scene {
     repeat: -1
   });
 
-  
+
     this.NPCs = this.physics.add.staticGroup();
 
     this.npcOne = createNPC(
@@ -241,11 +243,12 @@ class playGame extends Phaser.Scene {
       this.physics.paused = true;
 
       this.input.keyboard.on('keydown_Y', () => {
-        this.scene.start('BattleScene', this.player);
+        music.stop();
+        this.scene.start(_spriteNPC.battleScene, this.player);
         this.physics.resume();
         this.anims.resumeAll();
         this.physics.paused = false;
-
+        _spriteNPC.text;
       });
 
       this.input.keyboard.on('keydown_N', () => {
@@ -329,12 +332,10 @@ class playGame extends Phaser.Scene {
       } else {
         player.anims.stop();
         // If we were moving, pick and idle frame to use
-        if (prevVelocity.x < 0) player.setTexture('atlas', 'student-left');
-        else if (prevVelocity.x > 0)
-          player.setTexture('atlas', 'student-right');
-        else if (prevVelocity.y < 0) player.setTexture('atlas', 'student-back');
-        else if (prevVelocity.y > 0)
-          player.setTexture('atlas', 'student-front');
+        if (prevVelocity.x < 0) {player.setTexture('atlas', 'student-left');}
+        else if (prevVelocity.x > 0) {player.setTexture('atlas', 'student-right');}
+        else if (prevVelocity.y < 0) {player.setTexture('atlas', 'student-back');}
+        else if (prevVelocity.y > 0) {player.setTexture('atlas', 'student-front');}
       }
     }
   }
