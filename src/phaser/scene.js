@@ -7,6 +7,8 @@ import {
   HomeMap,
   GreenManImg,
   GreenManJSON,
+  PinkManImg,
+  PinkManJSON,
   gymOneMap,
   mansionImg,
   mansionMap,
@@ -32,6 +34,7 @@ let roomFive;
 let colliderActivated = true;
 let player = { x: 100, y: 364 };
 let showDebug = false;
+let yesOrNo = '(Y/N)';
 
 class playGame extends Phaser.Scene {
   constructor() {
@@ -52,11 +55,21 @@ class playGame extends Phaser.Scene {
     this.load.tilemapTiledJSON('level', pokeMap);
     this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
+    this.load.atlas('pinkman', PinkManImg, PinkManJSON);
     this.load.audio('levelOne', [Home]);
     this.load.audio('lounge', [Lounge]);
   }
 
   create() {
+    const createNPC = (x, y, spriteName, spriteFrame, text, reference) => {
+      let npc = this.NPCs.create(x, y, spriteName, spriteFrame)
+        .setSize(0, 38)
+        .setOffset(0, 23);
+      npc.text = text || '';
+      npc.reference = reference;
+      return npc;
+    };
+
     const map = this.make.tilemap({ key: 'level' });
     const tileset = map.addTilesetImage('poke', 'firstLevel');
     const belowLayer = map.createStaticLayer('Below', tileset, 0, 0);
@@ -127,19 +140,33 @@ class playGame extends Phaser.Scene {
       .setOffset(0, 24);
 
     this.NPCs = this.physics.add.staticGroup();
-    this.npcOne = this.NPCs.create(
+
+    this.npcOne = createNPC(
       350,
       350,
       'greenman',
-      'student-front-walk.000'
-    )
-      .setSize(0, 38)
-      .setOffset(0, 23);
-    this.npcOne.text = 'Hello Fullstacker, do you want to pair program?';
-    this.npcTwo = this.NPCs.create(300, 150, 'greenman', 'student-left')
-      .setSize(0, 38)
-      .setOffset(0, 23);
+      'greenman-front',
+      'Hello Fullstacker, do you want to pair program?',
+      'npcOne'
+    );
+    this.npcTwo = createNPC(
+      1250,
+      100,
+      'greenman',
+      'greenman-left',
+      'Hello man, do you want to pratice Promises?',
+      'npcTwo'
+    );
+    this.npcThree = createNPC(
+      1000,
+      350,
+      'pinkman',
+      'pinkman-right',
+      'You are not worth my time!',
+      'npcThree'
+    );
 
+    //const animsNPC = this.anims;
     const anims = this.anims;
     anims.create({
       key: 'student-left-walk',
@@ -189,26 +216,65 @@ class playGame extends Phaser.Scene {
 
     this.physics.add.collider(player, worldLayer);
 
-    this.dialogue = this.add
-      .text(this.npcOne.x - 10, this.npcOne.y - 10, this.npcOne.text)
-      .setVisible(false);
-    this.physics.add.collider(player, this.npcOne, () => {
+    this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
+      let _spriteNPC = spriteNPC;
+      let directionObj = spriteNPC.body.touching;
+      let direction = null;
+      for (let key in directionObj) {
+        if (directionObj[key]) {
+          if (key === 'down') {
+            direction = 'front';
+          } else if (key === 'up') {
+            direction = 'back';
+          } else {
+            direction = key;
+          }
+        }
+      }
+      console.log(_spriteNPC.texture.key)
+      spriteNPC.destroy();
+      this[_spriteNPC.reference] = createNPC(
+        _spriteNPC.x,
+        _spriteNPC.y,
+        _spriteNPC.texture.key,
+        `${_spriteNPC.texture.key}-${direction}`,
+        _spriteNPC.text,
+        _spriteNPC.reference
+      );
+
       this.physics.pause();
       this.anims.pauseAll();
+      this.dialogue = this.add
+        .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
+          wordWrap: { width: 500 },
+          padding: { top: 15, right: 15, bottom: 15, left: 15 },
+          align: 'left',
+          backgroundColor: '#ffffff',
+          color: '#ff0000',
+        })
+        .setScrollFactor(0)
+        .setDepth(30);
       this.physics.paused = true;
-      this.dialogue.setVisible(true);
-      this.input.keyboard.once('keydown_A', () => {
-        this.scene.start('scene2');
-        this.dialogue.setVisible(false);
-      });
-      this.input.keyboard.once('keydown_SPACE', () => {
+
+      // this.input.keyboard.once('keydown_Y', () => {
+      //   this.scene.start('scene2');
+      // });
+
+      this.input.keyboard.once('keydown_N', () => {
         this.physics.resume();
         this.anims.resumeAll();
         this.physics.paused = false;
-
-        this.dialogue.setVisible(false);
+        this.dialogue.destroy();
+        this[_spriteNPC.reference].destroy();
+        this[_spriteNPC.reference] = createNPC(
+          _spriteNPC.x,
+          _spriteNPC.y,
+          _spriteNPC.texture.key,
+          _spriteNPC.frame.name,
+          _spriteNPC.text
+        );
       });
-      return colliderActivated;
+      //return colliderActivated;
     });
 
     const camera = this.cameras.main;
@@ -256,7 +322,6 @@ class playGame extends Phaser.Scene {
     player.body.setVelocity(0);
     // Horizontal movement
     if (!this.physics.paused) {
-      
       if (cursors.left.isDown) player.body.setVelocityX(-speed);
       else if (cursors.right.isDown) player.body.setVelocityX(speed);
 
