@@ -18,8 +18,13 @@ import {
   pokeStudentJSON,
   Home,
   Lounge,
+  Library,
   shopImg,
-  shopMap
+  shopMap,
+  shopObj,
+  Mansion,
+  House,
+  Shop
 } from './assets'
 
 let cursors;
@@ -33,9 +38,23 @@ let colliderActivated = true;
 let player = {x: 100, y: 364};
 let showDebug = false;
 
+
 class playGame extends Phaser.Scene {
   constructor() {
     super('PlayGame');
+  }
+  init(data){
+    if (Object.keys(data).length === 0){
+        data = {
+          x: 600,
+          y: 200,
+          texture: 'atlas',
+          frame: 1,
+          name: 'Student',
+          health: 100
+        }
+    }
+    this.player = data
   }
   preload() {
     this.load.image('firstLevel', pokeImg);
@@ -56,6 +75,10 @@ class playGame extends Phaser.Scene {
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.audio('levelOne', [Home]);
     this.load.audio('lounge', [Lounge])
+    this.load.audio('Library', [Library])
+    this.load.audio('mansion', [Mansion])
+    this.load.audio('house', [House])
+    this.load.audio('shop', [Shop])
   }
 
   create() {
@@ -67,37 +90,37 @@ class playGame extends Phaser.Scene {
 
       music = this.sound.add('levelOne', { loop: true });
       music.play();
-      console.log(this.data)
-  roomOne = map.setTileIndexCallback(154, () => {
-      player.x = 170
-      player.y = 370
+
+    roomOne = map.setTileIndexCallback(154, () => {
+        player.x = 170
+        player.y = 370
+        music.stop()
+        this.scene.start('scene2')
+    }, this);
+    roomTwo = map.setTileIndexCallback(163, () => {
+      player.x = 630
+      player.y = 320
       music.stop()
-      this.scene.start('scene2')
+      this.scene.start('scene3')
   }, this);
-  roomTwo = map.setTileIndexCallback(163, () => {
-    player.x = 630
-    player.y = 320
-    music.stop()
-    this.scene.start('scene3')
-}, this);
-  roomThree = map.setTileIndexCallback(275, () => {
-    player.x = 220
-    player.y = 520
-    music.stop()
-    this.scene.start('scene4')
-  }, this);
-  roomFour = map.setTileIndexCallback(169, () => {
-    player.x = 930
-    player.y = 320
-    music.stop()
-    this.scene.start('scene5')
-  }, this);
-  roomFive = map.setTileIndexCallback(38, () => {
-    player.x = 930
-    player.y = 320
-    music.stop()
-    this.scene.start('scene6')
-  }, this);
+    roomThree = map.setTileIndexCallback(275, () => {
+      player.x = 220
+      player.y = 520
+      music.stop()
+      this.scene.start('scene4')
+    }, this);
+    roomFour = map.setTileIndexCallback(169, () => {
+      player.x = 930
+      player.y = 320
+      music.stop()
+      this.scene.start('scene5')
+    }, this);
+    roomFive = map.setTileIndexCallback(38, () => {
+      player.x = 380
+      player.y = 120
+      music.stop()
+      this.scene.start('scene6')
+    }, this);
 
 // and the second one
     const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
@@ -152,7 +175,8 @@ class playGame extends Phaser.Scene {
       this.physics.pause();
       this.dialogue.setVisible(true);
       this.input.keyboard.once('keydown_A', () => {
-        this.scene.switch('BattleScene');
+        this.physics.resume();
+        this.scene.start('BattleScene', this.player);
         this.dialogue.setVisible(false);
       });
       this.input.keyboard.once('keydown_SPACE', () => {
@@ -161,7 +185,7 @@ class playGame extends Phaser.Scene {
       });
       return colliderActivated;
     });
-
+console.log(this.player)
   const camera = this.cameras.main;
   camera.startFollow(player);
   cursors = this.input.keyboard.createCursorKeys();
@@ -234,4 +258,4 @@ class playGame extends Phaser.Scene {
 
 }
 
-export default playGame;
+export { shopObj, playGame }

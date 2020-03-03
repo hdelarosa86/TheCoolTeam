@@ -14,8 +14,13 @@ import pokeImg from '../assets/tilesets/poke.png';
 import pokeMap from '../assets/pokeWorld.json';
 import pokeStudent from '../assets/student/student.png';
 import pokeStudentJSON from '../assets/student/student_atlas.json';
-import Home from '../assets/levelOne.mp3'
-import Lounge from '../assets/lounge.mp3'
+import Home from '../assets/levelOne.mp3';
+import Lounge from '../assets/lounge.mp3';
+import Library from '../assets/Library.mp3';
+import Mansion from '../assets/mansion.mp3';
+import House from '../assets/house.mp3';
+import Shop from '../assets/shop.mp3';
+import { shopObj } from '../components/App.jsx'
 
 
 export {
@@ -36,5 +41,10 @@ export {
     Home,
     Lounge,
     shopImg,
-    shopMap
+    shopMap,
+    shopObj,
+    Library,
+    Mansion,
+    House,
+    Shop
 };

@@ -23,7 +23,7 @@ class SceneThree extends Phaser.Scene {
     const tileset = map.addTilesetImage('houseTwo', 'libraryLevel');
     const houseLayer = map.createStaticLayer('library', tileset, 0, 0);
 
-    music = this.sound.add('lounge', { loop: true });
+    music = this.sound.add('Library', { loop: true });
     music.play();
 
     tile = map.setTileIndexCallback(465, () => {
@@ -97,7 +97,7 @@ class SceneThree extends Phaser.Scene {
 }
 
   update(time, delta) {
-    
+
     // Runs once per frame for the duration of the scene
     const speed = 175;
     const prevVelocity = player.body.velocity.clone();

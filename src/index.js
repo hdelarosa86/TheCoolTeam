@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App.jsx';
-import playGame from './phaser/scene';
+import { App } from './components/App.jsx';
+import { playGame } from './phaser/scene';
 import SceneTwo from './phaser/sceneTwo';
 import SceneThree from './phaser/sceneThree';
 import SceneFour from './phaser/sceneFour';

@@ -2,6 +2,7 @@ import React from 'react'
 import Phaser from 'phaser';
 import pokeStudent from '../assets/student/student.png';
 import pokeStudentJSON from '../assets/student/student_atlas.json';
+import { shopObj } from './assets'
 
 let controls;
 let cursors;
@@ -23,7 +24,7 @@ class SceneFour extends Phaser.Scene {
     const tileset = map.addTilesetImage('shop', 'shopLevel');
     const shopLayer = map.createStaticLayer('shop', tileset, 0, 0);
 
-    music = this.sound.add('lounge', { loop: true });
+    music = this.sound.add('shop', { loop: true });
     music.play();
 
     tile = map.setTileIndexCallback(434, () => {
@@ -97,7 +98,7 @@ class SceneFour extends Phaser.Scene {
 }
 
   update(time, delta) {
-    
+
     // Runs once per frame for the duration of the scene
     const speed = 175;
     const prevVelocity = player.body.velocity.clone();
