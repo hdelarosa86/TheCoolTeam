@@ -4,6 +4,8 @@ import HomeImg from '../assets/tilesets/home.png';
 import HomeMap from '../assets/home.json';
 import GreenManImg from '../assets/student/GreenMan.png';
 import GreenManJSON from '../assets/student/GreenMan_atlas.json';
+import PinkManImg from '../assets/student/pink.png';
+import PinkManJSON from '../assets/student/pink_atlas.json';
 import shopImg from '../assets/tilesets/shop.png';
 import shopMap from '../assets/shop.json';
 import gymOneImg from '../assets/tilesets/houseTwo.png';
@@ -24,24 +26,26 @@ import { shopObj } from '../components/App.jsx'
 
 
 export {
-    HomeImg,
-    HomeMap,
-    GreenManImg,
-    GreenManJSON,
-    gymOneImg,
-    gymOneMap,
-    mansionImg,
-    mansionMap,
-    houseOneImg,
-    houseOneMap,
-    pokeImg,
-    pokeMap,
-    pokeStudent,
-    pokeStudentJSON,
-    Home,
-    Lounge,
-    shopImg,
-    shopMap,
+     HomeImg,
+  HomeMap,
+  GreenManImg,
+  GreenManJSON,
+  PinkManImg,
+  PinkManJSON,
+  gymOneImg,
+  gymOneMap,
+  mansionImg,
+  mansionMap,
+  houseOneImg,
+  houseOneMap,
+  pokeImg,
+  pokeMap,
+  pokeStudent,
+  pokeStudentJSON,
+  Home,
+  Lounge,
+  shopImg,
+  shopMap,
     shopObj,
     Library,
     Mansion,

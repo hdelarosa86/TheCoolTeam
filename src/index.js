@@ -10,6 +10,7 @@ import SceneFive from './phaser/sceneFive';
 import SceneSix from './phaser/sceneSix';
 import { BattleScene, UIScene } from './phaser/battle';
 
+
 //console.log(App);
 
 export const config = {

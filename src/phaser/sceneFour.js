@@ -4,6 +4,7 @@ import pokeStudent from '../assets/student/student.png';
 import pokeStudentJSON from '../assets/student/student_atlas.json';
 import { shopObj } from './assets'
 
+
 let controls;
 let cursors;
 let player;
@@ -25,6 +26,7 @@ class SceneFour extends Phaser.Scene {
     const shopLayer = map.createStaticLayer('shop', tileset, 0, 0);
 
     music = this.sound.add('shop', { loop: true });
+
     music.play();
 
     tile = map.setTileIndexCallback(434, () => {
