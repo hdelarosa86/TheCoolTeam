@@ -1,5 +1,15 @@
 import Phaser, { Game } from 'phaser';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import {
+  gymOneImg,
+  HomeImg,
+  HomeMap,
+  GreenManImg,
+  GreenManJSON,
+  gymOneMap,
+  mansionImg,
+  mansionMap,
   houseOneImg,
   houseOneMap,
   pokeImg,
@@ -7,27 +17,68 @@ import {
   pokeStudent,
   pokeStudentJSON,
   Home,
-  Lounge
+  Lounge,
+  Library,
+  shopImg,
+  shopMap,
+  shopObj,
+  Mansion,
+  House,
+  Shop
 } from './assets'
 
 let cursors;
 let music;
-let tile;
-let player = { x: 100 , y: 360};
+let roomOne;
+let roomTwo;
+let roomThree;
+let roomFour;
+let roomFive;
+let colliderActivated = true;
+let player = {x: 100, y: 364};
 let showDebug = false;
+
 
 class playGame extends Phaser.Scene {
   constructor() {
     super('PlayGame');
   }
+  init(data){
+    if (Object.keys(data).length === 0){
+        data = {
+          x: 600,
+          y: 200,
+          texture: 'atlas',
+          frame: 1,
+          name: 'Student',
+          health: 100
+        }
+    }
+    this.player = data
+  }
   preload() {
     this.load.image('firstLevel', pokeImg);
     this.load.image('houseLevel', houseOneImg);
+    this.load.image('libraryLevel', gymOneImg);
+    this.load.image('shopLevel', shopImg);
+    this.load.image('homeLevel', HomeImg);
+    this.load.image('mansionLevel', mansionImg);
+    this.load.image('dragonblue', GreenManImg);
+    this.load.image('dragonorrange', GreenManImg);
+    this.load.tilemapTiledJSON('mansion', mansionMap);
+    this.load.tilemapTiledJSON('home', HomeMap);
+    this.load.tilemapTiledJSON('shop', shopMap);
+    this.load.tilemapTiledJSON('library', gymOneMap);
     this.load.tilemapTiledJSON('house', houseOneMap);
     this.load.tilemapTiledJSON('level', pokeMap);
     this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
+    this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.audio('levelOne', [Home]);
     this.load.audio('lounge', [Lounge])
+    this.load.audio('Library', [Library])
+    this.load.audio('mansion', [Mansion])
+    this.load.audio('house', [House])
+    this.load.audio('shop', [Shop])
   }
 
   create() {
@@ -39,21 +90,54 @@ class playGame extends Phaser.Scene {
 
       music = this.sound.add('levelOne', { loop: true });
       music.play();
-    
-    tile = map.setTileIndexCallback(154, () => {
-      player.x = 170
-      player.y = 370
-      music.stop()
-      this.scene.start('scene2')
-  }, this);
 
-// and the second one 
+    roomOne = map.setTileIndexCallback(154, () => {
+        player.x = 170
+        player.y = 370
+        music.stop()
+        this.scene.start('scene2')
+    }, this);
+    roomTwo = map.setTileIndexCallback(163, () => {
+      player.x = 630
+      player.y = 320
+      music.stop()
+      this.scene.start('scene3')
+  }, this);
+    roomThree = map.setTileIndexCallback(275, () => {
+      player.x = 220
+      player.y = 520
+      music.stop()
+      this.scene.start('scene4')
+    }, this);
+    roomFour = map.setTileIndexCallback(169, () => {
+      player.x = 930
+      player.y = 320
+      music.stop()
+      this.scene.start('scene5')
+    }, this);
+    roomFive = map.setTileIndexCallback(38, () => {
+      player.x = 380
+      player.y = 120
+      music.stop()
+      this.scene.start('scene6')
+    }, this);
+
+// and the second one
     const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
-    
     player = this.physics.add
     .sprite(player.x, player.y, 'atlas', 'student-front')
     .setSize(30, 40)
     .setOffset(0, 24);
+
+    this.NPCs = this.physics.add.staticGroup();
+    this.npcOne = this.NPCs.create(350, 350, 'greenman', 'student-front-walk.000')
+      .setSize(0, 38)
+      .setOffset(0, 23);
+    this.npcOne.text = 'Hello Fullstacker, do you want to pair program?';
+    this.npcTwo = this.NPCs.create(300, 150, 'greenman', 'student-left')
+      .setSize(0, 38)
+      .setOffset(0, 23);
+
 
   const anims = this.anims;
   anims.create({
@@ -84,6 +168,24 @@ class playGame extends Phaser.Scene {
 
   this.physics.add.collider(player, worldLayer);
 
+  this.dialogue = this.add
+      .text(this.npcOne.x - 10, this.npcOne.y - 10, this.npcOne.text)
+      .setVisible(false);
+    this.physics.add.collider(player, this.npcOne, () => {
+      this.physics.pause();
+      this.dialogue.setVisible(true);
+      this.input.keyboard.once('keydown_A', () => {
+        this.physics.resume();
+        this.scene.start('BattleScene', this.player);
+        this.dialogue.setVisible(false);
+      });
+      this.input.keyboard.once('keydown_SPACE', () => {
+        this.physics.resume();
+        this.dialogue.setVisible(false);
+      });
+      return colliderActivated;
+    });
+console.log(this.player)
   const camera = this.cameras.main;
   camera.startFollow(player);
   cursors = this.input.keyboard.createCursorKeys();
@@ -117,12 +219,10 @@ class playGame extends Phaser.Scene {
         });
       });
   })
-  
 
 }
 
   update(time, delta) {
-
     // Runs once per frame for the duration of the scene
     const speed = 175;
     const prevVelocity = player.body.velocity.clone();
@@ -158,5 +258,4 @@ class playGame extends Phaser.Scene {
 
 }
 
-
-export default playGame;
+export { shopObj, playGame }
