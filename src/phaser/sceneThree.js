@@ -24,6 +24,7 @@ class SceneThree extends Phaser.Scene {
     const houseLayer = map.createStaticLayer('library', tileset, 0, 0);
 
     music = this.sound.add('Library', { loop: true });
+
     music.play();
 
     tile = map.setTileIndexCallback(465, () => {

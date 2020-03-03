@@ -186,22 +186,22 @@ var Unit = new Phaser.Class({
             if (arr.length > 0 && action === arr.pop().S){
                 target.takeDamage(20)
                 this.scene.events.emit( 'Message', 'You: '+ action + '!!!  \n' + target.type + ' with 20 point damage' )
-                target.frame = target.texture.frames['student-left']
+                target.frame = target.texture.frames['greenman-left']
                 setTimeout(() => {
-                    target.frame = target.texture.frames['student-back']
+                    target.frame = target.texture.frames['greenman-back']
                 }, 1000)
             }
             else {
                 target.takeDamage(random)
                 this.scene.events.emit( 'Message', 'You: '+ action + '!!!  \n' +  target.type + ' with ' + random + ' point damage')
-                target.frame = target.texture.frames['student-right']
+                target.frame = target.texture.frames['greenman-right']
                 setTimeout(() => {
-                    target.frame = target.texture.frames['student-back']
+                    target.frame = target.texture.frames['greenman-back']
                 }, 1000)
             }
         }
         else {
-            this.frame = this.texture.frames['student-back']
+            this.frame = this.texture.frames['greenman-back']
             target.frame = target.texture.frames['student-right']
             let damage = this.damage[random];
             target.takeDamage(8)

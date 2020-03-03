@@ -7,6 +7,8 @@ import {
   HomeMap,
   GreenManImg,
   GreenManJSON,
+  PinkManImg,
+  PinkManJSON,
   gymOneMap,
   mansionImg,
   mansionMap,
@@ -35,8 +37,9 @@ let roomThree;
 let roomFour;
 let roomFive;
 let colliderActivated = true;
-let player = {x: 100, y: 364};
+let player = { x: 100, y: 364 };
 let showDebug = false;
+let yesOrNo = '(Y/N)';
 
 
 class playGame extends Phaser.Scene {
@@ -73,6 +76,7 @@ class playGame extends Phaser.Scene {
     this.load.tilemapTiledJSON('level', pokeMap);
     this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
+    this.load.atlas('pinkman', PinkManImg, PinkManJSON);
     this.load.audio('levelOne', [Home]);
     this.load.audio('lounge', [Lounge])
     this.load.audio('Library', [Library])
@@ -82,6 +86,16 @@ class playGame extends Phaser.Scene {
   }
 
   create() {
+    const createNPC = (x, y, spriteName, spriteFrame, text, reference, battleScene) => {
+      let npc = this.NPCs.create(x, y, spriteName, spriteFrame)
+        .setSize(0, 38)
+        .setOffset(0, 23);
+      npc.text = text || '';
+      npc.reference = reference;
+      npc.battleScene = battleScene;
+      return npc;
+    };
+
     const map = this.make.tilemap({ key: 'level' });
     const tileset = map.addTilesetImage('poke', 'firstLevel');
     const belowLayer = map.createStaticLayer('Below', tileset, 0, 0);
@@ -122,24 +136,15 @@ class playGame extends Phaser.Scene {
       this.scene.start('scene6')
     }, this);
 
-// and the second one
     const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
     player = this.physics.add
     .sprite(player.x, player.y, 'atlas', 'student-front')
     .setSize(30, 40)
     .setOffset(0, 24);
-
-    this.NPCs = this.physics.add.staticGroup();
-    this.npcOne = this.NPCs.create(350, 350, 'greenman', 'student-front-walk.000')
-      .setSize(0, 38)
-      .setOffset(0, 23);
-    this.npcOne.text = 'Hello Fullstacker, do you want to pair program?';
-    this.npcTwo = this.NPCs.create(300, 150, 'greenman', 'student-left')
-      .setSize(0, 38)
-      .setOffset(0, 23);
-
-
-  const anims = this.anims;
+    
+    this.physics.add.collider(player, worldLayer);
+    
+    const anims = this.anims;
   anims.create({
     key: 'student-left-walk',
     frames: anims.generateFrameNames('atlas', { prefix: 'student-left-walk.', start: 0, end: 4, zeroPad: 3 }),
@@ -164,28 +169,98 @@ class playGame extends Phaser.Scene {
     frameRate: 10,
     repeat: -1
   });
-  player.touchesArea = false
 
-  this.physics.add.collider(player, worldLayer);
+  
+    this.NPCs = this.physics.add.staticGroup();
 
-  this.dialogue = this.add
-      .text(this.npcOne.x - 10, this.npcOne.y - 10, this.npcOne.text)
-      .setVisible(false);
-    this.physics.add.collider(player, this.npcOne, () => {
+    this.npcOne = createNPC(
+      350,
+      350,
+      'greenman',
+      'greenman-front',
+      'Hello Fullstacker, do you want to pair program?',
+      'npcOne',
+      'BattleScene'
+    );
+    this.npcTwo = createNPC(
+      1250,
+      100,
+      'greenman',
+      'greenman-left',
+      'Hello man, do you want to pratice Promises?',
+      'npcTwo',
+      'BattleScene'
+    );
+    this.npcThree = createNPC(
+      1000,
+      350,
+      'pinkman',
+      'pinkman-right',
+      'You are not worth my time!',
+      'npcThree',
+      'BattleScene'
+    );
+
+    this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
+      let _spriteNPC = spriteNPC;
+      let directionObj = spriteNPC.body.touching;
+      let direction = null;
+      for (let key in directionObj) {
+        if (directionObj[key]) {
+          if (key === 'down') {
+            direction = 'front';
+          } else if (key === 'up') {
+            direction = 'back';
+          } else {
+            direction = key;
+          }
+        }
+      }
+      spriteNPC.destroy();
+      this[_spriteNPC.reference] = createNPC(
+        _spriteNPC.x,
+        _spriteNPC.y,
+        _spriteNPC.texture.key,
+        `${_spriteNPC.texture.key}-${direction}`,
+        _spriteNPC.text,
+        _spriteNPC.reference
+      );
+
       this.physics.pause();
-      this.dialogue.setVisible(true);
-      this.input.keyboard.once('keydown_A', () => {
-        this.physics.resume();
+      this.anims.pauseAll();
+      this.dialogue = this.add
+        .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
+          wordWrap: { width: 500 },
+          padding: { top: 15, right: 15, bottom: 15, left: 15 },
+          align: 'left',
+          backgroundColor: '#ffffff',
+          color: '#ff0000',
+        })
+        .setScrollFactor(0)
+        .setDepth(30);
+      this.physics.paused = true;
+
+      this.input.keyboard.once('keydown_Y', () => {
         this.scene.start('BattleScene', this.player);
-        this.dialogue.setVisible(false);
+
       });
-      this.input.keyboard.once('keydown_SPACE', () => {
+
+      this.input.keyboard.once('keydown_N', () => {
         this.physics.resume();
-        this.dialogue.setVisible(false);
+        this.anims.resumeAll();
+        this.physics.paused = false;
+        this.dialogue.destroy();
+        this[_spriteNPC.reference].destroy();
+        this[_spriteNPC.reference] = createNPC(
+          _spriteNPC.x,
+          _spriteNPC.y,
+          _spriteNPC.texture.key,
+          _spriteNPC.frame.name,
+          _spriteNPC.text
+        );
       });
-      return colliderActivated;
     });
-console.log(this.player)
+
   const camera = this.cameras.main;
   camera.startFollow(player);
   cursors = this.input.keyboard.createCursorKeys();
@@ -194,16 +269,16 @@ console.log(this.player)
 
     // Help text that has a "fixed" position on the screen
     this.add
-    .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-      font: '18px monospace',
-      fill: '#000000',
-      padding: { x: 20, y: 10 },
-      backgroundColor: '#ffffff'
-    })
-    .setScrollFactor(0)
-    .setDepth(30);
+      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
+        font: '18px monospace',
+        fill: '#000000',
+        padding: { x: 20, y: 10 },
+        backgroundColor: '#ffffff',
+      })
+      .setScrollFactor(0)
+      .setDepth(30);
 
-      this.input.keyboard.once('keydown_D', event => {this.input.keyboard.once('keydown_D', event => {
+      this.input.keyboard.once('keydown_D', event => {
         // Turn on physics debugging to show player's hitbox
         this.physics.world.createDebugGraphic();
 
@@ -215,12 +290,10 @@ console.log(this.player)
         worldLayer.renderDebug(graphics, {
           tileColor: null, // Color of non-colliding tiles
           collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-          faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+          faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
         });
       });
-  })
-
-}
+  }
 
   update(time, delta) {
     // Runs once per frame for the duration of the scene
@@ -229,33 +302,39 @@ console.log(this.player)
 
     // Stop any previous movement from the last frame
     player.body.setVelocity(0);
-
     // Horizontal movement
-    if (cursors.left.isDown) player.body.setVelocityX(-speed);
-    else if (cursors.right.isDown) player.body.setVelocityX(speed);
+    if (!this.physics.paused) {
+      if (cursors.left.isDown) player.body.setVelocityX(-speed);
+      else if (cursors.right.isDown) player.body.setVelocityX(speed);
 
-    // Vertical movement
-    if (cursors.up.isDown) player.body.setVelocityY(-speed);
-    else if (cursors.down.isDown) player.body.setVelocityY(speed);
+      // Vertical movement
+      if (cursors.up.isDown) player.body.setVelocityY(-speed);
+      else if (cursors.down.isDown) player.body.setVelocityY(speed);
 
-    // Normalize and scale the velocity so that player can't move faster along a diagonal
-    player.body.velocity.normalize().scale(speed);
+      // Normalize and scale the velocity so that player can't move faster along a diagonal
+      player.body.velocity.normalize().scale(speed);
 
-    // Update the animation last and give left/right animations precedence over up/down animations
-    if (cursors.left.isDown) {player.anims.play('student-left-walk', true);}
-    else if (cursors.right.isDown) {player.anims.play('student-right-walk', true);}
-    else if (cursors.up.isDown) {player.anims.play('student-back-walk', true);}
-    else if (cursors.down.isDown) {player.anims.play('student-front-walk', true);}
-    else {
-      player.anims.stop();
-      // If we were moving, pick and idle frame to use
-      if (prevVelocity.x < 0) player.setTexture('atlas', 'student-left');
-      else if (prevVelocity.x > 0) player.setTexture('atlas', 'student-right');
-      else if (prevVelocity.y < 0) player.setTexture('atlas', 'student-back');
-      else if (prevVelocity.y > 0) player.setTexture('atlas', 'student-front');
+      // Update the animation last and give left/right animations precedence over up/down animations
+      if (cursors.left.isDown) {
+        player.anims.play('student-left-walk', true);
+      } else if (cursors.right.isDown) {
+        player.anims.play('student-right-walk', true);
+      } else if (cursors.up.isDown) {
+        player.anims.play('student-back-walk', true);
+      } else if (cursors.down.isDown) {
+        player.anims.play('student-front-walk', true);
+      } else {
+        player.anims.stop();
+        // If we were moving, pick and idle frame to use
+        if (prevVelocity.x < 0) player.setTexture('atlas', 'student-left');
+        else if (prevVelocity.x > 0)
+          player.setTexture('atlas', 'student-right');
+        else if (prevVelocity.y < 0) player.setTexture('atlas', 'student-back');
+        else if (prevVelocity.y > 0)
+          player.setTexture('atlas', 'student-front');
+      }
     }
   }
-
 }
 
 export { shopObj, playGame }

@@ -1,6 +1,6 @@
 {"frames": {
 
-    "greenman-back-walk.000":
+    "pinkman-back-walk.000":
     {
         "frame": {"x":97,"y":1,"w":32,"h":41},
         "rotated": false,
@@ -8,7 +8,7 @@
         "spriteSourceSize": {"x":0,"y":23,"w":32,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-back-walk.001":
+    "pinkman-back-walk.001":
     {
         "frame": {"x":97,"y":44,"w":32,"h":41},
         "rotated": false,
@@ -16,7 +16,7 @@
         "spriteSourceSize": {"x":0,"y":23,"w":32,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-back-walk.002":
+    "pinkman-back-walk.002":
     {
         "frame": {"x":131,"y":1,"w":32,"h":41},
         "rotated": false,
@@ -24,8 +24,7 @@
         "spriteSourceSize": {"x":0,"y":23,"w":32,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-back-walk.003":
-
+    "pinkman-back-walk.003":
     {
         "frame": {"x":97,"y":44,"w":32,"h":41},
         "rotated": false,
@@ -33,7 +32,7 @@
         "spriteSourceSize": {"x":0,"y":23,"w":32,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-back":
+    "pinkman-back":
     {
         "frame": {"x":97,"y":44,"w":32,"h":41},
         "rotated": false,
@@ -41,7 +40,7 @@
         "spriteSourceSize": {"x":0,"y":23,"w":32,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-front":
+    "pinkman-front":
     {
         "frame": {"x":1,"y":1,"w":30,"h":43},
         "rotated": false,
@@ -49,7 +48,7 @@
         "spriteSourceSize": {"x":1,"y":21,"w":30,"h":43},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-front-walk.001":
+    "pinkman-front-walk.001":
     {
         "frame": {"x":33,"y":1,"w":30,"h":43},
         "rotated": false,
@@ -57,7 +56,7 @@
         "spriteSourceSize": {"x":1,"y":21,"w":30,"h":43},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-front-walk.002":
+    "pinkman-front-walk.002":
     {
         "frame": {"x":65,"y":1,"w":30,"h":43},
         "rotated": false,
@@ -65,7 +64,7 @@
         "spriteSourceSize": {"x":1,"y":21,"w":30,"h":43},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-front-walk.003":
+    "pinkman-front-walk.003":
     {
         "frame": {"x":33,"y":1,"w":30,"h":43},
         "rotated": false,
@@ -73,7 +72,7 @@
         "spriteSourceSize": {"x":1,"y":21,"w":30,"h":43},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-front-walk.000":
+    "pinkman-front-walk.000":
     {
         "frame": {"x":33,"y":1,"w":30,"h":43},
         "rotated": false,
@@ -81,7 +80,7 @@
         "spriteSourceSize": {"x":1,"y":21,"w":30,"h":43},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-left-walk.000":
+    "pinkman-left-walk.000":
     {
         "frame": {"x":1,"y":46,"w":30,"h":39},
         "rotated": false,
@@ -89,7 +88,7 @@
         "spriteSourceSize": {"x":1,"y":25,"w":30,"h":39},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-left-walk.001":
+    "pinkman-left-walk.001":
     {
         "frame": {"x":131,"y":44,"w":30,"h":41},
         "rotated": false,
@@ -97,7 +96,7 @@
         "spriteSourceSize": {"x":1,"y":23,"w":30,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-left-walk.002":
+    "pinkman-left-walk.002":
     {
         "frame": {"x":33,"y":46,"w":30,"h":39},
         "rotated": false,
@@ -105,7 +104,7 @@
         "spriteSourceSize": {"x":1,"y":25,"w":30,"h":39},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-left-walk.003":
+    "pinkman-left-walk.003":
     {
         "frame": {"x":131,"y":44,"w":30,"h":41},
         "rotated": false,
@@ -113,7 +112,7 @@
         "spriteSourceSize": {"x":1,"y":23,"w":30,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-left":
+    "pinkman-left":
     {
         "frame": {"x":131,"y":44,"w":30,"h":41},
         "rotated": false,
@@ -121,7 +120,7 @@
         "spriteSourceSize": {"x":1,"y":23,"w":30,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-right-walk.000":
+    "pinkman-right-walk.000":
     {
         "frame": {"x":65,"y":46,"w":30,"h":39},
         "rotated": false,
@@ -129,8 +128,7 @@
         "spriteSourceSize": {"x":1,"y":25,"w":30,"h":39},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-right-walk.001":
-
+    "pinkman-right-walk.001":
     {
         "frame": {"x":163,"y":44,"w":30,"h":41},
         "rotated": false,
@@ -138,7 +136,7 @@
         "spriteSourceSize": {"x":1,"y":23,"w":30,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-right-walk.002":
+    "pinkman-right-walk.002":
     {
         "frame": {"x":165,"y":1,"w":30,"h":39},
         "rotated": false,
@@ -146,8 +144,7 @@
         "spriteSourceSize": {"x":1,"y":25,"w":30,"h":39},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-right-walk.003":
-
+    "pinkman-right-walk.003":
     {
         "frame": {"x":163,"y":44,"w":30,"h":41},
         "rotated": false,
@@ -155,8 +152,7 @@
         "spriteSourceSize": {"x":1,"y":23,"w":30,"h":41},
         "sourceSize": {"w":32,"h":64}
     },
-    "greenman-right":
-
+    "pinkman-right":
     {
         "frame": {"x":163,"y":44,"w":30,"h":41},
         "rotated": false,
