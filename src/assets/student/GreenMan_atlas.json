@@ -25,6 +25,7 @@
         "sourceSize": {"w":32,"h":64}
     },
     "greenman-back-walk.003":
+
     {
         "frame": {"x":97,"y":44,"w":32,"h":41},
         "rotated": false,
@@ -129,6 +130,7 @@
         "sourceSize": {"w":32,"h":64}
     },
     "greenman-right-walk.001":
+
     {
         "frame": {"x":163,"y":44,"w":30,"h":41},
         "rotated": false,
@@ -145,6 +147,7 @@
         "sourceSize": {"w":32,"h":64}
     },
     "greenman-right-walk.003":
+
     {
         "frame": {"x":163,"y":44,"w":30,"h":41},
         "rotated": false,
@@ -153,6 +156,7 @@
         "sourceSize": {"w":32,"h":64}
     },
     "greenman-right":
+
     {
         "frame": {"x":163,"y":44,"w":30,"h":41},
         "rotated": false,

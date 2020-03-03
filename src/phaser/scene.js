@@ -20,9 +20,14 @@ import {
   pokeStudentJSON,
   Home,
   Lounge,
+  Library,
   shopImg,
   shopMap,
-} from './assets';
+  shopObj,
+  Mansion,
+  House,
+  Shop
+} from './assets'
 
 let cursors;
 let music;
@@ -36,9 +41,23 @@ let player = { x: 100, y: 364 };
 let showDebug = false;
 let yesOrNo = '(Y/N)';
 
+
 class playGame extends Phaser.Scene {
   constructor() {
     super('PlayGame');
+  }
+  init(data){
+    if (Object.keys(data).length === 0){
+        data = {
+          x: 600,
+          y: 200,
+          texture: 'atlas',
+          frame: 1,
+          name: 'Student',
+          health: 100
+        }
+    }
+    this.player = data
   }
   preload() {
     this.load.image('firstLevel', pokeImg);
@@ -47,6 +66,8 @@ class playGame extends Phaser.Scene {
     this.load.image('shopLevel', shopImg);
     this.load.image('homeLevel', HomeImg);
     this.load.image('mansionLevel', mansionImg);
+    this.load.image('dragonblue', GreenManImg);
+    this.load.image('dragonorrange', GreenManImg);
     this.load.tilemapTiledJSON('mansion', mansionMap);
     this.load.tilemapTiledJSON('home', HomeMap);
     this.load.tilemapTiledJSON('shop', shopMap);
@@ -57,7 +78,11 @@ class playGame extends Phaser.Scene {
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.atlas('pinkman', PinkManImg, PinkManJSON);
     this.load.audio('levelOne', [Home]);
-    this.load.audio('lounge', [Lounge]);
+    this.load.audio('lounge', [Lounge])
+    this.load.audio('Library', [Library])
+    this.load.audio('mansion', [Mansion])
+    this.load.audio('house', [House])
+    this.load.audio('shop', [Shop])
   }
 
   create() {
@@ -76,69 +101,75 @@ class playGame extends Phaser.Scene {
     const worldLayer = map.createStaticLayer('World', tileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
 
-    music = this.sound.add('levelOne', { loop: true });
-    music.play();
-    roomOne = map.setTileIndexCallback(
-      154,
-      () => {
-        player.x = 170;
-        player.y = 370;
-        music.stop();
-        this.scene.start('scene2');
-      },
-      this
-    );
-    roomTwo = map.setTileIndexCallback(
-      163,
-      () => {
-        player.x = 630;
-        player.y = 320;
-        music.stop();
-        this.scene.start('scene3');
-      },
-      this
-    );
-    roomThree = map.setTileIndexCallback(
-      275,
-      () => {
-        player.x = 220;
-        player.y = 520;
-        music.stop();
-        this.scene.start('scene4');
-      },
-      this
-    );
-    roomFour = map.setTileIndexCallback(
-      169,
-      () => {
-        player.x = 930;
-        player.y = 320;
-        music.stop();
-        this.scene.start('scene5');
-      },
-      this
-    );
-    roomFive = map.setTileIndexCallback(
-      38,
-      () => {
-        player.x = 930;
-        player.y = 320;
-        music.stop();
-        this.scene.start('scene6');
-      },
-      this
-    );
+      music = this.sound.add('levelOne', { loop: true });
+      music.play();
 
-    // and the second one
-    const spawnPoint = map.findObject(
-      'Objects',
-      obj => obj.name === 'Spawn Point'
-    );
+    roomOne = map.setTileIndexCallback(154, () => {
+        player.x = 170
+        player.y = 370
+        music.stop()
+        this.scene.start('scene2')
+    }, this);
+    roomTwo = map.setTileIndexCallback(163, () => {
+      player.x = 630
+      player.y = 320
+      music.stop()
+      this.scene.start('scene3')
+  }, this);
+    roomThree = map.setTileIndexCallback(275, () => {
+      player.x = 220
+      player.y = 520
+      music.stop()
+      this.scene.start('scene4')
+    }, this);
+    roomFour = map.setTileIndexCallback(169, () => {
+      player.x = 930
+      player.y = 320
+      music.stop()
+      this.scene.start('scene5')
+    }, this);
+    roomFive = map.setTileIndexCallback(38, () => {
+      player.x = 380
+      player.y = 120
+      music.stop()
+      this.scene.start('scene6')
+    }, this);
+
+    const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
     player = this.physics.add
-      .sprite(player.x, player.y, 'atlas', 'student-front')
-      .setSize(30, 40)
-      .setOffset(0, 24);
+    .sprite(player.x, player.y, 'atlas', 'student-front')
+    .setSize(30, 40)
+    .setOffset(0, 24);
+    
+    this.physics.add.collider(player, worldLayer);
+    
+    const anims = this.anims;
+  anims.create({
+    key: 'student-left-walk',
+    frames: anims.generateFrameNames('atlas', { prefix: 'student-left-walk.', start: 0, end: 4, zeroPad: 3 }),
+    frameRate: 10,
+    repeat: -1
+  });
+  anims.create({
+    key: 'student-right-walk',
+    frames: anims.generateFrameNames('atlas', { prefix: 'student-right-walk.', start: 0, end: 4, zeroPad: 3 }),
+    frameRate: 10,
+    repeat: -1
+  });
+  anims.create({
+    key: 'student-front-walk',
+    frames: anims.generateFrameNames('atlas', { prefix: 'student-front-walk.', start: 0, end: 4, zeroPad: 3 }),
+    frameRate: 10,
+    repeat: -1
+  });
+  anims.create({
+    key: 'student-back-walk',
+    frames: anims.generateFrameNames('atlas', { prefix: 'student-back-walk.', start: 0, end: 4, zeroPad: 3 }),
+    frameRate: 10,
+    repeat: -1
+  });
 
+  
     this.NPCs = this.physics.add.staticGroup();
 
     this.npcOne = createNPC(
@@ -165,56 +196,6 @@ class playGame extends Phaser.Scene {
       'You are not worth my time!',
       'npcThree'
     );
-
-    //const animsNPC = this.anims;
-    const anims = this.anims;
-    anims.create({
-      key: 'student-left-walk',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-left-walk.',
-        start: 0,
-        end: 4,
-        zeroPad: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    anims.create({
-      key: 'student-right-walk',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-right-walk.',
-        start: 0,
-        end: 4,
-        zeroPad: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    anims.create({
-      key: 'student-front-walk',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-front-walk.',
-        start: 0,
-        end: 4,
-        zeroPad: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    anims.create({
-      key: 'student-back-walk',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-back-walk.',
-        start: 0,
-        end: 4,
-        zeroPad: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    player.touchesArea = false;
-
-    this.physics.add.collider(player, worldLayer);
 
     this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
       let _spriteNPC = spriteNPC;
@@ -277,9 +258,9 @@ class playGame extends Phaser.Scene {
       //return colliderActivated;
     });
 
-    const camera = this.cameras.main;
-    camera.startFollow(player);
-    cursors = this.input.keyboard.createCursorKeys();
+  const camera = this.cameras.main;
+  camera.startFollow(player);
+  cursors = this.input.keyboard.createCursorKeys();
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -294,7 +275,6 @@ class playGame extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(30);
 
-    this.input.keyboard.once('keydown_D', event => {
       this.input.keyboard.once('keydown_D', event => {
         // Turn on physics debugging to show player's hitbox
         this.physics.world.createDebugGraphic();
@@ -310,7 +290,6 @@ class playGame extends Phaser.Scene {
           faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
         });
       });
-    });
   }
 
   update(time, delta) {
@@ -355,4 +334,4 @@ class playGame extends Phaser.Scene {
   }
 }
 
-export default playGame;
+export { shopObj, playGame }
