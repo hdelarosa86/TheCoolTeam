@@ -240,12 +240,15 @@ class playGame extends Phaser.Scene {
         .setDepth(30);
       this.physics.paused = true;
 
-      this.input.keyboard.once('keydown_Y', () => {
+      this.input.keyboard.on('keydown_Y', () => {
         this.scene.start('BattleScene', this.player);
+        this.physics.resume();
+        this.anims.resumeAll();
+        this.physics.paused = false;
 
       });
 
-      this.input.keyboard.once('keydown_N', () => {
+      this.input.keyboard.on('keydown_N', () => {
         this.physics.resume();
         this.anims.resumeAll();
         this.physics.paused = false;
