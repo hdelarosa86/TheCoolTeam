@@ -86,12 +86,13 @@ class playGame extends Phaser.Scene {
   }
 
   create() {
-    const createNPC = (x, y, spriteName, spriteFrame, text, reference) => {
+    const createNPC = (x, y, spriteName, spriteFrame, text, reference, battleScene) => {
       let npc = this.NPCs.create(x, y, spriteName, spriteFrame)
         .setSize(0, 38)
         .setOffset(0, 23);
       npc.text = text || '';
       npc.reference = reference;
+      npc.battleScene = battleScene;
       return npc;
     };
 
@@ -178,7 +179,8 @@ class playGame extends Phaser.Scene {
       'greenman',
       'greenman-front',
       'Hello Fullstacker, do you want to pair program?',
-      'npcOne'
+      'npcOne',
+      'BattleScene'
     );
     this.npcTwo = createNPC(
       1250,
@@ -186,7 +188,8 @@ class playGame extends Phaser.Scene {
       'greenman',
       'greenman-left',
       'Hello man, do you want to pratice Promises?',
-      'npcTwo'
+      'npcTwo',
+      'BattleScene'
     );
     this.npcThree = createNPC(
       1000,
@@ -194,7 +197,8 @@ class playGame extends Phaser.Scene {
       'pinkman',
       'pinkman-right',
       'You are not worth my time!',
-      'npcThree'
+      'npcThree',
+      'BattleScene'
     );
 
     this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
@@ -212,7 +216,6 @@ class playGame extends Phaser.Scene {
           }
         }
       }
-      console.log(_spriteNPC.texture.key)
       spriteNPC.destroy();
       this[_spriteNPC.reference] = createNPC(
         _spriteNPC.x,
@@ -237,9 +240,10 @@ class playGame extends Phaser.Scene {
         .setDepth(30);
       this.physics.paused = true;
 
-      // this.input.keyboard.once('keydown_Y', () => {
-      //   this.scene.start('scene2');
-      // });
+      this.input.keyboard.once('keydown_Y', () => {
+        this.scene.start('BattleScene', this.player);
+
+      });
 
       this.input.keyboard.once('keydown_N', () => {
         this.physics.resume();
@@ -255,7 +259,6 @@ class playGame extends Phaser.Scene {
           _spriteNPC.text
         );
       });
-      //return colliderActivated;
     });
 
   const camera = this.cameras.main;
