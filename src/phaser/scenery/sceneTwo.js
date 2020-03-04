@@ -1,7 +1,6 @@
 import React from 'react'
 import Phaser from 'phaser';
-import pokeStudent from '../assets/student/student.png';
-import pokeStudentJSON from '../assets/student/student_atlas.json';
+import playGame from './scene'
 
 let controls;
 let cursors;
@@ -10,24 +9,20 @@ let music;
 let tile;
 let showDebug = false;
 
-class SceneThree extends Phaser.Scene {
+class SceneTwo extends Phaser.Scene {
   constructor() {
-    super('scene3');
-  }
-  preload() {
-    this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
+    super('scene2');
   }
 
   create() {
-    const map = this.make.tilemap({ key: 'library' });
-    const tileset = map.addTilesetImage('houseTwo', 'libraryLevel');
-    const houseLayer = map.createStaticLayer('library', tileset, 0, 0);
+    const map = this.make.tilemap({ key: 'house' });
+    const tileset = map.addTilesetImage('insideHouse', 'houseLevel');
+    const houseLayer = map.createStaticLayer('houseA', tileset, 0, 0);
 
-    music = this.sound.add('Library', { loop: true });
-
+    music = this.sound.add('lounge', { loop: true });
     music.play();
 
-    tile = map.setTileIndexCallback(465, () => {
+    tile = map.setTileIndexCallback(405, () => {
       music.stop();
       this.scene.start('PlayGame')
     }, this);
@@ -133,4 +128,4 @@ class SceneThree extends Phaser.Scene {
   }
 }
 
-export default SceneThree;
+export default SceneTwo;

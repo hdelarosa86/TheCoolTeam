@@ -1,5 +1,6 @@
 let arr = []
 let player = []
+let music;
 let battle = [
     {id: 0, Q: `sequelize.define(name, { attributes }). What is This?`, S: 'Sequelize', A: 20 },
     {id: 1, Q: 'const store = createStore(rootReducer). What is This?', S: 'Redux', A: 8 },
@@ -29,6 +30,8 @@ var BattleScene = new Phaser.Class({
         // change the background to green
         this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0)');
         this.startBattle();
+        music = this.sound.add('battleOne', { loop: true });
+        music.play();
         // on wake event we call startBattle too
         this.sys.events.on('wake', this.startBattle, this);
     },
@@ -129,7 +132,7 @@ var BattleScene = new Phaser.Class({
         this.scene.sleep('UIScene');
         // return to WorldScene and sleep current BattleScene
         arr = []
-        console.log(player.pop())
+        music.stop();
         this.scene.start('PlayGame', {
             x: this.player.x,
             y: this.player.y,
@@ -153,6 +156,7 @@ var BattleScene = new Phaser.Class({
         this.scene.sleep('UIScene');
         // return to WorldScene and sleep current BattleScene
         arr = []
+        music.stop();
         this.scene.start('scene5', this.units);
     }
 });
@@ -178,14 +182,14 @@ var Unit = new Phaser.Class({
     },
     // attack the target unit
     attack: function(action, target) {
-        let random = Math.floor(Math.random()*8)
+        let random = Math.floor(Math.random() * 8)
     if (target.living){
         if (target.type === 'Eliot'){
             console.log(this)
             player.push({ data: {hp: this.hp}})
             if (arr.length > 0 && action === arr.pop().S){
                 target.takeDamage(20)
-                this.scene.events.emit( 'Message', 'You: '+ action + '!!!  \n' + target.type + ' with 20 point damage' )
+                this.scene.events.emit( 'Message', 'You: ' + action + '!!!  \n' + target.type + ' with 20 point damage' )
                 target.frame = target.texture.frames['greenman-left']
                 setTimeout(() => {
                     target.frame = target.texture.frames['greenman-back']
@@ -193,7 +197,7 @@ var Unit = new Phaser.Class({
             }
             else {
                 target.takeDamage(random)
-                this.scene.events.emit( 'Message', 'You: '+ action + '!!!  \n' +  target.type + ' with ' + random + ' point damage')
+                this.scene.events.emit( 'Message', 'You: ' + action + '!!!  \n' +  target.type + ' with ' + random + ' point damage')
                 target.frame = target.texture.frames['greenman-right']
                 setTimeout(() => {
                     target.frame = target.texture.frames['greenman-back']
@@ -471,7 +475,7 @@ var UIScene = new Phaser.Class({
     onSelectedAction: function(index) {
         this.currentMenu = this.enemiesMenu
         this.currentMenu.confirm(index)
-        // this.enemiesMenu.select(0); 
+        // this.enemiesMenu.select(0);
     },
     remapHeroes: function() {
         var heroes = this.battleScene.heroes;
@@ -514,7 +518,7 @@ var Message = new Phaser.Class({
         graphics.fillStyle(0x031f4c, 0.3);
         graphics.strokeRect(-60, -15, 500, 150);
         graphics.fillRect(-60, -15, 500, 150);
-        this.text = new Phaser.GameObjects.Text(scene, 200, 40, '', { color: '#ffffff', align: 'center', fontSize: 15, padding: { top:10 }, wordWrap: { width: 400, useAdvancedWrap: true }});
+        this.text = new Phaser.GameObjects.Text(scene, 200, 40, '', { color: '#ffffff', align: 'center', fontSize: 15, padding: { top: 10 }, wordWrap: { width: 400, useAdvancedWrap: true }});
         this.add(this.text);
         this.text.setOrigin(0.5);
         events.on('Message', this.showMessage, this);
