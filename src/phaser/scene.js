@@ -26,8 +26,8 @@ import {
   shopObj,
   Mansion,
   House,
-  Shop
-} from './assets'
+  Shop,
+} from './assets';
 
 let cursors;
 let music;
@@ -36,29 +36,30 @@ let roomTwo;
 let roomThree;
 let roomFour;
 let roomFive;
-let colliderActivated = true;
 let player = { x: 100, y: 364 };
-let showDebug = false;
-let yesOrNo = '(Y/N)';
+const showDebug = false;
+const yesOrNo = '(Y/N)';
 
 
 class playGame extends Phaser.Scene {
   constructor() {
     super('PlayGame');
   }
-  init(data){
-    if (Object.keys(data).length === 0){
-        data = {
-          x: 600,
-          y: 200,
-          texture: 'atlas',
-          frame: 1,
-          name: 'Student',
-          health: 100
-        }
+
+  init(data) {
+    if (Object.keys(data).length === 0) {
+      data = {
+        x: 600,
+        y: 200,
+        texture: 'atlas',
+        frame: 1,
+        name: 'Student',
+        health: 100,
+      };
     }
-    this.player = data
+    this.player = data;
   }
+
   preload() {
     this.load.image('firstLevel', pokeImg);
     this.load.image('houseLevel', houseOneImg);
@@ -78,16 +79,16 @@ class playGame extends Phaser.Scene {
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.atlas('pinkman', PinkManImg, PinkManJSON);
     this.load.audio('levelOne', [Home]);
-    this.load.audio('lounge', [Lounge])
-    this.load.audio('Library', [Library])
-    this.load.audio('mansion', [Mansion])
-    this.load.audio('house', [House])
-    this.load.audio('shop', [Shop])
+    this.load.audio('lounge', [Lounge]);
+    this.load.audio('Library', [Library]);
+    this.load.audio('mansion', [Mansion]);
+    this.load.audio('house', [House]);
+    this.load.audio('shop', [Shop]);
   }
 
   create() {
     const createNPC = (x, y, spriteName, spriteFrame, text, reference, battleScene) => {
-      let npc = this.NPCs.create(x, y, spriteName, spriteFrame)
+      const npc = this.NPCs.create(x, y, spriteName, spriteFrame)
         .setSize(0, 38)
         .setOffset(0, 23);
       npc.text = text || '';
@@ -102,75 +103,83 @@ class playGame extends Phaser.Scene {
     const worldLayer = map.createStaticLayer('World', tileset, 0, 0);
     worldLayer.setCollisionByProperty({ collides: true });
 
-      music = this.sound.add('levelOne', { loop: true });
-      music.play();
+    music = this.sound.add('levelOne', { loop: true });
+    music.play();
 
     roomOne = map.setTileIndexCallback(154, () => {
-        player.x = 170
-        player.y = 370
-        music.stop()
-        this.scene.start('scene2')
+      player.x = 170;
+      player.y = 370;
+      music.stop();
+      this.scene.start('scene2');
     }, this);
     roomTwo = map.setTileIndexCallback(163, () => {
-      player.x = 630
-      player.y = 320
-      music.stop()
-      this.scene.start('scene3')
-  }, this);
+      player.x = 630;
+      player.y = 320;
+      music.stop();
+      this.scene.start('scene3');
+    }, this);
     roomThree = map.setTileIndexCallback(275, () => {
-      player.x = 220
-      player.y = 520
-      music.stop()
-      this.scene.start('scene4')
+      player.x = 220;
+      player.y = 520;
+      music.stop();
+      this.scene.start('scene4');
     }, this);
     roomFour = map.setTileIndexCallback(169, () => {
-      player.x = 930
-      player.y = 320
-      music.stop()
-      this.scene.start('scene5')
+      player.x = 930;
+      player.y = 320;
+      music.stop();
+      this.scene.start('scene5');
     }, this);
     roomFive = map.setTileIndexCallback(38, () => {
-      player.x = 380
-      player.y = 120
-      music.stop()
-      this.scene.start('scene6')
+      player.x = 380;
+      player.y = 120;
+      music.stop();
+      this.scene.start('scene6');
     }, this);
 
-    const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
+    const spawnPoint = map.findObject('Objects', (obj) => obj.name === 'Spawn Point');
     player = this.physics.add
-    .sprite(player.x, player.y, 'atlas', 'student-front')
-    .setSize(30, 40)
-    .setOffset(0, 24);
-    
-    this.physics.add.collider(player, worldLayer);
-    
-    const anims = this.anims;
-  anims.create({
-    key: 'student-left-walk',
-    frames: anims.generateFrameNames('atlas', { prefix: 'student-left-walk.', start: 0, end: 4, zeroPad: 3 }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: 'student-right-walk',
-    frames: anims.generateFrameNames('atlas', { prefix: 'student-right-walk.', start: 0, end: 4, zeroPad: 3 }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: 'student-front-walk',
-    frames: anims.generateFrameNames('atlas', { prefix: 'student-front-walk.', start: 0, end: 4, zeroPad: 3 }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: 'student-back-walk',
-    frames: anims.generateFrameNames('atlas', { prefix: 'student-back-walk.', start: 0, end: 4, zeroPad: 3 }),
-    frameRate: 10,
-    repeat: -1
-  });
+      .sprite(player.x, player.y, 'atlas', 'student-front')
+      .setSize(30, 40)
+      .setOffset(0, 24);
 
-  
+    this.physics.add.collider(player, worldLayer);
+
+    const { anims } = this;
+    anims.create({
+      key: 'student-left-walk',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'student-left-walk.', start: 0, end: 4, zeroPad: 3,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    anims.create({
+      key: 'student-right-walk',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'student-right-walk.', start: 0, end: 4, zeroPad: 3,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    anims.create({
+      key: 'student-front-walk',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'student-front-walk.', start: 0, end: 4, zeroPad: 3,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    anims.create({
+      key: 'student-back-walk',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'student-back-walk.', start: 0, end: 4, zeroPad: 3,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+
     this.NPCs = this.physics.add.staticGroup();
 
     this.npcOne = createNPC(
@@ -180,7 +189,7 @@ class playGame extends Phaser.Scene {
       'greenman-front',
       'Hello Fullstacker, do you want to pair program?',
       'npcOne',
-      'BattleScene'
+      'BattleScene',
     );
     this.npcTwo = createNPC(
       1250,
@@ -189,7 +198,7 @@ class playGame extends Phaser.Scene {
       'greenman-left',
       'Hello man, do you want to pratice Promises?',
       'npcTwo',
-      'BattleScene'
+      'BattleScene',
     );
     this.npcThree = createNPC(
       1000,
@@ -198,14 +207,14 @@ class playGame extends Phaser.Scene {
       'pinkman-right',
       'You are not worth my time!',
       'npcThree',
-      'BattleScene'
+      'BattleScene',
     );
 
     this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
-      let _spriteNPC = spriteNPC;
-      let directionObj = spriteNPC.body.touching;
+      const _spriteNPC = spriteNPC;
+      const directionObj = spriteNPC.body.touching;
       let direction = null;
-      for (let key in directionObj) {
+      for (const key in directionObj) {
         if (directionObj[key]) {
           if (key === 'down') {
             direction = 'front';
@@ -223,7 +232,7 @@ class playGame extends Phaser.Scene {
         _spriteNPC.texture.key,
         `${_spriteNPC.texture.key}-${direction}`,
         _spriteNPC.text,
-        _spriteNPC.reference
+        _spriteNPC.reference,
       );
 
       this.physics.pause();
@@ -231,7 +240,9 @@ class playGame extends Phaser.Scene {
       this.dialogue = this.add
         .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
           wordWrap: { width: 500 },
-          padding: { top: 15, right: 15, bottom: 15, left: 15 },
+          padding: {
+            top: 15, right: 15, bottom: 15, left: 15,
+          },
           align: 'left',
           backgroundColor: '#ffffff',
           color: '#ff0000',
@@ -245,7 +256,6 @@ class playGame extends Phaser.Scene {
         this.physics.resume();
         this.anims.resumeAll();
         this.physics.paused = false;
-
       });
 
       this.input.keyboard.on('keydown_N', () => {
@@ -259,14 +269,14 @@ class playGame extends Phaser.Scene {
           _spriteNPC.y,
           _spriteNPC.texture.key,
           _spriteNPC.frame.name,
-          _spriteNPC.text
+          _spriteNPC.text,
         );
       });
     });
 
-  const camera = this.cameras.main;
-  camera.startFollow(player);
-  cursors = this.input.keyboard.createCursorKeys();
+    const camera = this.cameras.main;
+    camera.startFollow(player);
+    cursors = this.input.keyboard.createCursorKeys();
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -281,21 +291,21 @@ class playGame extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(30);
 
-      this.input.keyboard.once('keydown_D', event => {
-        // Turn on physics debugging to show player's hitbox
-        this.physics.world.createDebugGraphic();
+    this.input.keyboard.once('keydown_D', (event) => {
+      // Turn on physics debugging to show player's hitbox
+      this.physics.world.createDebugGraphic();
 
-        // Create worldLayer collision graphic above the player, but below the help text
-        const graphics = this.add
-          .graphics()
-          .setAlpha(0.75)
-          .setDepth(20);
-        worldLayer.renderDebug(graphics, {
-          tileColor: null, // Color of non-colliding tiles
-          collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-          faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
-        });
+      // Create worldLayer collision graphic above the player, but below the help text
+      const graphics = this.add
+        .graphics()
+        .setAlpha(0.75)
+        .setDepth(20);
+      worldLayer.renderDebug(graphics, {
+        tileColor: null, // Color of non-colliding tiles
+        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
       });
+    });
   }
 
   update(time, delta) {
@@ -330,14 +340,12 @@ class playGame extends Phaser.Scene {
         player.anims.stop();
         // If we were moving, pick and idle frame to use
         if (prevVelocity.x < 0) player.setTexture('atlas', 'student-left');
-        else if (prevVelocity.x > 0)
-          player.setTexture('atlas', 'student-right');
+        else if (prevVelocity.x > 0) player.setTexture('atlas', 'student-right');
         else if (prevVelocity.y < 0) player.setTexture('atlas', 'student-back');
-        else if (prevVelocity.y > 0)
-          player.setTexture('atlas', 'student-front');
+        else if (prevVelocity.y > 0) player.setTexture('atlas', 'student-front');
       }
     }
   }
 }
 
-export { shopObj, playGame }
+export { shopObj, playGame };

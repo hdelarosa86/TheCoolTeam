@@ -22,11 +22,11 @@ import Library from '../assets/Library.mp3';
 import Mansion from '../assets/mansion.mp3';
 import House from '../assets/house.mp3';
 import Shop from '../assets/shop.mp3';
-import { shopObj } from '../components/App.jsx'
+import { shopObj } from '../components/App.jsx';
 
 
 export {
-     HomeImg,
+  HomeImg,
   HomeMap,
   GreenManImg,
   GreenManJSON,
@@ -46,9 +46,9 @@ export {
   Lounge,
   shopImg,
   shopMap,
-    shopObj,
-    Library,
-    Mansion,
-    House,
-    Shop
+  shopObj,
+  Library,
+  Mansion,
+  House,
+  Shop,
 };
