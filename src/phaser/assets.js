@@ -23,7 +23,7 @@ import Library from '../assets/Music/Library.mp3';
 import Mansion from '../assets/Music/mansion.mp3';
 import House from '../assets/Music/house.mp3';
 import Shop from '../assets/Music/shop.mp3';
-import { shopObj } from '../components/App.jsx'
+import { shopObj } from '../components/App.jsx';
 
 
 export {
@@ -52,5 +52,5 @@ export {
   battleOne,
   Mansion,
   House,
-  Shop
+  Shop,
 };
