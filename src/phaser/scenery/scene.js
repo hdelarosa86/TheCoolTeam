@@ -270,7 +270,12 @@ class playGame extends Phaser.Scene {
           980, 350, 'pinkman', 'pinkman-right', 'You are not worth my time!', 'npcThree', 'BattleScene'
       );
 
+      this.npcSave = createNPC(
+        470, 260, 'pinkman', 'pinkman-front', 'You want to save your progress?', 'npcSave', null
+      )
+
       this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
+          console.log(player);
           let _spriteNPC = spriteNPC;
           let directionObj = spriteNPC.body.touching;
           let direction = null;
@@ -352,6 +357,36 @@ class playGame extends Phaser.Scene {
               faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
           });
       });
+
+      this.input.keyboard.on('keydown_M', () => {
+          console.log(`${player.x}, ${player.y}`);
+
+          if(!this.menuBox){
+            this.menuBox = this.add
+            .text(150, 300, `Do you wish to save your game or load from your last save`, {
+                wordWrap: {
+                    width: 500
+                },
+                padding: {
+                    top: 15,
+                    right: 15,
+                    bottom: 15,
+                    left: 15
+                },
+                align: 'left',
+                backgroundColor: '#ffffff',
+                color: '#ff0000',
+            }).setScrollFactor(0).setDepth(30);
+            console.log('null',this);
+            //this.menuBox.canvas.innerHTML = '<p>Hello a paragraph here</p>';
+            return this.menuBox;
+          } else {
+              console.log('esle: ', this)
+              
+            this.menuBox.destroy();
+            this.menuBox = null
+          }
+      })
   }
 
   update(time, delta) {

@@ -10,9 +10,8 @@ export class App extends React.Component {
 		super()
 	}
 	render() {
-		console.log(this.props)
 		return (
-			<div style={{ textAlign: 'center' }} >New Flag</div>
+			<div style={{ textAlign: 'center' }}>New Flag</div>
 		);
 	}
 }
