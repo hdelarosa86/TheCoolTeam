@@ -214,7 +214,8 @@ var BattleScene = new Phaser.Class({
             health: player.pop().data.hp += 100,
             maxHP: 100,
             points: this.player.points += 200,
-            badge: this.player.badge
+            badge: this.player.badge,
+            level: ''
 		});
 
 	},
@@ -229,10 +230,21 @@ var BattleScene = new Phaser.Class({
 		this.units.length = 0;
 		// sleep the UI
 		this.scene.sleep('UIScene');
-		// return to WorldScene and sleep current BattleScene
+		// // return to WorldScene and sleep current BattleScene
 		arr = []
 		music.stop();
-		this.scene.start('scene5', this.units);
+		this.scene.start('scene5', {
+			x: this.player.x,
+			y: this.player.y,
+			texture: this.player.texture,
+			frame: this.player.frame,
+			name: this.player.name,
+            health: 0,
+            maxHP: 100,
+            points: this.player.points,
+            badge: this.player.badge,
+            level: 'scene5'
+		});
 	}
 });
 
@@ -290,7 +302,7 @@ var Unit = new Phaser.Class({
 				}
 			} else {
 				let damage = this.damage[random];
-				target.takeDamage(8)
+				target.takeDamage(20)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
