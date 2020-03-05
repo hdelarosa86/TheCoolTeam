@@ -6,6 +6,7 @@ let cursors;
 let player;
 let music;
 let tile;
+let yesOrNo = '(Y/N)';
 const showDebug = false;
 
 class SceneFour extends Phaser.Scene {
@@ -14,6 +15,17 @@ class SceneFour extends Phaser.Scene {
   }
 
   create() {
+    const createNPC = (x, y, spriteName, spriteFrame, text, reference, battleScene, url) => {
+      let npc = this.NPCs.create(x, y, spriteName, spriteFrame)
+          .setSize(0, 38)
+          .setOffset(0, 23);
+      npc.text = text || '';
+      npc.reference = reference;
+      npc.battleScene = battleScene;
+      npc.url = url
+      return npc;
+  };
+
     const map = this.make.tilemap({ key: 'shop' });
     const tileset = map.addTilesetImage('shop', 'shopLevel');
     const shopLayer = map.createStaticLayer('shop', tileset, 0, 0);
@@ -34,40 +46,6 @@ class SceneFour extends Phaser.Scene {
       .setSize(30, 40)
       .setOffset(0, 24);
 
-    const { anims } = this;
-    anims.create({
-      key: 'student-left-walk',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-left-walk.', start: 0, end: 4, zeroPad: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    anims.create({
-      key: 'student-right-walk',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-right-walk.', start: 0, end: 4, zeroPad: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    anims.create({
-      key: 'student-front-walk',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-front-walk.', start: 0, end: 4, zeroPad: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    anims.create({
-      key: 'student-back-walk',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-back-walk.', start: 0, end: 4, zeroPad: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
     this.physics.add.collider(player, shopLayer);
 
     const camera = this.cameras.main;
@@ -76,29 +54,87 @@ class SceneFour extends Phaser.Scene {
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-    // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        font: '18px monospace',
-        fill: '#000000',
-        padding: { x: 20, y: 10 },
-        backgroundColor: '#ffffff',
-      })
-      .setScrollFactor(0)
-      .setDepth(30);
+    this.NPCs = this.physics.add.staticGroup();
 
-    this.input.keyboard.once('keydown_D', (event) => {
-      this.input.keyboard.once('keydown_D', (event) => {
-      // Turn on physics debugging to show player's hitbox
-        this.physics.world.createDebugGraphic();
+      this.npcOne = createNPC(
+          540, 410, 'greenman', 'greenman-right', "You want some Pothos man? It's pretty good", 'npcOne', 'BattleScene', 'https://pothos.herokuapp.com/'
+      );
+      this.npcTwo = createNPC(
+          980, 410, 'greenman', 'greenman-left', 'Hey man, I can hook you up with some Juuls', 'npcTwo', 'BattleScene', '#'
+      );
+      this.npcThree = createNPC(
+          600, 500, 'pinkman', 'pinkman-right', 'We have that nice art you want bro. Give me your credit card info!', 'npcThree', 'BattleScene', '#'
+      );
+      this.npcFour = createNPC(
+        940, 550, 'pinkman', 'pinkman-right', 'We sell stuff for cheap. Just give us you social security!', 'npcFour', 'BattleScene', '#'
+    );
 
-        // Create worldLayer collision graphic above the player, but below the help text
-        const graphics = this.add
-          .graphics()
-          .setAlpha(0.75)
-          .setDepth(20);
+      this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
+          let _spriteNPC = spriteNPC;
+          let directionObj = spriteNPC.body.touching;
+          let direction = null;
+          for (let key in directionObj) {
+              if (directionObj[key]) {
+                  if (key === 'down') {
+                      direction = 'front';
+                  } else if (key === 'up') {
+                      direction = 'back';
+                  } else {
+                      direction = key;
+                  }
+              }
+          }
+          spriteNPC.destroy();
+          this[_spriteNPC.reference] = createNPC(
+              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference
+          );
+
+          this.physics.pause();
+          this.anims.pauseAll();
+          this.dialogue = this.add
+              .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
+                  wordWrap: {
+                      width: 500
+                  },
+                  padding: {
+                      top: 15,
+                      right: 15,
+                      bottom: 15,
+                      left: 15
+                  },
+                  align: 'left',
+                  backgroundColor: '#ffffff',
+                  color: '#ff0000',
+              })
+              .setScrollFactor(0)
+              .setDepth(30);
+          this.physics.paused = true;
+
+          this.input.keyboard.on('keydown_Y', () => {
+              music.stop();
+              this.physics.resume();
+              this.anims.resumeAll();
+              const s = window.open(_spriteNPC.url, '_blank');
+              s.focus()
+              this.physics.paused = false;
+              this.dialogue.destroy();
+              this[_spriteNPC.reference].destroy();
+              this[_spriteNPC.reference] = createNPC(
+                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
+              );
+          });
+
+          this.input.keyboard.on('keydown_N', () => {
+              this.physics.resume();
+              this.anims.resumeAll();
+              this.physics.paused = false;
+              this.dialogue.destroy();
+              this[_spriteNPC.reference].destroy();
+              this[_spriteNPC.reference] = createNPC(
+                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
+              );
+          });
       });
-    });
   }
 
   update(time, delta) {
