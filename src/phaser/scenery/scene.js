@@ -65,14 +65,21 @@ class playGame extends Phaser.Scene {
               texture: 'atlas',
               frame: 3,
               name: 'Student',
-              health: 100,
+              health: 120,
               maxHp: 0,
               points: 0,
               badge: 'none',
-              notify: 'on'
+              notify: 'on',
+              level: ''
           }
       }
       this.player = data
+
+      if ( this.player.level === 'scene5'){
+        player.x = 930;
+        player.y = 320;
+        this.player.level = ''
+      }
   }
   preload() {
       this.load.image('firstLevel', pokeImg);
@@ -155,7 +162,7 @@ class playGame extends Phaser.Scene {
           player.x = 930
           player.y = 320
           music.stop()
-          this.scene.start('scene5')
+          this.scene.start('scene5', this.player)
       }, this);
       map.setTileIndexCallback(38, () => {
           player.x = 380

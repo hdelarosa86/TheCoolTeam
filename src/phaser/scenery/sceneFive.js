@@ -12,7 +12,9 @@ class SceneFive extends Phaser.Scene {
   constructor() {
     super('scene5');
   }
-
+  init(data){
+    this.player = data
+  }
   create() {
     const map = this.make.tilemap({ key: 'home' });
     const tileset = map.addTilesetImage('home', 'homeLevel');
@@ -24,7 +26,7 @@ class SceneFive extends Phaser.Scene {
 
     tile = map.setTileIndexCallback(435, () => {
       music.stop();
-      this.scene.start('PlayGame');
+      this.scene.start('PlayGame', this.player);
     }, this);
 
     shopLayer.setCollisionByProperty({ collides: true });
@@ -33,6 +35,52 @@ class SceneFive extends Phaser.Scene {
       .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'student-back')
       .setSize(30, 40)
       .setOffset(0, 24);
+
+      this.stat = this.add.text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
+        wordWrap: { width: 500 },
+        padding: { top: 15, right: 15, bottom: 15, left: 15 },
+        align: 'left',
+        backgroundColor: '#c90000',
+        color: '#ffffff',
+    })
+    .setScrollFactor(0)
+    .setDepth(30);
+
+    if (this.player.health === 0){
+      this.stat.destroy()
+      this.dialouge = this.add.text(130, 500, `You didn't do so good. You must start junior phase again.`, {
+        wordWrap: {
+            width: 500
+        },
+        padding: {
+            top: 15,
+            right: 15,
+            bottom: 15,
+            left: 15
+        },
+        align: 'left',
+        backgroundColor: '#ffffff',
+        color: '#c90000',
+    })
+    .setScrollFactor(0)
+    .setDepth(30);
+
+    this.player.health = 100
+
+      setTimeout( () => {
+        this.dialouge.destroy()
+      }, 7000)
+      // health
+      this.speech = this.add.text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
+        wordWrap: { width: 500 },
+        padding: { top: 15, right: 15, bottom: 15, left: 15 },
+        align: 'left',
+        backgroundColor: '#c90000',
+        color: '#ffffff',
+    })
+    .setScrollFactor(0)
+    .setDepth(30);
+    }
 
     const { anims } = this;
     anims.create({
@@ -77,17 +125,7 @@ class SceneFive extends Phaser.Scene {
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        font: '18px monospace',
-        fill: '#000000',
-        padding: { x: 20, y: 10 },
-        backgroundColor: '#ffffff',
-      })
-      .setScrollFactor(0)
-      .setDepth(30);
 
-    this.input.keyboard.once('keydown_D', (event) => {
       this.input.keyboard.once('keydown_D', (event) => {
       // Turn on physics debugging to show player's hitbox
         this.physics.world.createDebugGraphic();
@@ -98,7 +136,6 @@ class SceneFive extends Phaser.Scene {
           .setAlpha(0.75)
           .setDepth(20);
       });
-    });
   }
 
   update(time, delta) {
