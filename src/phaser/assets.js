@@ -4,6 +4,22 @@ import HomeImg from '../assets/tilesets/home.png';
 import HomeMap from '../assets/JSON/home.json';
 import GreenManImg from '../assets/students/NPCcharacter/GreenMan.png';
 import GreenManJSON from '../assets/students/NPCcharacter/GreenMan_atlas.json';
+import ElliotImg from '../assets/students/NPCcharacter/elliot.png';
+import ElliotJSON from '../assets/students/NPCcharacter/Elliot_atlas.json';
+import SteveImg from '../assets/students/NPCcharacter/Steve.png';
+import SteveJSON from '../assets/students/NPCcharacter/Steve_atlas.json';
+import MarkImg from '../assets/students/NPCcharacter/Mark.png';
+import MarkJSON from '../assets/students/NPCcharacter/Mark_atlas.json';
+import RyanImg from '../assets/students/NPCcharacter/ryan.png';
+import RyanJSON from '../assets/students/NPCcharacter/Ryan_atlas.json';
+import ProfImg from '../assets/students/NPCcharacter/prof.png';
+import ProfJSON from '../assets/students/NPCcharacter/Prof_atlas.json';
+import BaggieImg from '../assets/students/NPCcharacter/Baggie.png';
+import BaggieJSON from '../assets/students/NPCcharacter/Baggie_atlas.json';
+import KevinImg from '../assets/students/NPCcharacter/kevin.png';
+import KevinJSON from '../assets/students/NPCcharacter/Kevin_atlas.json';
+import RussellImg from '../assets/students/NPCcharacter/russell.png';
+import RussellJSON from '../assets/students/NPCcharacter/Russell_atlas.json';
 import PinkManImg from '../assets/students/NPCcharacter/pink.png';
 import PinkManJSON from '../assets/students/NPCcharacter/pink_atlas.json';
 import shopImg from '../assets/tilesets/shop.png';
@@ -58,5 +74,21 @@ export {
   House,
   Shop,
   uppercut,
-  explosion
+  explosion,
+  ElliotImg,
+  ElliotJSON,
+  SteveImg,
+  SteveJSON,
+  BaggieImg,
+  BaggieJSON,
+  KevinImg,
+  KevinJSON,
+  MarkImg,
+  MarkJSON,
+  RyanImg,
+  RyanJSON,
+  ProfImg,
+  ProfJSON,
+  RussellImg,
+  RussellJSON
 };
