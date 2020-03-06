@@ -9,6 +9,10 @@ import SceneFour from './phaser/scenery/sceneFour';
 import SceneFive from './phaser/scenery/sceneFive';
 import SceneSix from './phaser/scenery/sceneSix';
 import { BattleScene, UIScene } from './phaser/battle/battle';
+import { BattleSceneKevin, UISceneKevin } from './phaser/battle/battleKevin';
+import { BattleSceneRyan, UISceneRyan } from './phaser/battle/battleRyan';
+import { BattleSceneRussell, UISceneRussell } from './phaser/battle/battleRussell';
+import { BattleSceneMark, UISceneMark } from './phaser/battle/battleMark';
 
 
 // console.log(App);
@@ -25,7 +29,7 @@ export const config = {
       gravity: { y: 0 },
     },
   },
-  scene: [playGame, SceneTwo, SceneThree, SceneFour, SceneFive, SceneSix, BattleScene, UIScene],
+  scene: [playGame, SceneTwo, SceneThree, SceneFour, SceneFive, SceneSix, BattleScene, UIScene, BattleSceneKevin, UISceneKevin, BattleSceneRyan, UISceneRyan, BattleSceneRussell, UISceneRussell, BattleSceneMark, UISceneMark],
 };
 
 const game = new Phaser.Game(config);
