@@ -7,14 +7,14 @@ let kaboom;
 let uppercut;
 let battle = [{
 		id: 0,
-		Q: `What uses await`,
-		S: 'Async',
+		Q: `This searches tables for matching or overlapping data \n Upon finding it, it combines \nand returns the information \ninto one new table.`,
+		S: 'Inner-Join',
 		A: 20
 	},
 	{
 		id: 1,
-		Q: 'await "".get("url").data. \nWhat is this?',
-		S: 'axios',
+		Q: 'This includes the matching rows as well as \n some of the non-matching rows between the two tables.',
+		S: 'Outer-Join',
 		A: 8
 	},
 	{
@@ -496,8 +496,8 @@ var ActionsMenu = new Phaser.Class({
 
 		function ActionsMenu(x, y, scene) {
 			Menu.call(this, x, y, scene);
-			this.addMenuItem('Async');
-			this.addMenuItem('await');
+			this.addMenuItem('Outer-Join');
+			this.addMenuItem('Inner-Join');
 			this.addMenuItem('promise');
 			this.addMenuItem('setTimeout');
 			this.addMenuItem('then');

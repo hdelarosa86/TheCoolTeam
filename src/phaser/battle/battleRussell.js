@@ -47,29 +47,6 @@ let battle = [{
 		S: 'catch',
 		A: 8
 	},
-	{
-		id: 6,
-		Q: `const p = new Promise(
-			function (resolve, reject) {
-				if (···) {
-					resolve(value); // success
-				}
-			}).then().(err) \nWhat will I get if I run this function`,
-		S: 'error',
-		A: 8
-	},
-	{
-		id: 7,
-		Q: 'What Promise uses a then()?',
-		S: 'promise',
-		A: 8
-	},
-	{
-		id: 8,
-		Q: 'what do we use before a catch is called?',
-		S: 'setTimeout',
-		A: 8
-	}
 ]
 var BattleSceneRussell = new Phaser.Class({
 

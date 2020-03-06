@@ -41,6 +41,26 @@ let battle = [{
 		S: 'LinkedList',
 		A: 8
 	},
+	{
+		id: 6,
+		Q: 'Libraries like async.js, bluebird, q, Co are \n used to dealing with what type of situation',
+		S: 'Asynchronous Code',
+		A: 8
+	},
+	{
+		id: 7,
+		Q: 'This keyword is used with constructor functions to make objects in JavaScript',
+		S: 'New',
+		A: 8
+	},
+	{
+		id: 8,
+		Q: 'What is XXX below? \n array.XXX(function(total, currentValue, currentIndex, arr), initialValue)',
+		S: 'reduce',
+		A: 8
+	}
+
+	
 ]
 var BattleSceneMark = new Phaser.Class({
 
@@ -172,6 +192,14 @@ var BattleSceneMark = new Phaser.Class({
 			this.units[this.index].attack(action, this.enemies[target]);
 		} else if (action === 'LinkedList') {
 			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'Array') {
+			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'Asynchronous Code') {
+			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'New') {
+			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'reduce') {
+			this.units[this.index].attack(action, this.enemies[target]);
 		}
 		// next turn in 3 seconds
 		this.time.addEvent({
@@ -258,7 +286,7 @@ var Unit = new Phaser.Class({
 	},
 	// attack the target unit is real to use
 	attack: function (action, target) {
-		let random = Math.floor(Math.random() * 8)
+		let random = Math.floor(Math.random() * 9)
 		console.log(this, target)
 		if (target.living) {
 			if (target.type === 'Mark') {
@@ -468,6 +496,10 @@ var ActionsMenu = new Phaser.Class({
 			this.addMenuItem('Graphs');
 			this.addMenuItem('Array');
 			this.addMenuItem('LinkedList');
+			this.addMenuItem('Asynchronous Code');
+			this.addMenuItem('New');
+			this.addMenuItem('reduce');
+
 		},
 	confirm: function () {
 		// we select an action and go to the next menu and choose from the enemies to apply the action\
@@ -508,12 +540,12 @@ var UISceneMark = new Phaser.Class({
 		this.graphics = this.add.graphics();
 		this.graphics.lineStyle(1, 0xffffff);
 		this.graphics.fillStyle(0x031f4c, 1);
-		this.graphics.strokeRect(15, 400, 255, 150);
-		this.graphics.fillRect(15, 400, 255, 150);
-		this.graphics.strokeRect(255, 400, 240, 150);
-		this.graphics.fillRect(255, 400, 240, 150);
-		this.graphics.strokeRect(495, 400, 240, 150);
-		this.graphics.fillRect(495, 400, 240, 150);
+		this.graphics.strokeRect(15, 400, 255, 180);
+		this.graphics.fillRect(15, 400, 255, 180);
+		this.graphics.strokeRect(255, 400, 240, 180);
+		this.graphics.fillRect(255, 400, 240, 180);
+		this.graphics.strokeRect(495, 400, 240, 180);
+		this.graphics.fillRect(495, 400, 240, 180);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
