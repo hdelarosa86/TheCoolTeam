@@ -7,69 +7,40 @@ let kaboom;
 let uppercut;
 let battle = [{
 		id: 0,
-		Q: `What uses await`,
-		S: 'Async',
+		Q: `Which data-sctructure elements are identified by index?`,
+		S: 'Array',
 		A: 20
 	},
 	{
 		id: 1,
-		Q: 'await "".get("url").data. \nWhat is this?',
-		S: 'axios',
+		Q: 'What has lesser value nodes stored on the left \n while the nodes with higher value are \n stored at the right?',
+		S: 'BinaryTree',
 		A: 8
 	},
 	{
 		id: 2,
-		Q: `catch(""){ } \nWhat is inside catch?`,
-		S: 'error',
+		Q: `What is a process of ordering or placing a \n list of elements from a collection \n in some kind of order.`,
+		S: 'Sorting',
 		A: 8
 	},
 	{
 		id: 3,
-		Q: `var promise = new Promise(function(resolve, reject) {
-			(function() {
-			  console.log('in setTimeout callback');
-			}, 100);
-		  }); \nWhat is missing in this function?`,
-		S: 'setTimeout',
+		Q: `What process uses Bubble, Insertion, Selection, Quick, Merge?`,
+		S: 'Sorting',
 		A: 8
 	},
 	{
 		id: 4,
-		Q: `async function main() {
-			 asyncFunc();
-		} \nWhat is this async function missing?`,
-		S: 'await',
+		Q: `Adjacency Matrix and Adjacency List are two common ways to represent what?`,
+		S: 'Graphs',
 		A: 8
 	},
 	{
 		id: 5,
-		Q: 'What should be called when a then function is called?',
-		S: 'catch',
+		Q: 'What is connected through a chain of references,\n with each item containing a reference \nto the next item.',
+		S: 'LinkedList',
 		A: 8
 	},
-	{
-		id: 6,
-		Q: `const p = new Promise(
-			function (resolve, reject) {
-				if (···) {
-					resolve(value); // success
-				}
-			}).then().(err) \nWhat will I get if I run this function`,
-		S: 'error',
-		A: 8
-	},
-	{
-		id: 7,
-		Q: 'What Promise uses a then()?',
-		S: 'promise',
-		A: 8
-	},
-	{
-		id: 8,
-		Q: 'what do we use before a catch is called?',
-		S: 'setTimeout',
-		A: 8
-	}
 ]
 var BattleSceneMark = new Phaser.Class({
 
@@ -191,19 +162,15 @@ var BattleSceneMark = new Phaser.Class({
 	},
 	// when the player have selected the enemy to be attacked
 	receivePlayerSelection: function (action, target) {
-		if (action === 'Async') {
+		if (action === 'Array') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'await') {
+		} else if (action === 'BinaryTree') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'axois') {
+		} else if (action === 'Sorting') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'setTimeout') {
+		} else if (action === 'Graphs') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'promise') {
-			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'then') {
-			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'catch') {
+		} else if (action === 'LinkedList') {
 			this.units[this.index].attack(action, this.enemies[target]);
 		}
 		// next turn in 3 seconds
@@ -496,12 +463,11 @@ var ActionsMenu = new Phaser.Class({
 
 		function ActionsMenu(x, y, scene) {
 			Menu.call(this, x, y, scene);
-			this.addMenuItem('Async');
-			this.addMenuItem('await');
-			this.addMenuItem('promise');
-			this.addMenuItem('setTimeout');
-			this.addMenuItem('then');
-			this.addMenuItem('catch');
+			this.addMenuItem('BinaryTree');
+			this.addMenuItem('Sorting');
+			this.addMenuItem('Graphs');
+			this.addMenuItem('Array');
+			this.addMenuItem('LinkedList');
 		},
 	confirm: function () {
 		// we select an action and go to the next menu and choose from the enemies to apply the action\
