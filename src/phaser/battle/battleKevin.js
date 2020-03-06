@@ -7,43 +7,43 @@ let kaboom;
 let uppercut;
 let battle = [{
 		id: 0,
-		Q: `What uses await`,
+		Q: `What uses await?`,
 		S: 'Async',
 		A: 20
 	},
 	{
 		id: 1,
-		Q: 'await "".get("url").data. \nWhat is this?',
-		S: 'axios',
+		Q: `Promise(
+			function (resolve, reject) {
+				let value = "sauce"; return value
+			}). \nWhat is this?`,
+		S: 'promise',
 		A: 8
 	},
 	{
 		id: 2,
-		Q: `catch(""){ } \nWhat is inside catch?`,
-		S: 'error',
+		Q: `new Promise(
+			function (resolve, reject) {let value = 'sauce'; return value}).catch \nWhat is missing?`,
+		S: 'then',
 		A: 8
 	},
 	{
 		id: 3,
-		Q: `var promise = new Promise(function(resolve, reject) {
-			(function() {
-			  console.log('in setTimeout callback');
-			}, 100);
-		  }); \nWhat is missing in this function?`,
+		Q: `var promise = new Promise(
+			function(resolve, reject) {
+			(function() { console.log('hello') }, 100);}); \nWhat is missing in this function?`,
 		S: 'setTimeout',
 		A: 8
 	},
 	{
 		id: 4,
-		Q: `async function main() {
-			 asyncFunc();
-		} \nWhat is this async function missing?`,
+		Q: `async function main() { '...' asyncFunc();} \nWhat is this async function missing?`,
 		S: 'await',
 		A: 8
 	},
 	{
 		id: 5,
-		Q: 'What should be called when a then function is called?',
+		Q: 'What should be placed after a then() is called?',
 		S: 'catch',
 		A: 8
 	},
@@ -51,11 +51,9 @@ let battle = [{
 		id: 6,
 		Q: `const p = new Promise(
 			function (resolve, reject) {
-				if (···) {
-					resolve(value); // success
-				}
-			}).then().(err) \nWhat will I get if I run this function`,
-		S: 'error',
+				let value = 'sauce'; return value
+			}).then().(err) \nWhat is missing in this function?`,
+		S: 'catch',
 		A: 8
 	},
 	{
@@ -66,11 +64,11 @@ let battle = [{
 	},
 	{
 		id: 8,
-		Q: 'what do we use before a catch is called?',
+		Q: 'what do we use to delay promise call?',
 		S: 'setTimeout',
 		A: 8
-	}
-]
+	}]
+
 var BattleSceneKevin = new Phaser.Class({
 
 	Extends: Phaser.Scene,
@@ -291,8 +289,7 @@ var Unit = new Phaser.Class({
 	},
 	// attack the target unit is real to use
 	attack: function (action, target) {
-		let random = Math.floor(Math.random() * 8)
-		console.log(this, target)
+		let random = Math.floor(Math.random() * 9)
 		if (target.living) {
 			if (target.type === 'Kevin') {
 				player.push({
@@ -325,7 +322,7 @@ var Unit = new Phaser.Class({
 				}
 			} else {
 				let damage = this.damage[random];
-				target.takeDamage(20)
+				target.takeDamage(random)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
@@ -380,7 +377,7 @@ var MenuItem = new Phaser.Class({
 
 		function MenuItem(x, y, text, scene) {
 			Phaser.GameObjects.Text.call(this, scene, x, y, text, {
-				color: '#ffffff',
+				color: '#000000',
 				align: 'left',
 				fontSize: 15
 			});
@@ -389,7 +386,7 @@ var MenuItem = new Phaser.Class({
 		this.setColor('#fc0303');
 	},
 	deselect: function () {
-		this.setColor('#ffffff');
+		this.setColor('#000000');
 	},
 	unitKilled: function () {
 		this.active = false;
@@ -540,8 +537,8 @@ var UISceneKevin = new Phaser.Class({
 	create: function () {
 		// draw some background for the menu
 		this.graphics = this.add.graphics();
-		this.graphics.lineStyle(1, 0xffffff);
-		this.graphics.fillStyle(0x031f4c, 1);
+		this.graphics.lineStyle(3, 0x000000);
+		this.graphics.fillStyle(0xffffff, 1);
 		this.graphics.strokeRect(15, 400, 255, 150);
 		this.graphics.fillRect(15, 400, 255, 150);
 		this.graphics.strokeRect(255, 400, 240, 150);
@@ -650,7 +647,7 @@ var Message = new Phaser.Class({
 		var graphics = this.scene.add.graphics();
 		this.add(graphics);
 		graphics.lineStyle(2, 0xffffff, 0.8);
-		graphics.fillStyle(0x031f4c, 0.3);
+		graphics.fillStyle(0x000000, 0.8);
 		graphics.strokeRect(-60, -15, 500, 150);
 		graphics.fillRect(-60, -15, 500, 150);
 		this.text = new Phaser.GameObjects.Text(scene, 200, 40, '', {
@@ -658,7 +655,7 @@ var Message = new Phaser.Class({
 			align: 'center',
 			fontSize: 15,
 			padding: {
-				top: 10
+				top: 60
 			},
 			wordWrap: {
 				width: 400,
@@ -677,7 +674,7 @@ var Message = new Phaser.Class({
 			this.hideEvent.remove(false);
 		}
 		this.hideEvent = this.scene.time.addEvent({
-			delay: 5000,
+			delay: 7000,
 			callback: this.hideMessage,
 			callbackScope: this
 		});
