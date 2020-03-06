@@ -28,7 +28,23 @@ import {
   Shop,
   uppercut,
   battleLevel,
-  explosion
+  explosion,
+  ElliotImg,
+  ElliotJSON,
+  SteveImg,
+  SteveJSON,
+  BaggieImg,
+  BaggieJSON,
+  KevinImg,
+  KevinJSON,
+  MarkImg,
+  MarkJSON,
+  RyanImg,
+  RyanJSON,
+  ProfImg,
+  ProfJSON,
+  RussellImg,
+  RussellJSON
 } from '../assets'
 
 let cursors;
@@ -94,8 +110,6 @@ class playGame extends Phaser.Scene {
       this.load.image('shopLevel', shopImg);
       this.load.image('homeLevel', HomeImg);
       this.load.image('mansionLevel', mansionImg);
-      this.load.image('dragonblue', GreenManImg);
-      this.load.image('dragonorrange', GreenManImg);
       this.load.tilemapTiledJSON('mansion', mansionMap);
       this.load.tilemapTiledJSON('home', HomeMap);
       this.load.tilemapTiledJSON('shop', shopMap);
@@ -104,7 +118,15 @@ class playGame extends Phaser.Scene {
       this.load.tilemapTiledJSON('level', pokeMap);
       this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
       this.load.atlas('greenman', GreenManImg, GreenManJSON);
+      this.load.atlas('mark', MarkImg, MarkJSON);
       this.load.atlas('pinkman', PinkManImg, PinkManJSON);
+      this.load.atlas('russell', RussellImg, RussellJSON);
+      this.load.atlas('ryan', RyanImg, RyanJSON);
+      this.load.atlas('prof', ProfImg, ProfJSON);
+      this.load.atlas('kevin', KevinImg, KevinJSON);
+      this.load.atlas('baggie', BaggieImg, BaggieJSON);
+      this.load.atlas('elliot', ElliotImg, ElliotJSON);
+      this.load.atlas('steve', SteveImg, SteveJSON);
       this.load.audio('levelOne', [Home]);
       this.load.audio('battleOne', [battleOne]);
       this.load.audio('lounge', [Lounge])
@@ -271,7 +293,7 @@ class playGame extends Phaser.Scene {
           350, 350, 'greenman', 'greenman-front', 'Hello Fullstacker, do you want to pair program?', 'npcOne', 'BattleScene'
       );
       this.npcTwo = createNPC(
-          1250, 100, 'greenman', 'greenman-left', 'Hello man, do you want to pratice Promises?', 'npcTwo', 'BattleScene'
+          1250, 100, 'steve', 'steve-left', 'Hello man, do you want to pratice Promises?', 'npcTwo', 'BattleScene'
       );
       this.npcThree = createNPC(
           980, 350, 'pinkman', 'pinkman-right', 'You are not worth my time!', 'npcThree', 'BattleScene'
