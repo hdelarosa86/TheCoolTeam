@@ -7,53 +7,48 @@ let kaboom;
 let uppercut;
 let battle = [{
 		id: 0,
-		Q: `sequelize.define(name, { attributes }). \n What is This?`,
-		S: 'Sequelize',
+		Q: `What uses await`,
+		S: 'Async',
 		A: 20
 	},
 	{
 		id: 1,
-		Q: 'const store = createStore(rootReducer). \nWhat is This?',
-		S: 'Redux',
+		Q: 'await "".get("url").data. \nWhat is this?',
+		S: 'axios',
 		A: 8
 	},
 	{
 		id: 2,
-		Q: `intermediate result for  2  * factorial( 1 ):  2. \nWhat is this`,
-		S: 'Recursion',
+		Q: `catch(""){ } \nWhat is inside catch?`,
+		S: 'error',
 		A: 8
 	},
 	{
 		id: 3,
-		Q: `document.getElementsByTagName("p")? \nWhat is this?`,
-		S: 'DOM',
+		Q: `var promise = new Promise(function(resolve, reject) {
+			(function() {
+			  console.log('in setTimeout callback');
+			}, 100);
+		  }); \nWhat is missing in this function?`,
+		S: 'setTimeout',
 		A: 8
 	},
 	{
 		id: 4,
-		Q: `Model.hook('afterDestroy', function () {}). \nWhat is This?`,
-		S: 'Sequelize',
+		Q: `async function main() {
+			 asyncFunc();
+		} \nWhat is this async function missing?`,
+		S: 'await',
 		A: 8
 	},
 	{
 		id: 5,
-		Q: '</Provider>. \nWhat is This?',
-		S: 'Redux',
+		Q: 'What should be called when a then function is called?',
+		S: 'catch',
 		A: 8
 	},
-	{
-		id: 6,
-		Q: `def factorial(n):if n == 1:return 1 else: return n * factorial(n-1). \nWhat is this`,
-		S: 'Recursion',
-		A: 8
-	},
-	{
-		id: 7,
-		Q: 'alert(paragraphs[0].nodeName). \nWhat is this?',
-		S: 'DOM',
-		A: 8
-	}]
-var BattleScene = new Phaser.Class({
+]
+var BattleSceneRussell = new Phaser.Class({
 
 	Extends: Phaser.Scene,
 
@@ -61,7 +56,7 @@ var BattleScene = new Phaser.Class({
 
 		function BattleScene() {
 			Phaser.Scene.call(this, {
-				key: 'BattleScene'
+				key: 'BattleSceneRussell'
 			});
 		},
 	init: function (data) {
@@ -96,23 +91,23 @@ var BattleScene = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var main = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing( main);
+		var player = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing(player);
 
 
-		var GreenMan = new Enemy(this, 150, 250, 'greenman', 2, 'GreenMan', 60, battle);
-		this.add.existing(GreenMan);
+		var russell = new Enemy(this, 150, 250, 'russell', 2, 'Russell', 100, battle);
+		this.add.existing(russell);
 
 		// array with heroes
-		this.heroes = [main];
+		this.heroes = [player];
 		// array with enemies
-		this.enemies = [GreenMan];
+		this.enemies = [russell];
 		// array with both parties, who will attack
 		this.units = this.heroes.concat(this.enemies);
 
 		this.index = -1; // currently active unit
 
-		this.scene.run('UIScene');
+		this.scene.run('UISceneRussell');
 	},
 	nextTurn: function () {
 		// if we have victory or game over
@@ -173,13 +168,19 @@ var BattleScene = new Phaser.Class({
 	},
 	// when the player have selected the enemy to be attacked
 	receivePlayerSelection: function (action, target) {
-		if (action === 'DOM') {
+		if (action === 'Async') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'Recursion') {
+		} else if (action === 'await') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'Sequelize') {
+		} else if (action === 'axois') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'Redux') {
+		} else if (action === 'setTimeout') {
+			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'promise') {
+			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'then') {
+			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'catch') {
 			this.units[this.index].attack(action, this.enemies[target]);
 		}
 		// next turn in 3 seconds
@@ -199,11 +200,11 @@ var BattleScene = new Phaser.Class({
 		}
 		this.units.length = 0;
 		// sleep the UI
-		this.scene.sleep('UIScene');
+		this.scene.sleep('UISceneRussell');
 		// return to WorldScene and sleep current BattleScene
 		arr = []
         music.stop();
-		this.scene.start('PlayGame', {
+		this.scene.start('scene6', {
 			x: this.player.x,
 			y: this.player.y,
 			texture: this.player.texture,
@@ -227,7 +228,7 @@ var BattleScene = new Phaser.Class({
 		}
 		this.units.length = 0;
 		// sleep the UI
-		this.scene.sleep('UIScene');
+		this.scene.sleep('UISceneRussell');
 		// // return to WorldScene and sleep current BattleScene
 		arr = []
 		music.stop();
@@ -268,8 +269,9 @@ var Unit = new Phaser.Class({
 	// attack the target unit is real to use
 	attack: function (action, target) {
 		let random = Math.floor(Math.random() * 8)
+		console.log(this, target)
 		if (target.living) {
-			if (target.type === 'GreenMan') {
+			if (target.type === 'Russell') {
 				player.push({
 					data: {
 						hp: this.hp
@@ -278,10 +280,10 @@ var Unit = new Phaser.Class({
 				if (arr.length > 0 && action === arr.pop().S) {
 					target.takeDamage(20)
 					target.tint = 0xFF6347
-					target.frame = target.texture.frames['greenman-front']
+					target.frame = target.texture.frames['russell-front']
 					setTimeout(() => {
 						target.clearTint()
-						target.frame = target.texture.frames['greenman-left']
+						target.frame = target.texture.frames['russell-left']
 					}, 2000)
 					uppercut.play();
 					this.scene.events.emit('Message', 'You: ' + action + '!!!  \n' + target.type + ' with 20 point damage')
@@ -289,10 +291,10 @@ var Unit = new Phaser.Class({
 				} else {
 					target.takeDamage(random)
 					target.tint = 0xFF6347
-					target.frame = target.texture.frames['greenman-front']
+					target.frame = target.texture.frames['russell-front']
 					setTimeout(() => {
 						target.clearTint()
-						target.frame = target.texture.frames['greenman-left']
+						target.frame = target.texture.frames['russell-left']
 					}, 2000)
 					this.scene.events.emit('Message', 'You: ' + action + '!!!  \n' + target.type + ' with ' + random + ' point damage')
 					uppercut.play();
@@ -300,7 +302,7 @@ var Unit = new Phaser.Class({
 				}
 			} else {
 				let damage = this.damage[random];
-				target.takeDamage(random)
+				target.takeDamage(20)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
@@ -308,7 +310,7 @@ var Unit = new Phaser.Class({
 					target.clearTint()
 					target.frame = target.texture.frames['student-right']
 				}, 2000)
-				this.scene.events.emit('Message', 'Eliot: \n' + damage.Q + ' !!!')
+				this.scene.events.emit('Message', 'Russell: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 boom.anims.play('explode');
 			}
@@ -333,7 +335,7 @@ var Enemy = new Phaser.Class({
 		Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
 		this.flipX = true;
 		this.setScale(2);
-		this.frame = this.texture.frames['greenman-left']
+		this.frame = this.texture.frames['russell-left']
 	}
 });
 
@@ -354,8 +356,8 @@ var MenuItem = new Phaser.Class({
 	initialize:
 
 		function MenuItem(x, y, text, scene) {
-            Phaser.GameObjects.Text.call(this, scene, x, y, text, {
-				color: '#000000',
+			Phaser.GameObjects.Text.call(this, scene, x, y, text, {
+				color: '#ffffff',
 				align: 'left',
 				fontSize: 15
 			});
@@ -364,7 +366,7 @@ var MenuItem = new Phaser.Class({
 		this.setColor('#fc0303');
 	},
 	deselect: function () {
-		this.setColor('#000000');
+		this.setColor('#ffffff');
 	},
 	unitKilled: function () {
 		this.active = false;
@@ -471,10 +473,12 @@ var ActionsMenu = new Phaser.Class({
 
 		function ActionsMenu(x, y, scene) {
 			Menu.call(this, x, y, scene);
-			this.addMenuItem('DOM');
-			this.addMenuItem('Recursion');
-			this.addMenuItem('Redux');
-			this.addMenuItem('Sequelize');
+			this.addMenuItem('Async');
+			this.addMenuItem('await');
+			this.addMenuItem('promise');
+			this.addMenuItem('setTimeout');
+			this.addMenuItem('then');
+			this.addMenuItem('catch');
 		},
 	confirm: function () {
 		// we select an action and go to the next menu and choose from the enemies to apply the action\
@@ -498,7 +502,7 @@ var EnemiesMenu = new Phaser.Class({
 });
 
 // User Interface scene
-var UIScene = new Phaser.Class({
+var UISceneRussell = new Phaser.Class({
 
 	Extends: Phaser.Scene,
 
@@ -506,21 +510,21 @@ var UIScene = new Phaser.Class({
 
 		function UIScene() {
 			Phaser.Scene.call(this, {
-				key: 'UIScene'
+				key: 'UISceneRussell'
 			});
 		},
 
 	create: function () {
 		// draw some background for the menu
-        this.graphics = this.add.graphics();
-        this.graphics.lineStyle(3, 0x000000);
-        this.graphics.fillStyle(0xffffff, 1);
-        this.graphics.strokeRect(15, 400, 255, 150);
-        this.graphics.fillRect(15, 400, 255, 150);
-        this.graphics.strokeRect(255, 400, 240, 150);
-        this.graphics.fillRect(255, 400, 240, 150);
-        this.graphics.strokeRect(495, 400, 240, 150);
-        this.graphics.fillRect(495, 400, 240, 150);
+		this.graphics = this.add.graphics();
+		this.graphics.lineStyle(1, 0xffffff);
+		this.graphics.fillStyle(0x031f4c, 1);
+		this.graphics.strokeRect(15, 400, 255, 150);
+		this.graphics.fillRect(15, 400, 255, 150);
+		this.graphics.strokeRect(255, 400, 240, 150);
+		this.graphics.fillRect(255, 400, 240, 150);
+		this.graphics.strokeRect(495, 400, 240, 150);
+		this.graphics.fillRect(495, 400, 240, 150);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
@@ -537,7 +541,7 @@ var UIScene = new Phaser.Class({
 		this.menus.add(this.actionsMenu);
 		this.menus.add(this.enemiesMenu);
 
-		this.battleScene = this.scene.get('BattleScene');
+		this.battleScene = this.scene.get('BattleSceneRussell');
 
 		// listen for keyboard events
 		this.input.keyboard.on('keydown', this.onKeyInput, this);
@@ -593,6 +597,7 @@ var UIScene = new Phaser.Class({
 	},
 	remapEnemies: function () {
 		var enemies = this.battleScene.enemies;
+		console.log(enemies)
 		this.enemiesMenu.remap(enemies);
 	},
 	onKeyInput: function (event) {
@@ -622,7 +627,7 @@ var Message = new Phaser.Class({
 		var graphics = this.scene.add.graphics();
 		this.add(graphics);
 		graphics.lineStyle(2, 0xffffff, 0.8);
-		graphics.fillStyle(0x000000, 0.8);
+		graphics.fillStyle(0x031f4c, 0.3);
 		graphics.strokeRect(-60, -15, 500, 150);
 		graphics.fillRect(-60, -15, 500, 150);
 		this.text = new Phaser.GameObjects.Text(scene, 200, 40, '', {
@@ -660,6 +665,6 @@ var Message = new Phaser.Class({
 	}
 });
 export {
-	BattleScene,
-	UIScene
+	BattleSceneRussell,
+	UISceneRussell
 };

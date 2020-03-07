@@ -13,7 +13,9 @@ class SceneFour extends Phaser.Scene {
   constructor() {
     super('scene4');
   }
-
+  init(data){
+    this.player = data
+  }
   create() {
     const createNPC = (x, y, spriteName, spriteFrame, text, reference, battleScene, url) => {
       let npc = this.NPCs.create(x, y, spriteName, spriteFrame)
@@ -25,6 +27,23 @@ class SceneFour extends Phaser.Scene {
       npc.url = url
       return npc;
   };
+
+  this.speech = this.add.text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
+    wordWrap: {
+        width: 500
+    },
+    padding: {
+        top: 15,
+        right: 15,
+        bottom: 15,
+        left: 15
+    },
+    align: 'left',
+    backgroundColor: '#c90000',
+    color: '#ffffff',
+})
+.setScrollFactor(0)
+.setDepth(30);
 
     const map = this.make.tilemap({ key: 'shop' });
     const tileset = map.addTilesetImage('shop', 'shopLevel');
@@ -60,13 +79,13 @@ class SceneFour extends Phaser.Scene {
           540, 410, 'greenman', 'greenman-right', "You want some Pothos man? It's pretty good", 'npcOne', 'BattleScene', 'https://pothos.herokuapp.com/'
       );
       this.npcTwo = createNPC(
-          980, 410, 'greenman', 'greenman-left', 'Hey man, I can hook you up with some Juuls', 'npcTwo', 'BattleScene', '#'
+          980, 410, 'baggie', 'baggie-left', 'Hey man, I can hook you up with some Juuls', 'npcTwo', 'BattleScene', 'https://http.cat/fksfdj'
       );
       this.npcThree = createNPC(
-          600, 500, 'pinkman', 'pinkman-right', 'We have that nice art you want bro. Give me your credit card info!', 'npcThree', 'BattleScene', '#'
+          600, 500, 'gin', 'gin-right', 'We have that nice art you want?', 'npcThree', 'BattleScene', 'https://fakers.herokuapp.com/'
       );
       this.npcFour = createNPC(
-        940, 550, 'pinkman', 'pinkman-right', 'We sell stuff for cheap. Just give us you social security!', 'npcFour', 'BattleScene', '#'
+        940, 550, 'steve', 'steve-left', 'We sell stuff for cheap. Just give us you social security!', 'npcFour', 'BattleScene', 'https://httpstatusdogs.com/404-not-found'
     );
 
       this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
@@ -88,7 +107,6 @@ class SceneFour extends Phaser.Scene {
           this[_spriteNPC.reference] = createNPC(
               _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference
           );
-
           this.physics.pause();
           this.anims.pauseAll();
           this.dialogue = this.add
@@ -109,32 +127,18 @@ class SceneFour extends Phaser.Scene {
               .setScrollFactor(0)
               .setDepth(30);
           this.physics.paused = true;
-
           this.input.keyboard.on('keydown_Y', () => {
-              music.stop();
-              this.physics.resume();
-              this.anims.resumeAll();
-              const s = window.open(_spriteNPC.url, '_blank');
-              s.focus()
-              this.physics.paused = false;
-              this.dialogue.destroy();
-              this[_spriteNPC.reference].destroy();
-              this[_spriteNPC.reference] = createNPC(
-                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
-              );
-          });
+            console.log(spriteNPC.url)
+              window.open(spriteNPC.url, '_blank') 
+          })
 
           this.input.keyboard.on('keydown_N', () => {
               this.physics.resume();
               this.anims.resumeAll();
               this.physics.paused = false;
               this.dialogue.destroy();
-              this[_spriteNPC.reference].destroy();
-              this[_spriteNPC.reference] = createNPC(
-                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
-              );
-          });
       });
+    }, null, this)
   }
 
   update(time, delta) {

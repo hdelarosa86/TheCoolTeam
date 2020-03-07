@@ -12,8 +12,20 @@ class SceneThree extends Phaser.Scene {
   constructor() {
     super('scene3');
   }
-
+  init(data){
+    this.player = data
+  }
   create() {
+    const createNPC = (x, y, spriteName, spriteFrame, text, reference, battleScene) => {
+      let npc = this.NPCs.create(x, y, spriteName, spriteFrame)
+          .setSize(0, 38)
+          .setOffset(0, 23);
+      npc.text = text || '';
+      npc.reference = reference;
+      npc.battleScene = battleScene;
+      return npc;
+  };
+
     const map = this.make.tilemap({ key: 'library' });
     const tileset = map.addTilesetImage('houseTwo', 'libraryLevel');
     const houseLayer = map.createStaticLayer('library', tileset, 0, 0);
@@ -21,6 +33,23 @@ class SceneThree extends Phaser.Scene {
     music = this.sound.add('Library', { loop: true });
 
     music.play();
+
+    this.speech = this.add.text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
+      wordWrap: {
+          width: 500
+      },
+      padding: {
+          top: 15,
+          right: 15,
+          bottom: 15,
+          left: 15
+      },
+      align: 'left',
+      backgroundColor: '#c90000',
+      color: '#ffffff',
+  })
+  .setScrollFactor(0)
+  .setDepth(30);
 
     tile = map.setTileIndexCallback(465, () => {
       music.stop();
@@ -70,6 +99,98 @@ class SceneThree extends Phaser.Scene {
 
     this.physics.add.collider(player, houseLayer);
 
+    this.NPCs = this.physics.add.staticGroup();
+
+      this.npcOne = createNPC(
+          400, 650, 'blu', 'blu-front', 'Nice to meet you, my name is Gin, if you ever need any help, just let me know?', 'npcOne'
+      );
+      this.npcTwo = createNPC(
+          1000, 650, 'kevin', 'kevin-left', 'I hear that Master Prof is in charge of DOM. You better practice your DOM.', 'npcTwo'
+      );
+      this.npcThree = createNPC(
+          950, 650, 'pinkman', 'pinkman-right', 'First time at fullstack academy. Word of wisdom: code is your life.', 'npcThree'
+      );
+      this.npcFour = createNPC(
+        750, 360, 'steve', 'steve-back', `I need to study.... Ahh Man, I completely lost to the master fellow. He's insane in code, I need to ask a fellow for Help. I'm having a PANIC ATTACK!!!`, 'npcFour'
+      );
+      this.npcFive = createNPC(
+        400, 500, 'baggie', 'baggie-right', `Ryan's backend is something else. I need to go back to studying the backend, so I can get past him.`, 'npcFive'
+    );
+      this.npcSix = createNPC(
+       450, 500, 'gin', 'gin-left', `Man, Mark got me with his algos again, couldn't get past his questions.`, 'npcSix'
+    );
+
+      this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
+          let _spriteNPC = spriteNPC;
+          let directionObj = spriteNPC.body.touching;
+          let direction = null;
+          for (let key in directionObj) {
+              if (directionObj[key]) {
+                  if (key === 'down') {
+                      direction = 'front';
+                  } else if (key === 'up') {
+                      direction = 'back';
+                  } else {
+                      direction = key;
+                  }
+              }
+          }
+          spriteNPC.destroy();
+          this[_spriteNPC.reference] = createNPC(
+              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference
+          );
+
+          this.physics.pause();
+          this.anims.pauseAll();
+          this.dialogue = this.add
+              .text(130, 450, `${_spriteNPC.text} \n[Space]`, {
+                  wordWrap: {
+                      width: 500
+                  },
+                  padding: {
+                      top: 15,
+                      right: 15,
+                      bottom: 15,
+                      left: 15
+                  },
+                  align: 'left',
+                  backgroundColor: '#ffffff',
+                  color: '#ff0000',
+              })
+              .setScrollFactor(0)
+              .setDepth(30);
+          this.physics.paused = true;
+
+          this.input.keyboard.on('keydown_Y', () => {
+              music.stop();
+              this.scene.start(_spriteNPC.battleScene, this.player);
+              this.physics.resume();
+              this.anims.resumeAll();
+              this.physics.paused = false;
+          });
+
+          this.input.keyboard.on('keydown_N', () => {
+              this.physics.resume();
+              this.anims.resumeAll();
+              this.physics.paused = false;
+              this.dialogue.destroy();
+              this[_spriteNPC.reference].destroy();
+              this[_spriteNPC.reference] = createNPC(
+                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
+              );
+          });
+          this.input.keyboard.on('keydown_SPACE', () => {
+            this.physics.resume();
+            this.anims.resumeAll();
+            this.physics.paused = false;
+            this.dialogue.destroy();
+            this[_spriteNPC.reference].destroy();
+            this[_spriteNPC.reference] = createNPC(
+                _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
+            );
+        });
+      });
+
     const camera = this.cameras.main;
     camera.startFollow(player);
     cursors = this.input.keyboard.createCursorKeys();
@@ -77,17 +198,6 @@ class SceneThree extends Phaser.Scene {
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        font: '18px monospace',
-        fill: '#000000',
-        padding: { x: 20, y: 10 },
-        backgroundColor: '#ffffff',
-      })
-      .setScrollFactor(0)
-      .setDepth(30);
-
-    this.input.keyboard.once('keydown_D', (event) => {
       this.input.keyboard.once('keydown_D', (event) => {
       // Turn on physics debugging to show player's hitbox
         this.physics.world.createDebugGraphic();
@@ -98,7 +208,6 @@ class SceneThree extends Phaser.Scene {
           .setAlpha(0.75)
           .setDepth(20);
       });
-    });
   }
 
   update(time, delta) {
