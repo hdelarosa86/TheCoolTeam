@@ -185,6 +185,7 @@ class SceneSix extends Phaser.Scene {
                 this.scene.start(_spriteNPC.battleScene, this.player);
                 this.physics.resume();
                 this.anims.resumeAll();
+                music.stop();
                 this.physics.paused = false;
               }
             })

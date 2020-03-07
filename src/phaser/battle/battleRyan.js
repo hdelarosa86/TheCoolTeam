@@ -227,7 +227,7 @@ var BattleSceneRyan = new Phaser.Class({
 		// return to WorldScene and sleep current BattleScene
 		arr = []
         music.stop();
-		this.scene.start('PlayGame', {
+		this.scene.start('scene6', {
 			x: this.player.x,
 			y: this.player.y,
 			texture: this.player.texture,
