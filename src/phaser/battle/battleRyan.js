@@ -19,57 +19,40 @@ let battle = [{
 	},
 	{
 		id: 2,
-		Q: `catch(""){ } \nWhat is inside catch?`,
-		S: 'error',
+		Q: `What keyword finds all instances that match the search criteria.\n If no criteria are given, it returns all \nthe instances in the table.`,
+		S: 'Model.findAll',
 		A: 8
 	},
 	{
 		id: 3,
-		Q: `var promise = new Promise(function(resolve, reject) {
-			(function() {
-			  console.log('in setTimeout callback');
-			}, 100);
-		  }); \nWhat is missing in this function?`,
-		S: 'setTimeout',
+		Q: `What keyword finds a single instance that matches the \nsearch criteria (even if there are \nmore than one that match the search criteria \n- it will return the first it finds)`,
+		S: 'Model.findOne',
 		A: 8
 	},
 	{
 		id: 4,
-		Q: `async function main() {
-			 asyncFunc();
-		} \nWhat is this async function missing?`,
-		S: 'await',
+		Q: `What keyword finds the instance with the specified id.`,
+		S: 'Model.findById',
 		A: 8
 	},
 	{
 		id: 5,
-		Q: 'What should be called when a then function is called?',
-		S: 'catch',
+		Q: 'What keyword updates all instances that match a query.\nTakes two parameters:first contains info you want to update.\nSecond contains the query for which instances to update.',
+		S: 'Model.update',
 		A: 8
 	},
 	{
 		id: 6,
-		Q: `const p = new Promise(
-			function (resolve, reject) {
-				if (···) {
-					resolve(value); // success
-				}
-			}).then().(err) \nWhat will I get if I run this function`,
-		S: 'error',
+		Q: `What is the process of analyzing the given \nrelation schemas based on their functional \ndependencies and primary keys to minimize \nreducdancies and CRUD anomalies.`,
+		S: 'Normalization',
 		A: 8
 	},
 	{
 		id: 7,
-		Q: 'What Promise uses a then()?',
-		S: 'promise',
+		Q: 'XXX is a set of properties that guarantee \nthat database transactions are processed reliably.\n What is XXX?',
+		S: 'ACID',
 		A: 8
 	},
-	{
-		id: 8,
-		Q: 'what do we use before a catch is called?',
-		S: 'setTimeout',
-		A: 8
-	}
 ]
 var BattleSceneRyan = new Phaser.Class({
 
@@ -191,19 +174,21 @@ var BattleSceneRyan = new Phaser.Class({
 	},
 	// when the player have selected the enemy to be attacked
 	receivePlayerSelection: function (action, target) {
-		if (action === 'Async') {
+		if (action === 'Model.findAll') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'await') {
+		} else if (action === 'Inner-Join') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'axois') {
+		} else if (action === 'Outer-Join') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'setTimeout') {
+		} else if (action === 'Model.findOne') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'promise') {
+		} else if (action === 'Model.findById') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'then') {
+		} else if (action === 'Model.update') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'catch') {
+		} else if (action === 'Normalization') {
+			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'ACID') {
 			this.units[this.index].attack(action, this.enemies[target]);
 		}
 		// next turn in 3 seconds
@@ -498,10 +483,12 @@ var ActionsMenu = new Phaser.Class({
 			Menu.call(this, x, y, scene);
 			this.addMenuItem('Outer-Join');
 			this.addMenuItem('Inner-Join');
-			this.addMenuItem('promise');
-			this.addMenuItem('setTimeout');
-			this.addMenuItem('then');
-			this.addMenuItem('catch');
+			this.addMenuItem('Model.findAll');
+			this.addMenuItem('Model.findOne');
+			this.addMenuItem('Model.findById');
+			this.addMenuItem('Model.update');
+			this.addMenuItem('Normalization');
+			this.addMenuItem('ACID');
 		},
 	confirm: function () {
 		// we select an action and go to the next menu and choose from the enemies to apply the action\
@@ -542,12 +529,12 @@ var UISceneRyan = new Phaser.Class({
 		this.graphics = this.add.graphics();
 		this.graphics.lineStyle(1, 0xffffff);
 		this.graphics.fillStyle(0x031f4c, 1);
-		this.graphics.strokeRect(15, 400, 255, 150);
-		this.graphics.fillRect(15, 400, 255, 150);
-		this.graphics.strokeRect(255, 400, 240, 150);
-		this.graphics.fillRect(255, 400, 240, 150);
-		this.graphics.strokeRect(495, 400, 240, 150);
-		this.graphics.fillRect(495, 400, 240, 150);
+		this.graphics.strokeRect(15, 400, 255, 185);
+		this.graphics.fillRect(15, 400, 255, 185);
+		this.graphics.strokeRect(255, 400, 240, 185);
+		this.graphics.fillRect(255, 400, 240, 185);
+		this.graphics.strokeRect(495, 400, 240, 185);
+		this.graphics.fillRect(495, 400, 240, 185);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
