@@ -79,13 +79,13 @@ class SceneFour extends Phaser.Scene {
           540, 410, 'greenman', 'greenman-right', "You want some Pothos man? It's pretty good", 'npcOne', 'BattleScene', 'https://pothos.herokuapp.com/'
       );
       this.npcTwo = createNPC(
-          980, 410, 'baggie', 'baggie-left', 'Hey man, I can hook you up with some Juuls', 'npcTwo', 'BattleScene', 'https://http.cat/fksfdj'
+          980, 410, 'baggie', 'baggie-left', 'Hey man, I can hook you up with some Juuls', 'npcTwo', 'BattleSceneKevin', 'https://http.cat/fksfdj'
       );
       this.npcThree = createNPC(
-          600, 500, 'gin', 'gin-right', 'We have that nice art you want?', 'npcThree', 'BattleScene', 'https://fakers.herokuapp.com/'
+          600, 500, 'gin', 'gin-right', 'We have that nice art you want?', 'npcThree', 'BattleSceneMark', 'https://fakers.herokuapp.com/'
       );
       this.npcFour = createNPC(
-        940, 550, 'steve', 'steve-left', 'We sell stuff for cheap. Just give us you social security!', 'npcFour', 'BattleScene', 'https://httpstatusdogs.com/404-not-found'
+        940, 550, 'steve', 'steve-left', 'We sell stuff for cheap. Just give us you social security!', 'npcFour', 'BattleSceneRussell', 'https://httpstatusdogs.com/404-not-found'
     );
 
       this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
@@ -105,10 +105,11 @@ class SceneFour extends Phaser.Scene {
           }
           spriteNPC.destroy();
           this[_spriteNPC.reference] = createNPC(
-              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference
+              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference, _spriteNPC.battleScene, _spriteNPC.url
           );
           this.physics.pause();
           this.anims.pauseAll();
+          this.physics.paused = false;
           this.dialogue = this.add
               .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
                   wordWrap: {
@@ -126,19 +127,24 @@ class SceneFour extends Phaser.Scene {
               })
               .setScrollFactor(0)
               .setDepth(30);
-          this.physics.paused = true;
-          this.input.keyboard.on('keydown_Y', () => {
-            console.log(spriteNPC.url)
-              window.open(spriteNPC.url, '_blank') 
-          })
+              this.input.keyboard.on('keydown_Y', () => {
+              window.open(spriteNPC.url, '_new')
+              this.physics.resume();
+              this.anims.resumeAll();
+              this.physics.paused = false;
+              this.dialogue.destroy()
+              })
 
           this.input.keyboard.on('keydown_N', () => {
               this.physics.resume();
               this.anims.resumeAll();
               this.physics.paused = false;
-              this.dialogue.destroy();
+              spriteNPC.destroy();
+              this[_spriteNPC.reference] = createNPC(
+              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference, _spriteNPC.battleScene, _spriteNPC.url
+              );
       });
-    }, null, this)
+    })
   }
 
   update(time, delta) {
