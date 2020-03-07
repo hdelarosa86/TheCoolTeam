@@ -69,8 +69,7 @@ let battle = [{
 		Q: 'what do we use before a catch is called?',
 		S: 'setTimeout',
 		A: 8
-	}
-]
+	}]
 var BattleSceneRyan = new Phaser.Class({
 
 	Extends: Phaser.Scene,
