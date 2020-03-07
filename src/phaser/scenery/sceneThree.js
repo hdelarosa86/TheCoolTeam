@@ -114,7 +114,7 @@ class SceneThree extends Phaser.Scene {
         750, 360, 'steve', 'steve-back', `I need to study.... Ahh Man, I completely lost to the master fellow. He's insane in code, I need to ask a fellow for Help. I'm having a PANIC ATTACK!!!`, 'npcFour'
       );
       this.npcFive = createNPC(
-        400, 500, 'baggie', 'baggie-right', `Ryan's backend is something else. I need to go back to studying the backend, so I can get past him.`, 'npcFive'
+        400, 500, 'baggie', 'baggie-right', `Ryan's backend problems are something else. I need to go back and study Sequelize & API, so I can get past him.`, 'npcFive'
     );
       this.npcSix = createNPC(
        450, 500, 'gin', 'gin-left', `Man, Mark got me with his algos again, couldn't get past his questions.`, 'npcSix'

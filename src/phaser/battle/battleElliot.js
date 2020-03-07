@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 let arr = []
 let player = []
 let music;
+let toggle = true
 let boom;
 let kaboom;
 let uppercut;
@@ -194,22 +195,20 @@ var BattleSceneEliot = new Phaser.Class({
 		} while (!this.units[this.index].living);
 		// if its player hero
 		if (this.units[this.index] instanceof PlayerCharacter) {
-			// we need the player to select action and then enemy
+			this.units[this.index].attack('attack', this.heroes[0]);
 			this.events.emit('PlayerSelect', this.index);
-		} else { // else if its enemy unit
+			// we need the player to select action and then enemy
 			// pick random living hero to be attacked
-			var r;
-			do {
-				r = Math.floor(Math.random() * this.heroes.length);
-			} while (!this.heroes[r].living)
 			// call the enemy's attack function
-			this.units[this.index].attack('attack', this.heroes[r]);
-			// add timer for the next turn, so will have smooth gameplay
 			this.time.addEvent({
 				delay: 2000,
 				callback: this.nextTurn,
 				callbackScope: this
 			});
+			// add timer for the next turn, so will have smooth gameplay
+		}
+		else {
+			// helpful
 		}
 	},
 	// check for game over or victory
@@ -257,6 +256,7 @@ var BattleSceneEliot = new Phaser.Class({
 			callback: this.nextTurn,
 			callbackScope: this
 		});
+
 	},
 	endVictory: function () {
 		// clear state, remove sprites
@@ -272,7 +272,7 @@ var BattleSceneEliot = new Phaser.Class({
 		// return to WorldScene and sleep current BattleScene
 		arr = []
         music.stop();
-		this.scene.start('scene2', {
+		this.scene.start('scene6', {
 			x: this.player.x,
 			y: this.player.y,
 			texture: this.player.texture,
@@ -336,7 +336,7 @@ var Unit = new Phaser.Class({
 	},
 	// attack the target unit is real to use
 	attack: function (action, target) {
-		let random = Math.floor(Math.random() * 11)
+		let random = Math.floor(Math.random() * 8)
 		if (target.living) {
 			if (target.type === 'Eliot') {
 				player.push({
@@ -368,8 +368,17 @@ var Unit = new Phaser.Class({
 					kaboom.anims.play('explode');
 				}
 			} else {
+                if(toggle){
+                toggle = false
+                let damage = this.damage[random];
+				target.takeDamage(0)
+				uppercut.play();
+				this.scene.events.emit('Message', 'Eliot: \n' + damage.Q + ' !!!')
+				arr.push(damage)
+                }
+                else{
 				let damage = this.damage[random];
-				target.takeDamage(40)
+				target.takeDamage(50)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
@@ -377,9 +386,10 @@ var Unit = new Phaser.Class({
 					target.clearTint()
 					target.frame = target.texture.frames['student-right']
 				}, 2000)
-				this.scene.events.emit('Message', 'Master Eliot: \n' + damage.Q + ' !!!')
+				this.scene.events.emit('Message', 'Eliot: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 boom.anims.play('explode');
+             }
 			}
 		}
 	},
@@ -635,9 +645,9 @@ var UISceneEliot = new Phaser.Class({
 	},
 	createMenu: function () {
 		// map hero menu items to heroes
+		this.remapEnemies();
 		this.remapHeroes();
 		// map enemies menu items to enemies
-		this.remapEnemies();
 		// first move
 		this.battleScene.nextTurn();
 	},

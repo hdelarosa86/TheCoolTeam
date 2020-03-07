@@ -85,7 +85,7 @@ class SceneFour extends Phaser.Scene {
           600, 500, 'gin', 'gin-right', 'We have that nice art you want?', 'npcThree', 'BattleSceneMark', 'https://fakers.herokuapp.com/'
       );
       this.npcFour = createNPC(
-        940, 550, 'steve', 'steve-left', 'We sell stuff for cheap. Just give us you social security!', 'npcFour', 'BattleSceneRussell', 'https://developer.mozilla.org/en-US/'
+        940, 550, 'steve', 'steve-left', 'Go read the docs!', 'npcFour', 'BattleSceneRussell', 'https://developer.mozilla.org/en-US/'
     );
 
       this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
@@ -139,6 +139,7 @@ class SceneFour extends Phaser.Scene {
               this.physics.resume();
               this.anims.resumeAll();
               this.physics.paused = false;
+              this.dialogue.destroy()
               spriteNPC.destroy();
               this[_spriteNPC.reference] = createNPC(
               _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference, _spriteNPC.battleScene, _spriteNPC.url
