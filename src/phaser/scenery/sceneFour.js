@@ -85,7 +85,7 @@ class SceneFour extends Phaser.Scene {
           600, 500, 'gin', 'gin-right', 'We have that nice art you want?', 'npcThree', 'BattleSceneMark', 'https://fakers.herokuapp.com/'
       );
       this.npcFour = createNPC(
-        940, 550, 'steve', 'steve-left', 'We sell stuff for cheap. Just give us you social security!', 'npcFour', 'BattleSceneRussell', 'https://httpstatusdogs.com/404-not-found'
+        940, 550, 'steve', 'steve-left', 'We sell stuff for cheap. Just give us you social security!', 'npcFour', 'BattleSceneRussell', 'https://developer.mozilla.org/en-US/'
     );
 
       this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
