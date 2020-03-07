@@ -51,8 +51,8 @@ import {
   BluImg,
   BluJSON,
   battleProf,
-  battleGround
-} from '../assets'
+  battleGround,
+} from '../assets';
 
 let cursors;
 let player = {
@@ -106,47 +106,47 @@ class playGame extends Phaser.Scene {
     }
   }
   preload() {
-      this.load.image('firstLevel', pokeImg);
-      this.load.spritesheet('boom', explosion, {
-          frameWidth: 64,
-          frameHeight: 64,
-          endFrame: 23
-      });
-      this.load.image('houseLevel', houseOneImg);
-      this.load.image('battleGround', battleGround)
-      this.load.image('battleScene', battleLevel)
-      this.load.image('libraryLevel', gymOneImg);
-      this.load.image('shopLevel', shopImg);
-      this.load.image('homeLevel', HomeImg);
-      this.load.image('mansionLevel', mansionImg);
-      this.load.tilemapTiledJSON('mansion', mansionMap);
-      this.load.tilemapTiledJSON('home', HomeMap);
-      this.load.tilemapTiledJSON('shop', shopMap);
-      this.load.tilemapTiledJSON('library', gymOneMap);
-      this.load.tilemapTiledJSON('house', houseOneMap);
-      this.load.tilemapTiledJSON('level', pokeMap);
-      this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
-      this.load.atlas('greenman', GreenManImg, GreenManJSON);
-      this.load.atlas('mark', MarkImg, MarkJSON);
-      this.load.atlas('pinkman', PinkManImg, PinkManJSON);
-      this.load.atlas('russell', RussellImg, RussellJSON);
-      this.load.atlas('ryan', RyanImg, RyanJSON);
-      this.load.atlas('prof', ProfImg, ProfJSON);
-      this.load.atlas('kevin', KevinImg, KevinJSON);
-      this.load.atlas('baggie', BaggieImg, BaggieJSON);
-      this.load.atlas('gin', GinImg, GinJSON);
-      this.load.atlas('blu', BluImg, BluJSON);
-      this.load.atlas('elliot', ElliotImg, ElliotJSON);
-      this.load.atlas('steve', SteveImg, SteveJSON);
-      this.load.audio('levelOne', [Home]);
-      this.load.audio('battleOne', [battleOne]);
-      this.load.audio('lounge', [Lounge])
-      this.load.audio('Library', [Library])
-      this.load.audio('mansion', [Mansion])
-      this.load.audio('house', [House])
-      this.load.audio('shop', [Shop])
-      this.load.audio('upperAttack', [uppercut])
-      this.load.audio('professor', [battleProf])
+    this.load.image('firstLevel', pokeImg);
+    this.load.spritesheet('boom', explosion, {
+      frameWidth: 64,
+      frameHeight: 64,
+      endFrame: 23,
+    });
+    this.load.image('houseLevel', houseOneImg);
+    this.load.image('battleGround', battleGround);
+    this.load.image('battleScene', battleLevel);
+    this.load.image('libraryLevel', gymOneImg);
+    this.load.image('shopLevel', shopImg);
+    this.load.image('homeLevel', HomeImg);
+    this.load.image('mansionLevel', mansionImg);
+    this.load.tilemapTiledJSON('mansion', mansionMap);
+    this.load.tilemapTiledJSON('home', HomeMap);
+    this.load.tilemapTiledJSON('shop', shopMap);
+    this.load.tilemapTiledJSON('library', gymOneMap);
+    this.load.tilemapTiledJSON('house', houseOneMap);
+    this.load.tilemapTiledJSON('level', pokeMap);
+    this.load.atlas('atlas', pokeStudent, pokeStudentJSON);
+    this.load.atlas('greenman', GreenManImg, GreenManJSON);
+    this.load.atlas('mark', MarkImg, MarkJSON);
+    this.load.atlas('pinkman', PinkManImg, PinkManJSON);
+    this.load.atlas('russell', RussellImg, RussellJSON);
+    this.load.atlas('ryan', RyanImg, RyanJSON);
+    this.load.atlas('prof', ProfImg, ProfJSON);
+    this.load.atlas('kevin', KevinImg, KevinJSON);
+    this.load.atlas('baggie', BaggieImg, BaggieJSON);
+    this.load.atlas('gin', GinImg, GinJSON);
+    this.load.atlas('blu', BluImg, BluJSON);
+    this.load.atlas('elliot', ElliotImg, ElliotJSON);
+    this.load.atlas('steve', SteveImg, SteveJSON);
+    this.load.audio('levelOne', [Home]);
+    this.load.audio('battleOne', [battleOne]);
+    this.load.audio('lounge', [Lounge]);
+    this.load.audio('Library', [Library]);
+    this.load.audio('mansion', [Mansion]);
+    this.load.audio('house', [House]);
+    this.load.audio('shop', [Shop]);
+    this.load.audio('upperAttack', [uppercut]);
+    this.load.audio('professor', [battleProf]);
   }
 
   create() {
@@ -182,36 +182,56 @@ class playGame extends Phaser.Scene {
     });
     music.play();
 
-      map.setTileIndexCallback(154, () => {
-          player.x = 170
-          player.y = 370
-          music.stop()
-          this.scene.start('scene2', this.player)
-      }, this);
-      map.setTileIndexCallback(163, () => {
-          player.x = 630
-          player.y = 320
-          music.stop()
-          this.scene.start('scene3', this.player)
-      }, this);
-      map.setTileIndexCallback(275, () => {
-          player.x = 220
-          player.y = 520
-          music.stop()
-          this.scene.start('scene4', this.player)
-      }, this);
-      map.setTileIndexCallback(169, () => {
-          player.x = 930
-          player.y = 320
-          music.stop()
-          this.scene.start('scene5', this.player)
-      }, this);
-      map.setTileIndexCallback(38, () => {
-          player.x = 380
-          player.y = 120
-          music.stop()
-          this.scene.start('scene6', this.player)
-      }, this);
+    map.setTileIndexCallback(
+      154,
+      () => {
+        player.x = 170;
+        player.y = 370;
+        music.stop();
+        this.scene.start('scene2', this.player);
+      },
+      this
+    );
+    map.setTileIndexCallback(
+      163,
+      () => {
+        player.x = 630;
+        player.y = 320;
+        music.stop();
+        this.scene.start('scene3', this.player);
+      },
+      this
+    );
+    map.setTileIndexCallback(
+      275,
+      () => {
+        player.x = 220;
+        player.y = 520;
+        music.stop();
+        this.scene.start('scene4', this.player);
+      },
+      this
+    );
+    map.setTileIndexCallback(
+      169,
+      () => {
+        player.x = 930;
+        player.y = 320;
+        music.stop();
+        this.scene.start('scene5', this.player);
+      },
+      this
+    );
+    map.setTileIndexCallback(
+      38,
+      () => {
+        player.x = 380;
+        player.y = 120;
+        music.stop();
+        this.scene.start('scene6', this.player);
+      },
+      this
+    );
 
     player = this.physics.add
       .sprite(player.x, player.y, 'atlas', 'student-front')
@@ -271,27 +291,27 @@ class playGame extends Phaser.Scene {
         toggle = obj.badge
         this.player.badge = obj.badge
         this.dialogue = this.add
-              .text(130, 500, `You just got ${obj.badge} and 100 more health`, {
-                  wordWrap: {
-                      width: 500
-                  },
-                  padding: {
-                      top: 15,
-                      right: 15,
-                      bottom: 15,
-                      left: 15
-                  },
-                  align: 'left',
-                  backgroundColor: '#ffffff',
-                  color: '#ff0000',
-              })
-              .setScrollFactor(0)
-              .setDepth(30);
-              setTimeout( () => {
-                this.dialogue.destroy()
-              }, 3000)
-            }
-    })
+          .text(130, 500, `You just got ${obj.badge} and 100 more health`, {
+            wordWrap: {
+              width: 500,
+            },
+            padding: {
+              top: 15,
+              right: 15,
+              bottom: 15,
+              left: 15,
+            },
+            align: 'left',
+            backgroundColor: '#ffffff',
+            color: '#ff0000',
+          })
+          .setScrollFactor(0)
+          .setDepth(30);
+        setTimeout(() => {
+          this.dialogue.destroy();
+        }, 3000);
+      }
+    });
 
     this.speech = this.add
       .text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
@@ -311,26 +331,44 @@ class playGame extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(30);
 
-  this.NPCs = this.physics.add.staticGroup();
+    this.NPCs = this.physics.add.staticGroup();
 
-      this.npcOne = createNPC(
-          30, 360, 'greenman', 'greenman-right', 'Hello Fullstacker, do you want to pair program?', 'npcOne', 'BattleScene'
-      );
-      this.npcTwo = createNPC(
-          1470, 310, 'kevin', 'kevin-left', 'Hello man, do you want to pratice Promises?', 'npcTwo', 'BattleSceneKevin'
-      );
-      this.npcThree = createNPC(
-          1470, 360, 'pinkman', 'pinkman-left', 'You are not worth my time!', 'npcThree', 'BattleScenePink'
-      );
-      this.npcSave = createNPC(
-        470,
-        260,
-        'pinkman',
-        'pinkman-front',
-        'You want to save your progress?',
-        'npcSave',
-        null
-      );
+    this.npcOne = createNPC(
+      30,
+      360,
+      'greenman',
+      'greenman-right',
+      'Hello Fullstacker, do you want to pair program?',
+      'npcOne',
+      'BattleScene'
+    );
+    this.npcTwo = createNPC(
+      1470,
+      310,
+      'kevin',
+      'kevin-left',
+      'Hello man, do you want to pratice Promises?',
+      'npcTwo',
+      'BattleSceneKevin'
+    );
+    this.npcThree = createNPC(
+      1470,
+      360,
+      'pinkman',
+      'pinkman-left',
+      'You are not worth my time!',
+      'npcThree',
+      'BattleScenePink'
+    );
+    this.npcSave = createNPC(
+      470,
+      260,
+      'pinkman',
+      'pinkman-front',
+      'You want to save your progress?',
+      'npcSave',
+      null
+    );
 
     this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
       let _spriteNPC = spriteNPC;
@@ -384,9 +422,7 @@ class playGame extends Phaser.Scene {
         this.anims.resumeAll();
         this.physics.paused = false;
         if (_spriteNPC.reference === 'npcSave') {
-            console.log(this);
           axios.post('/api', this.player).then(() => {
-              
             this.dialogue.destroy();
             this.dialogue = this.add
               .text(300, 500, 'Game Succesfully Saved', {
@@ -486,6 +522,8 @@ class playGame extends Phaser.Scene {
             delete returnedData[0].id;
             delete returnedData[0].createdAt;
             delete returnedData[0].updatedAt;
+            player.x = 523;
+            player.y = 310;
             this.scene.restart(returnedData[0]);
           });
       }
