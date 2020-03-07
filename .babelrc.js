@@ -1,6 +1,6 @@
 const presets = [
   [
-    "@babel/env",
+    "@babel/preset-env",
     {
       targets: {
         browsers: [">0.25%", "not ie 11", "not op_mini all"],
@@ -9,11 +9,11 @@ const presets = [
       modules: false
     }
   ],
-  "@babel/preset-react"
+  "@babel/preset-react",
 ];
 const plugins = [
   "@babel/plugin-proposal-class-properties",
-  "@babel/plugin-transform-modules-commonjs"
+  "@babel/plugin-transform-modules-commonjs",
 ];
 
 module.exports = { presets, plugins };

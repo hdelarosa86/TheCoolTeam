@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './style.css';
 
 export let shopObj = {
@@ -12,7 +11,7 @@ export class App extends React.Component {
 	}
 	render() {
 		return (
-			<div style={{ textAlign: 'center' }} >New Flag</div>
+			<div style={{ textAlign: 'center' }}>New Flag</div>
 		);
 	}
 }
