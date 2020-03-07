@@ -57,8 +57,9 @@ export const config = {
     BattleSceneMark, 
     UISceneMark
   ],
-
+}
 const game = new Phaser.Game(config);
+
 
 ReactDOM.render(
   <App />,
