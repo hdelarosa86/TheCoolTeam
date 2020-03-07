@@ -18,8 +18,7 @@ class SceneFive extends Phaser.Scene {
   create() {
     const map = this.make.tilemap({ key: 'home' });
     const tileset = map.addTilesetImage('home', 'homeLevel');
-    const shopLayer = map.createStaticLayer('home', tileset, 0, 0);
-
+    const shopLayer = map.createStaticLayer('home', tileset, 0, 0); 
     music = this.sound.add('house', { loop: true });
 
     music.play();

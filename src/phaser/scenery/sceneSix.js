@@ -7,13 +7,26 @@ let player;
 let music;
 let tile;
 const showDebug = false;
+let yesOrNo = '(Y/N)';
 
 class SceneSix extends Phaser.Scene {
   constructor() {
     super('scene6');
   }
-
+  init(data){
+    this.player = data
+  }
   create() {
+    const createNPC = (x, y, spriteName, spriteFrame, text, reference, battleScene, points) => {
+      let npc = this.NPCs.create(x, y, spriteName, spriteFrame)
+          .setSize(0, 38)
+          .setOffset(0, 23);
+      npc.text = text || '';
+      npc.reference = reference;
+      npc.battleScene = battleScene;
+      npc.point = points
+      return npc;
+  };
     const map = this.make.tilemap({ key: 'mansion' });
     const tileset = map.addTilesetImage('mansion', 'mansionLevel');
     const mansionLayer = map.createStaticLayer('mansion', tileset, 0, 0);
@@ -21,6 +34,23 @@ class SceneSix extends Phaser.Scene {
     music = this.sound.add('mansion', { loop: true });
 
     music.play();
+
+    this.speech = this.add.text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
+      wordWrap: {
+          width: 500
+      },
+      padding: {
+          top: 15,
+          right: 15,
+          bottom: 15,
+          left: 15
+      },
+      align: 'left',
+      backgroundColor: '#c90000',
+      color: '#ffffff',
+  })
+  .setScrollFactor(0)
+  .setDepth(30);
 
     tile = map.setTileIndexCallback(585, () => {
       music.stop();
@@ -70,6 +100,108 @@ class SceneSix extends Phaser.Scene {
 
     this.physics.add.collider(player, mansionLayer);
 
+    this.NPCs = this.physics.add.staticGroup();
+
+      this.npcOne = createNPC(
+        600, 120, 'ryan', 'ryan-front', `Hey Fullstacker, please tell me you watched inuyasha?`, 'npcOne', 'BattleSceneRyan', 2000
+      );
+      this.npcTwo = createNPC(
+        1000, 120, 'mark', 'mark-right', `Hey Fullstacker, are you ready to get REACTO'd?`, 'npcTwo', 'BattleSceneMark', 2400
+      );
+      this.npcThree = createNPC(
+        300, 260, 'russell', 'russell-right', 'You better be ready for some interview experience?', 'npcThree', 'BattleSceneRussell', 3000
+      );
+      this.npcFour = createNPC(
+        325, 520, 'elliot', 'elliot-back', `Hey Buddy, Are you ready for the big boss.I'll try to go easy on you?`, 'npcFour', 'BattleSceneEliot', 5000
+    );
+
+      this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
+          let _spriteNPC = spriteNPC;
+          let directionObj = spriteNPC.body.touching;
+          let direction = null;
+          for (let key in directionObj) {
+              if (directionObj[key]) {
+                  if (key === 'down') {
+                      direction = 'front';
+                  } else if (key === 'up') {
+                      direction = 'back';
+                  } else {
+                      direction = key;
+                  }
+              }
+          }
+          spriteNPC.destroy();
+          this[_spriteNPC.reference] = createNPC(
+              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference
+          );
+          this.physics.pause();
+          this.anims.pauseAll();
+          this.dialogue = this.add
+              .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
+                  wordWrap: {
+                      width: 500
+                  },
+                  padding: {
+                      top: 15,
+                      right: 15,
+                      bottom: 15,
+                      left: 15
+                  },
+                  align: 'left',
+                  backgroundColor: '#ffffff',
+                  color: '#ff0000',
+              })
+              .setScrollFactor(0)
+              .setDepth(30);
+          this.physics.paused = true;
+
+          this.input.keyboard.on('keydown_Y', () => {
+            if ( this.player.points < 2000 ){
+                  this.stat = this.add
+                  .text(130, 500, `You can't be here without a better badge`, {
+                      wordWrap: {
+                          width: 500
+                      },
+                      padding: {
+                          top: 15,
+                          right: 15,
+                          bottom: 15,
+                          left: 15
+                      },
+                      align: 'left',
+                      backgroundColor: '#c90000',
+                      color: '#ffffff',
+                  })
+                  .setScrollFactor(0)
+                  .setDepth(30);
+                  setTimeout(() => { this.stat.destroy() }, 2000)
+                  this.physics.resume();
+                  this.anims.resumeAll();
+                  this.dialogue.destroy()
+                  this.physics.paused = false;
+                  console.log(this.player)
+              }
+              else {
+                this.scene.start(_spriteNPC.battleScene, this.player);
+                this.physics.resume();
+                this.anims.resumeAll();
+                this.physics.paused = false;
+              }
+            })
+
+          this.input.keyboard.on('keydown_N', () => {
+              this.physics.resume();
+              this.anims.resumeAll();
+              this.physics.paused = false;
+              this.dialogue.destroy();
+              this[_spriteNPC.reference].destroy();
+              this[_spriteNPC.reference] = createNPC(
+                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
+              );
+          });
+      });
+
+
     const camera = this.cameras.main;
     camera.startFollow(player);
     cursors = this.input.keyboard.createCursorKeys();
@@ -77,17 +209,6 @@ class SceneSix extends Phaser.Scene {
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        font: '18px monospace',
-        fill: '#000000',
-        padding: { x: 20, y: 10 },
-        backgroundColor: '#ffffff',
-      })
-      .setScrollFactor(0)
-      .setDepth(30);
-
-    this.input.keyboard.once('keydown_D', (event) => {
       this.input.keyboard.once('keydown_D', (event) => {
       // Turn on physics debugging to show player's hitbox
         this.physics.world.createDebugGraphic();
@@ -98,7 +219,6 @@ class SceneSix extends Phaser.Scene {
           .setAlpha(0.75)
           .setDepth(20);
       });
-    });
   }
 
   update(time, delta) {
