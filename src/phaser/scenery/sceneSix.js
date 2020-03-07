@@ -132,7 +132,7 @@ class SceneSix extends Phaser.Scene {
           }
           spriteNPC.destroy();
           this[_spriteNPC.reference] = createNPC(
-              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference
+              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference, _spriteNPC.battleScene, _spriteNPC.points
           );
           this.physics.pause();
           this.anims.pauseAll();
@@ -179,7 +179,7 @@ class SceneSix extends Phaser.Scene {
                   this.anims.resumeAll();
                   this.dialogue.destroy()
                   this.physics.paused = false;
-                  console.log(this.player)
+                  spriteNPC.destroy();
               }
               else {
                 this.scene.start(_spriteNPC.battleScene, this.player);
@@ -195,9 +195,9 @@ class SceneSix extends Phaser.Scene {
               this.anims.resumeAll();
               this.physics.paused = false;
               this.dialogue.destroy();
-              this[_spriteNPC.reference].destroy();
+              spriteNPC.destroy();
               this[_spriteNPC.reference] = createNPC(
-                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
+                _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference, _spriteNPC.battleScene, _spriteNPC.url
               );
           });
       });
