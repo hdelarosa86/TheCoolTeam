@@ -175,25 +175,13 @@ class SceneSix extends Phaser.Scene {
                   .setScrollFactor(0)
                   .setDepth(30);
                   this.dialogue.destroy()
-                  setTimeout(() => { 
+                  setTimeout(() => {
+                    this.physics.resume();
+                    this.anims.resumeAll();
                     this.stat.destroy()
-                    this.dialogue = this.add
-                    .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
-                        wordWrap: {
-                            width: 500
-                        },
-                        padding: {
-                            top: 15,
-                            right: 15,
-                            bottom: 15,
-                            left: 15
-                        },
-                        align: 'left',
-                        backgroundColor: '#ffffff',
-                        color: '#ff0000',
-                    })
-                    .setScrollFactor(0)
-                    .setDepth(30);
+                    this[_spriteNPC.reference] = createNPC(
+                      _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference, _spriteNPC.battleScene, _spriteNPC.url
+                    );
                   }, 2000)
                   this.physics.paused();
                   this.anims.pauseAll();
