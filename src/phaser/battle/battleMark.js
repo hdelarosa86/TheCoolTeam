@@ -58,10 +58,7 @@ let battle = [{
 		Q: 'What is XXX below? \n array.XXX(function(total, currentValue, currentIndex, arr), initialValue)',
 		S: 'reduce',
 		A: 8
-	}
-
-	
-]
+	}]
 var BattleSceneMark = new Phaser.Class({
 
 	Extends: Phaser.Scene,

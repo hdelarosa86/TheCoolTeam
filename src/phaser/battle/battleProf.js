@@ -70,8 +70,7 @@ let battle = [{
 		Q: `What's my favorite color?`,
 		S: 'tomato',
 		A: 8
-	}
-]
+	}]
 var BattleSceneProf = new Phaser.Class({
 
 	Extends: Phaser.Scene,

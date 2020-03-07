@@ -21,15 +21,15 @@ const seed = () => {
 
 module.exports = seed;
 
-// if (require.main === module) {
-//   seed()
-//     .then(() => {
-//       console.log(chalk.greenBright("Successful seeding in pothos."));
-//       db.close();
-//     })
-//     .catch(err => {
-//       console.error(chalk.redBright("Error with seeding pothos!"));
-//       console.error(err);
-//       db.close();
-//     });
-// }
+if (require.main === module) {
+  seed()
+    .then(() => {
+      console.log(chalk.greenBright("Successful seeding FullStack Town."));
+      db.close();
+    })
+    .catch(err => {
+      console.error(chalk.redBright("Error with seeding FullStack Town"));
+      console.error(err);
+      db.close();
+    });
+}
