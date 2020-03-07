@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './style.css';
-import '../phaser/phaser.min.js';
+import './phaser.min.js';
 
 export let shopObj = {
 	shop: false

@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { db } = require('./db');
+const seed = require('../seed');
 const chalk = require('chalk');
 
 //if (process.env.NODE_ENV !== 'production') require('dotenv').config();
@@ -22,8 +23,8 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '../dist')));
 
 
-// api routes
-//app.use('/api', require('./api'));
+//api routes
+app.use('/api', require('./api'));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
@@ -54,7 +55,7 @@ if (process.env.NODE_ENV === 'production') {
     });
 } else {
   db.sync()
-    //.then(seed)
+    .then(seed)
     .then(startServer)
     .then(() => {
       console.log(
