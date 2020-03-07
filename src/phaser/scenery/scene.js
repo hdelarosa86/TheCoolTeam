@@ -44,7 +44,13 @@ import {
   ProfImg,
   ProfJSON,
   RussellImg,
-  RussellJSON
+  RussellJSON,
+  GinImg,
+  GinJSON,
+  BluImg,
+  BluJSON,
+  battleProf,
+  battleGround
 } from '../assets'
 
 let cursors;
@@ -105,6 +111,7 @@ class playGame extends Phaser.Scene {
           endFrame: 23
       });
       this.load.image('houseLevel', houseOneImg);
+      this.load.image('battleGround', battleGround)
       this.load.image('battleScene', battleLevel)
       this.load.image('libraryLevel', gymOneImg);
       this.load.image('shopLevel', shopImg);
@@ -125,6 +132,8 @@ class playGame extends Phaser.Scene {
       this.load.atlas('prof', ProfImg, ProfJSON);
       this.load.atlas('kevin', KevinImg, KevinJSON);
       this.load.atlas('baggie', BaggieImg, BaggieJSON);
+      this.load.atlas('gin', GinImg, GinJSON);
+      this.load.atlas('blu', BluImg, BluJSON);
       this.load.atlas('elliot', ElliotImg, ElliotJSON);
       this.load.atlas('steve', SteveImg, SteveJSON);
       this.load.audio('levelOne', [Home]);
@@ -135,6 +144,7 @@ class playGame extends Phaser.Scene {
       this.load.audio('house', [House])
       this.load.audio('shop', [Shop])
       this.load.audio('upperAttack', [uppercut])
+      this.load.audio('professor', [battleProf])
   }
 
   create() {
@@ -166,19 +176,19 @@ class playGame extends Phaser.Scene {
           player.x = 170
           player.y = 370
           music.stop()
-          this.scene.start('scene2')
+          this.scene.start('scene2', this.player)
       }, this);
       map.setTileIndexCallback(163, () => {
           player.x = 630
           player.y = 320
           music.stop()
-          this.scene.start('scene3')
+          this.scene.start('scene3', this.player)
       }, this);
       map.setTileIndexCallback(275, () => {
           player.x = 220
           player.y = 520
           music.stop()
-          this.scene.start('scene4')
+          this.scene.start('scene4', this.player)
       }, this);
       map.setTileIndexCallback(169, () => {
           player.x = 930
@@ -190,7 +200,7 @@ class playGame extends Phaser.Scene {
           player.x = 380
           player.y = 120
           music.stop()
-          this.scene.start('scene6')
+          this.scene.start('scene6', this.player)
       }, this);
 
       player = this.physics.add
@@ -264,6 +274,8 @@ class playGame extends Phaser.Scene {
                   backgroundColor: '#ffffff',
                   color: '#ff0000',
               })
+              .setScrollFactor(0)
+              .setDepth(30);
               setTimeout( () => {
                 this.dialogue.destroy()
               }, 3000)
@@ -287,16 +299,16 @@ class playGame extends Phaser.Scene {
   .setScrollFactor(0)
   .setDepth(30);
 
-      this.NPCs = this.physics.add.staticGroup();
+  this.NPCs = this.physics.add.staticGroup();
 
       this.npcOne = createNPC(
-          350, 350, 'greenman', 'greenman-front', 'Hello Fullstacker, do you want to pair program?', 'npcOne', 'BattleScene'
+          30, 360, 'greenman', 'greenman-right', 'Hello Fullstacker, do you want to pair program?', 'npcOne', 'BattleScene'
       );
       this.npcTwo = createNPC(
-          1250, 100, 'steve', 'steve-left', 'Hello man, do you want to pratice Promises?', 'npcTwo', 'BattleScene'
+          1470, 310, 'kevin', 'kevin-left', 'Hello man, do you want to pratice Promises?', 'npcTwo', 'BattleSceneKevin'
       );
       this.npcThree = createNPC(
-          980, 350, 'pinkman', 'pinkman-right', 'You are not worth my time!', 'npcThree', 'BattleScene'
+          1470, 360, 'pinkman', 'pinkman-left', 'You are not worth my time!', 'npcThree', 'BattleScenePink'
       );
 
       this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {

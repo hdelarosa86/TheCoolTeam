@@ -7,69 +7,116 @@ let kaboom;
 let uppercut;
 let battle = [{
 		id: 0,
-		Q: `What uses await?`,
-		S: 'Async',
+		Q: `client.on('error', function (err) {
+			console.log('Something went wrong ' + err);
+		   }). \nWhat is this an example of?`,
+		S: 'redis',
 		A: 20
 	},
 	{
 		id: 1,
-		Q: `Promise(
-			function (resolve, reject) {
-				let value = "sauce"; return value
-			}). \nWhat is this?`,
-		S: 'promise',
+		Q: `client.set('my test key', 'my test value', redis.print);
+		client.get('my test key', function (error, result) {
+			console.log('GET result ->' + result);
+		}); \nWhat is this an example of?`,
+		S: 'redis',
 		A: 8
 	},
 	{
 		id: 2,
-		Q: `new Promise(
-			function (resolve, reject) {let value = 'sauce'; return value}).catch \nWhat is missing?`,
-		S: 'then',
+		Q: `EXPOSE 8080. What uses Expose?`,
+		S: 'docker',
 		A: 8
 	},
 	{
 		id: 3,
-		Q: `var promise = new Promise(
-			function(resolve, reject) {
-			(function() { console.log('hello') }, 100);}); \nWhat is missing in this function?`,
-		S: 'setTimeout',
+		Q: `run -p 49160:8080 -d <your username>/node-web-app.\nWhat is this an example of?`,
+		S: 'docker',
 		A: 8
 	},
 	{
 		id: 4,
-		Q: `async function main() { '...' asyncFunc();} \nWhat is this async function missing?`,
-		S: 'await',
+		Q: `<script src="/'...'.io.js"></script>
+		    <script> var '...' = io();</script>. \nWhat method will benefit using this code?`,
+		S: 'socket',
 		A: 8
 	},
 	{
 		id: 5,
-		Q: 'What should be placed after a then() is called?',
-		S: 'catch',
+		Q: 'CMD [ "node", "server.js" ]. \nWhere can you find this in>',
+		S: 'docker',
 		A: 8
 	},
 	{
 		id: 6,
-		Q: `const p = new Promise(
-			function (resolve, reject) {
-				let value = 'sauce'; return value
-			}).then().(err) \nWhat is missing in this function?`,
-		S: 'catch',
+		Q: 'function greeter(person: string). \nWhat is this code running on?',
+		S: 'typescript',
 		A: 8
 	},
 	{
 		id: 7,
-		Q: 'What Promise uses a then()?',
-		S: 'promise',
+		Q: `function myFunction() { 
+			document.getElementById("demo").inerHTML = "Hello World!";
+		  }. \nWhat is this?`,
+		S: 'error',
 		A: 8
 	},
 	{
 		id: 8,
-		Q: 'what do we use to delay promise call?',
-		S: 'setTimeout',
+		Q: `function getGreeting() { return "howdy"; }. How can we make this better?`,
+		S: 'typescript',
 		A: 8
-	}]
-
-var BattleSceneKevin = new Phaser.Class({
+	},
+	{
+		id: 9,
+		Q: `WORKDIR /usr/src/app. \nWhat is this part of?`,
+		S: 'docker',
+		A: 8
+	},
+	{
+		id: 10,
+		Q: `io.connect('/'). What is this used in?`,
+		S: 'socket',
+		A: 8
+	},
+	{
+		id: 11,
+		Q: 'CMD [ "node", "server.js" ]. Where can you find this in>',
+		S: 'docker',
+		A: 8
+	},
+	{
+		id: 12,
+		Q: 'function greeter(person: string). What is this code running on?',
+		S: 'typescript',
+		A: 8
+	},
+	{
+		id: 13,
+		Q: `const client = new net.Socket();
+		client.connect({ port: 59090, host: process.argv[2] });
+		client.on('data', (data) => {
+		  console.log(data.toString('utf-8'));
+		}). What is this used in?`,
+		S: 'socket',
+		A: 8
+	},
+	{
+		id: 14,
+		Q: `new "..."('code', 'root', 'root', {
+			host: 'localhost', dialect: 'mysql', pool: { max: 10,}
+		  }). What could it be?`,
+		S: 'sequelize',
+		A: 8
+	},
+	{
+		id: 15,
+		Q: `"..".createElement('ul'). What is the missing piece?`,
+		S: 'react',
+		A: 8
+	}
+]
+var BattleSceneEliot = new Phaser.Class({
 
 	Extends: Phaser.Scene,
 
@@ -77,7 +124,7 @@ var BattleSceneKevin = new Phaser.Class({
 
 		function BattleScene() {
 			Phaser.Scene.call(this, {
-				key: 'BattleSceneKevin'
+				key: 'BattleSceneEliot'
 			});
 		},
 	init: function (data) {
@@ -112,23 +159,23 @@ var BattleSceneKevin = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var player = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing(player);
+		var main = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing(main);
 
 
-		var kevin = new Enemy(this, 150, 250, 'kevin', 2, 'Kevin', 100, battle);
-		this.add.existing(kevin);
+		var Eliot = new Enemy(this, 150, 250, 'elliot', 2, 'Eliot', 5000, battle);
+		this.add.existing(Eliot);
 
 		// array with heroes
-		this.heroes = [player];
+		this.heroes = [main];
 		// array with enemies
-		this.enemies = [kevin];
+		this.enemies = [Eliot];
 		// array with both parties, who will attack
 		this.units = this.heroes.concat(this.enemies);
 
 		this.index = -1; // currently active unit
 
-		this.scene.run('UISceneKevin');
+		this.scene.run('UISceneEliot');
 	},
 	nextTurn: function () {
 		// if we have victory or game over
@@ -189,21 +236,21 @@ var BattleSceneKevin = new Phaser.Class({
 	},
 	// when the player have selected the enemy to be attacked
 	receivePlayerSelection: function (action, target) {
-		if (action === 'Async') {
+		if (action === 'redis') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'await') {
+		} else if (action === 'docker') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'axois') {
+		} else if (action === 'socket') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'setTimeout') {
+		} else if (action === 'error') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'promise') {
+		} else if (action === 'typescript') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'then') {
+		} else if (action === 'sequelize') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'catch') {
+		} else if (action === 'react') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		}
+		} 
 		// next turn in 3 seconds
 		this.time.addEvent({
 			delay: 2000,
@@ -221,11 +268,11 @@ var BattleSceneKevin = new Phaser.Class({
 		}
 		this.units.length = 0;
 		// sleep the UI
-		this.scene.sleep('UISceneKevin');
+		this.scene.sleep('UISceneEliot');
 		// return to WorldScene and sleep current BattleScene
 		arr = []
         music.stop();
-		this.scene.start('PlayGame', {
+		this.scene.start('scene2', {
 			x: this.player.x,
 			y: this.player.y,
 			texture: this.player.texture,
@@ -233,7 +280,7 @@ var BattleSceneKevin = new Phaser.Class({
 			name: this.player.name,
             health: player.pop().data.hp += 100,
             maxHP: 100,
-            points: this.player.points += 200,
+            points: this.player.points += 400,
             badge: this.player.badge,
             level: ''
 		});
@@ -249,7 +296,7 @@ var BattleSceneKevin = new Phaser.Class({
 		}
 		this.units.length = 0;
 		// sleep the UI
-		this.scene.sleep('UISceneKevin');
+		this.scene.sleep('UISceneEliot');
 		// // return to WorldScene and sleep current BattleScene
 		arr = []
 		music.stop();
@@ -289,9 +336,9 @@ var Unit = new Phaser.Class({
 	},
 	// attack the target unit is real to use
 	attack: function (action, target) {
-		let random = Math.floor(Math.random() * 9)
+		let random = Math.floor(Math.random() * 11)
 		if (target.living) {
-			if (target.type === 'Kevin') {
+			if (target.type === 'Eliot') {
 				player.push({
 					data: {
 						hp: this.hp
@@ -300,10 +347,10 @@ var Unit = new Phaser.Class({
 				if (arr.length > 0 && action === arr.pop().S) {
 					target.takeDamage(20)
 					target.tint = 0xFF6347
-					target.frame = target.texture.frames['kevin-front']
+					target.frame = target.texture.frames['elliot-front']
 					setTimeout(() => {
 						target.clearTint()
-						target.frame = target.texture.frames['kevin-left']
+						target.frame = target.texture.frames['elliot-left']
 					}, 2000)
 					uppercut.play();
 					this.scene.events.emit('Message', 'You: ' + action + '!!!  \n' + target.type + ' with 20 point damage')
@@ -311,10 +358,10 @@ var Unit = new Phaser.Class({
 				} else {
 					target.takeDamage(random)
 					target.tint = 0xFF6347
-					target.frame = target.texture.frames['kevin-front']
+					target.frame = target.texture.frames['elliot-front']
 					setTimeout(() => {
 						target.clearTint()
-						target.frame = target.texture.frames['kevin-left']
+						target.frame = target.texture.frames['elliot-left']
 					}, 2000)
 					this.scene.events.emit('Message', 'You: ' + action + '!!!  \n' + target.type + ' with ' + random + ' point damage')
 					uppercut.play();
@@ -322,7 +369,7 @@ var Unit = new Phaser.Class({
 				}
 			} else {
 				let damage = this.damage[random];
-				target.takeDamage(random)
+				target.takeDamage(40)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
@@ -330,7 +377,7 @@ var Unit = new Phaser.Class({
 					target.clearTint()
 					target.frame = target.texture.frames['student-right']
 				}, 2000)
-				this.scene.events.emit('Message', 'Kevin: \n' + damage.Q + ' !!!')
+				this.scene.events.emit('Message', 'Master Eliot: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 boom.anims.play('explode');
 			}
@@ -355,7 +402,7 @@ var Enemy = new Phaser.Class({
 		Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
 		this.flipX = true;
 		this.setScale(2);
-		this.frame = this.texture.frames['kevin-left']
+		this.frame = this.texture.frames['elliot-left']
 	}
 });
 
@@ -376,7 +423,7 @@ var MenuItem = new Phaser.Class({
 	initialize:
 
 		function MenuItem(x, y, text, scene) {
-			Phaser.GameObjects.Text.call(this, scene, x, y, text, {
+	Phaser.GameObjects.Text.call(this, scene, x, y, text, {
 				color: '#000000',
 				align: 'left',
 				fontSize: 15
@@ -493,12 +540,13 @@ var ActionsMenu = new Phaser.Class({
 
 		function ActionsMenu(x, y, scene) {
 			Menu.call(this, x, y, scene);
-			this.addMenuItem('Async');
-			this.addMenuItem('await');
-			this.addMenuItem('promise');
-			this.addMenuItem('setTimeout');
-			this.addMenuItem('then');
-			this.addMenuItem('catch');
+			this.addMenuItem('redis');
+			this.addMenuItem('docker');
+			this.addMenuItem('socket');
+			this.addMenuItem('error');
+			this.addMenuItem('typescript');
+			this.addMenuItem('sequelize');
+			this.addMenuItem('react');
 		},
 	confirm: function () {
 		// we select an action and go to the next menu and choose from the enemies to apply the action\
@@ -522,7 +570,7 @@ var EnemiesMenu = new Phaser.Class({
 });
 
 // User Interface scene
-var UISceneKevin = new Phaser.Class({
+var UISceneEliot = new Phaser.Class({
 
 	Extends: Phaser.Scene,
 
@@ -530,7 +578,7 @@ var UISceneKevin = new Phaser.Class({
 
 		function UIScene() {
 			Phaser.Scene.call(this, {
-				key: 'UISceneKevin'
+				key: 'UISceneEliot'
 			});
 		},
 
@@ -539,12 +587,12 @@ var UISceneKevin = new Phaser.Class({
 		this.graphics = this.add.graphics();
 		this.graphics.lineStyle(3, 0x000000);
 		this.graphics.fillStyle(0xffffff, 1);
-		this.graphics.strokeRect(15, 400, 255, 150);
-		this.graphics.fillRect(15, 400, 255, 150);
-		this.graphics.strokeRect(255, 400, 240, 150);
-		this.graphics.fillRect(255, 400, 240, 150);
-		this.graphics.strokeRect(495, 400, 240, 150);
-		this.graphics.fillRect(495, 400, 240, 150);
+		this.graphics.strokeRect(15, 400, 255, 180);
+		this.graphics.fillRect(15, 400, 255, 180);
+		this.graphics.strokeRect(255, 400, 240, 180);
+		this.graphics.fillRect(255, 400, 240, 180);
+		this.graphics.strokeRect(495, 400, 240, 180);
+		this.graphics.fillRect(495, 400, 240, 180);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
@@ -561,7 +609,7 @@ var UISceneKevin = new Phaser.Class({
 		this.menus.add(this.actionsMenu);
 		this.menus.add(this.enemiesMenu);
 
-		this.battleScene = this.scene.get('BattleSceneKevin');
+		this.battleScene = this.scene.get('BattleSceneEliot');
 
 		// listen for keyboard events
 		this.input.keyboard.on('keydown', this.onKeyInput, this);
@@ -685,6 +733,6 @@ var Message = new Phaser.Class({
 	}
 });
 export {
-	BattleSceneKevin,
-	UISceneKevin
+	BattleSceneEliot,
+	UISceneEliot
 };

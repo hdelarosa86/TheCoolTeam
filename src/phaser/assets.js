@@ -20,9 +20,14 @@ import KevinImg from '../assets/students/NPCcharacter/kevin.png';
 import KevinJSON from '../assets/students/NPCcharacter/Kevin_atlas.json';
 import RussellImg from '../assets/students/NPCcharacter/russell.png';
 import RussellJSON from '../assets/students/NPCcharacter/Russell_atlas.json';
+import GinImg from '../assets/students/NPCcharacter/gin.png';
+import GinJSON from '../assets/students/NPCcharacter/gin_atlas.json';
+import BluImg from '../assets/students/NPCcharacter/blu.png';
+import BluJSON from '../assets/students/NPCcharacter/blu_atlas.json';
 import PinkManImg from '../assets/students/NPCcharacter/pink.png';
 import PinkManJSON from '../assets/students/NPCcharacter/pink_atlas.json';
 import shopImg from '../assets/tilesets/shop.png';
+import battleGround from '../assets/tilesets/battleGround.png';
 import battleLevel from '../assets/tilesets/battleScene.png';
 import shopMap from '../assets/JSON/shop.json';
 import gymOneImg from '../assets/tilesets/houseTwo.png';
@@ -34,6 +39,7 @@ import pokeMap from '../assets/JSON/pokeWorld.json';
 import pokeStudent from '../assets/students/mainCharacter/student.png';
 import pokeStudentJSON from '../assets/students/mainCharacter/student_atlas.json';
 import battleOne from '../assets/Music/battleOne.mp3';
+import battleProf from '../assets/Music/battleProf.mp3';
 import Home from '../assets/Music/levelOne.mp3';
 import Lounge from '../assets/Music/lounge.mp3';
 import Library from '../assets/Music/Library.mp3';
@@ -90,5 +96,11 @@ export {
   ProfImg,
   ProfJSON,
   RussellImg,
-  RussellJSON
+  RussellJSON,
+  GinImg,
+  GinJSON,
+  BluImg,
+  BluJSON,
+  battleProf,
+  battleGround
 };

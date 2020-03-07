@@ -1,6 +1,4 @@
-import Phaser, {
-	Game
-} from 'phaser';
+import Phaser from 'phaser';
 let arr = []
 let player = []
 let music;
@@ -98,17 +96,17 @@ var BattleScene = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var warrior = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing(warrior);
+		var main = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing( main);
 
 
-		var dragonblue = new Enemy(this, 150, 250, 'greenman', 2, 'Eliot', 100, battle);
-		this.add.existing(dragonblue);
+		var GreenMan = new Enemy(this, 150, 250, 'greenman', 2, 'GreenMan', 60, battle);
+		this.add.existing(GreenMan);
 
 		// array with heroes
-		this.heroes = [warrior];
+		this.heroes = [main];
 		// array with enemies
-		this.enemies = [dragonblue];
+		this.enemies = [GreenMan];
 		// array with both parties, who will attack
 		this.units = this.heroes.concat(this.enemies);
 
@@ -271,7 +269,7 @@ var Unit = new Phaser.Class({
 	attack: function (action, target) {
 		let random = Math.floor(Math.random() * 8)
 		if (target.living) {
-			if (target.type === 'Eliot') {
+			if (target.type === 'GreenMan') {
 				player.push({
 					data: {
 						hp: this.hp
@@ -302,7 +300,7 @@ var Unit = new Phaser.Class({
 				}
 			} else {
 				let damage = this.damage[random];
-				target.takeDamage(20)
+				target.takeDamage(random)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
@@ -356,8 +354,8 @@ var MenuItem = new Phaser.Class({
 	initialize:
 
 		function MenuItem(x, y, text, scene) {
-			Phaser.GameObjects.Text.call(this, scene, x, y, text, {
-				color: '#ffffff',
+            Phaser.GameObjects.Text.call(this, scene, x, y, text, {
+				color: '#000000',
 				align: 'left',
 				fontSize: 15
 			});
@@ -366,7 +364,7 @@ var MenuItem = new Phaser.Class({
 		this.setColor('#fc0303');
 	},
 	deselect: function () {
-		this.setColor('#ffffff');
+		this.setColor('#000000');
 	},
 	unitKilled: function () {
 		this.active = false;
@@ -514,15 +512,15 @@ var UIScene = new Phaser.Class({
 
 	create: function () {
 		// draw some background for the menu
-		this.graphics = this.add.graphics();
-		this.graphics.lineStyle(1, 0xffffff);
-		this.graphics.fillStyle(0x031f4c, 1);
-		this.graphics.strokeRect(15, 400, 255, 150);
-		this.graphics.fillRect(15, 400, 255, 150);
-		this.graphics.strokeRect(255, 400, 240, 150);
-		this.graphics.fillRect(255, 400, 240, 150);
-		this.graphics.strokeRect(495, 400, 240, 150);
-		this.graphics.fillRect(495, 400, 240, 150);
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(3, 0x000000);
+        this.graphics.fillStyle(0xffffff, 1);
+        this.graphics.strokeRect(15, 400, 255, 150);
+        this.graphics.fillRect(15, 400, 255, 150);
+        this.graphics.strokeRect(255, 400, 240, 150);
+        this.graphics.fillRect(255, 400, 240, 150);
+        this.graphics.strokeRect(495, 400, 240, 150);
+        this.graphics.fillRect(495, 400, 240, 150);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
@@ -624,7 +622,7 @@ var Message = new Phaser.Class({
 		var graphics = this.scene.add.graphics();
 		this.add(graphics);
 		graphics.lineStyle(2, 0xffffff, 0.8);
-		graphics.fillStyle(0x031f4c, 0.3);
+		graphics.fillStyle(0x000000, 0.8);
 		graphics.strokeRect(-60, -15, 500, 150);
 		graphics.fillRect(-60, -15, 500, 150);
 		this.text = new Phaser.GameObjects.Text(scene, 200, 40, '', {

@@ -7,69 +7,48 @@ let kaboom;
 let uppercut;
 let battle = [{
 		id: 0,
-		Q: `What uses await?`,
-		S: 'Async',
+		Q: `What method takes the last element in array? `,
+		S: 'pop',
 		A: 20
 	},
 	{
 		id: 1,
-		Q: `Promise(
-			function (resolve, reject) {
-				let value = "sauce"; return value
-			}). \nWhat is this?`,
-		S: 'promise',
+		Q: `arr"..."('adds elements')?. How?`,
+		S: 'push',
 		A: 8
 	},
 	{
 		id: 2,
-		Q: `new Promise(
-			function (resolve, reject) {let value = 'sauce'; return value}).catch \nWhat is missing?`,
-		S: 'then',
+		Q: `<... type=name/>. How?`,
+		S: 'input',
 		A: 8
 	},
 	{
 		id: 3,
-		Q: `var promise = new Promise(
-			function(resolve, reject) {
-			(function() { console.log('hello') }, 100);}); \nWhat is missing in this function?`,
-		S: 'setTimeout',
+		Q: `dom.'...'('<button>hello</button>'). How?`,
+		S: 'append',
 		A: 8
 	},
 	{
 		id: 4,
-		Q: `async function main() { '...' asyncFunc();} \nWhat is this async function missing?`,
-		S: 'await',
+		Q: `[1,2,3]."..."([1,3,5]) = [1,2,3,1,3,5]. How?`,
+		S: 'concat',
 		A: 8
 	},
 	{
 		id: 5,
-		Q: 'What should be placed after a then() is called?',
-		S: 'catch',
+		Q: 'I want to add an event call. How do I do that?',
+		S: 'addListener',
 		A: 8
 	},
 	{
 		id: 6,
-		Q: `const p = new Promise(
-			function (resolve, reject) {
-				let value = 'sauce'; return value
-			}).then().(err) \nWhat is missing in this function?`,
-		S: 'catch',
+		Q: `function addElement(element){ }. \nWhat method do I use`,
+		S: 'push',
 		A: 8
-	},
-	{
-		id: 7,
-		Q: 'What Promise uses a then()?',
-		S: 'promise',
-		A: 8
-	},
-	{
-		id: 8,
-		Q: 'what do we use to delay promise call?',
-		S: 'setTimeout',
-		A: 8
-	}]
-
-var BattleSceneKevin = new Phaser.Class({
+	}
+]
+var BattleScenePink = new Phaser.Class({
 
 	Extends: Phaser.Scene,
 
@@ -77,7 +56,7 @@ var BattleSceneKevin = new Phaser.Class({
 
 		function BattleScene() {
 			Phaser.Scene.call(this, {
-				key: 'BattleSceneKevin'
+				key: 'BattleScenePink'
 			});
 		},
 	init: function (data) {
@@ -112,23 +91,23 @@ var BattleSceneKevin = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var player = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing(player);
+		var main = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing(main);
 
 
-		var kevin = new Enemy(this, 150, 250, 'kevin', 2, 'Kevin', 100, battle);
-		this.add.existing(kevin);
+		var Pink = new Enemy(this, 150, 250, 'pinkman', 2, 'Pink Man', 100, battle);
+		this.add.existing(Pink);
 
 		// array with heroes
-		this.heroes = [player];
+		this.heroes = [main];
 		// array with enemies
-		this.enemies = [kevin];
+		this.enemies = [Pink];
 		// array with both parties, who will attack
 		this.units = this.heroes.concat(this.enemies);
 
 		this.index = -1; // currently active unit
 
-		this.scene.run('UISceneKevin');
+		this.scene.run('UIScenePink');
 	},
 	nextTurn: function () {
 		// if we have victory or game over
@@ -189,19 +168,17 @@ var BattleSceneKevin = new Phaser.Class({
 	},
 	// when the player have selected the enemy to be attacked
 	receivePlayerSelection: function (action, target) {
-		if (action === 'Async') {
+		if (action === 'addListener') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'await') {
+		} else if (action === 'pop') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'axois') {
+		} else if (action === 'push') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'setTimeout') {
+		} else if (action === 'input') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'promise') {
+		} else if (action === 'append') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'then') {
-			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'catch') {
+		} else if (action === 'concat') {
 			this.units[this.index].attack(action, this.enemies[target]);
 		}
 		// next turn in 3 seconds
@@ -221,7 +198,7 @@ var BattleSceneKevin = new Phaser.Class({
 		}
 		this.units.length = 0;
 		// sleep the UI
-		this.scene.sleep('UISceneKevin');
+		this.scene.sleep('UIScenePink');
 		// return to WorldScene and sleep current BattleScene
 		arr = []
         music.stop();
@@ -249,7 +226,7 @@ var BattleSceneKevin = new Phaser.Class({
 		}
 		this.units.length = 0;
 		// sleep the UI
-		this.scene.sleep('UISceneKevin');
+		this.scene.sleep('UIScenePink');
 		// // return to WorldScene and sleep current BattleScene
 		arr = []
 		music.stop();
@@ -289,9 +266,9 @@ var Unit = new Phaser.Class({
 	},
 	// attack the target unit is real to use
 	attack: function (action, target) {
-		let random = Math.floor(Math.random() * 9)
+		let random = Math.floor(Math.random() * 7)
 		if (target.living) {
-			if (target.type === 'Kevin') {
+			if (target.type === 'Pink Man') {
 				player.push({
 					data: {
 						hp: this.hp
@@ -300,10 +277,10 @@ var Unit = new Phaser.Class({
 				if (arr.length > 0 && action === arr.pop().S) {
 					target.takeDamage(20)
 					target.tint = 0xFF6347
-					target.frame = target.texture.frames['kevin-front']
+					target.frame = target.texture.frames['pinkman-front']
 					setTimeout(() => {
 						target.clearTint()
-						target.frame = target.texture.frames['kevin-left']
+						target.frame = target.texture.frames['pinkman-left']
 					}, 2000)
 					uppercut.play();
 					this.scene.events.emit('Message', 'You: ' + action + '!!!  \n' + target.type + ' with 20 point damage')
@@ -311,10 +288,10 @@ var Unit = new Phaser.Class({
 				} else {
 					target.takeDamage(random)
 					target.tint = 0xFF6347
-					target.frame = target.texture.frames['kevin-front']
+					target.frame = target.texture.frames['pinkman-front']
 					setTimeout(() => {
 						target.clearTint()
-						target.frame = target.texture.frames['kevin-left']
+						target.frame = target.texture.frames['pinkman-left']
 					}, 2000)
 					this.scene.events.emit('Message', 'You: ' + action + '!!!  \n' + target.type + ' with ' + random + ' point damage')
 					uppercut.play();
@@ -330,7 +307,7 @@ var Unit = new Phaser.Class({
 					target.clearTint()
 					target.frame = target.texture.frames['student-right']
 				}, 2000)
-				this.scene.events.emit('Message', 'Kevin: \n' + damage.Q + ' !!!')
+				this.scene.events.emit('Message', 'Pink Man: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 boom.anims.play('explode');
 			}
@@ -355,7 +332,7 @@ var Enemy = new Phaser.Class({
 		Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
 		this.flipX = true;
 		this.setScale(2);
-		this.frame = this.texture.frames['kevin-left']
+		this.frame = this.texture.frames['pinkman-left']
 	}
 });
 
@@ -374,9 +351,8 @@ var MenuItem = new Phaser.Class({
 	Extends: Phaser.GameObjects.Text,
 
 	initialize:
-
-		function MenuItem(x, y, text, scene) {
-			Phaser.GameObjects.Text.call(this, scene, x, y, text, {
+	function MenuItem(x, y, text, scene) {
+	Phaser.GameObjects.Text.call(this, scene, x, y, text, {
 				color: '#000000',
 				align: 'left',
 				fontSize: 15
@@ -493,12 +469,12 @@ var ActionsMenu = new Phaser.Class({
 
 		function ActionsMenu(x, y, scene) {
 			Menu.call(this, x, y, scene);
-			this.addMenuItem('Async');
-			this.addMenuItem('await');
-			this.addMenuItem('promise');
-			this.addMenuItem('setTimeout');
-			this.addMenuItem('then');
-			this.addMenuItem('catch');
+			this.addMenuItem('addListener');
+			this.addMenuItem('input');
+			this.addMenuItem('push');
+			this.addMenuItem('pop');
+			this.addMenuItem('append');
+			this.addMenuItem('concat');
 		},
 	confirm: function () {
 		// we select an action and go to the next menu and choose from the enemies to apply the action\
@@ -522,7 +498,7 @@ var EnemiesMenu = new Phaser.Class({
 });
 
 // User Interface scene
-var UISceneKevin = new Phaser.Class({
+var UIScenePink = new Phaser.Class({
 
 	Extends: Phaser.Scene,
 
@@ -530,21 +506,21 @@ var UISceneKevin = new Phaser.Class({
 
 		function UIScene() {
 			Phaser.Scene.call(this, {
-				key: 'UISceneKevin'
+				key: 'UIScenePink'
 			});
 		},
 
 	create: function () {
 		// draw some background for the menu
-		this.graphics = this.add.graphics();
-		this.graphics.lineStyle(3, 0x000000);
-		this.graphics.fillStyle(0xffffff, 1);
-		this.graphics.strokeRect(15, 400, 255, 150);
-		this.graphics.fillRect(15, 400, 255, 150);
-		this.graphics.strokeRect(255, 400, 240, 150);
-		this.graphics.fillRect(255, 400, 240, 150);
-		this.graphics.strokeRect(495, 400, 240, 150);
-		this.graphics.fillRect(495, 400, 240, 150);
+			this.graphics = this.add.graphics();
+			this.graphics.lineStyle(3, 0x000000);
+			this.graphics.fillStyle(0xffffff, 1);
+			this.graphics.strokeRect(15, 400, 255, 150);
+			this.graphics.fillRect(15, 400, 255, 150);
+			this.graphics.strokeRect(255, 400, 240, 150);
+			this.graphics.fillRect(255, 400, 240, 150);
+			this.graphics.strokeRect(495, 400, 240, 150);
+			this.graphics.fillRect(495, 400, 240, 150);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
@@ -561,7 +537,7 @@ var UISceneKevin = new Phaser.Class({
 		this.menus.add(this.actionsMenu);
 		this.menus.add(this.enemiesMenu);
 
-		this.battleScene = this.scene.get('BattleSceneKevin');
+		this.battleScene = this.scene.get('BattleScenePink');
 
 		// listen for keyboard events
 		this.input.keyboard.on('keydown', this.onKeyInput, this);
@@ -617,7 +593,6 @@ var UISceneKevin = new Phaser.Class({
 	},
 	remapEnemies: function () {
 		var enemies = this.battleScene.enemies;
-		console.log(enemies)
 		this.enemiesMenu.remap(enemies);
 	},
 	onKeyInput: function (event) {
@@ -685,6 +660,6 @@ var Message = new Phaser.Class({
 	}
 });
 export {
-	BattleSceneKevin,
-	UISceneKevin
+	BattleScenePink,
+	UIScenePink
 };
