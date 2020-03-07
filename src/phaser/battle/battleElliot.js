@@ -114,8 +114,7 @@ let battle = [{
 		Q: `"..".createElement('ul'). What is the missing piece?`,
 		S: 'react',
 		A: 8
-	}
-]
+	}]
 var BattleSceneEliot = new Phaser.Class({
 
 	Extends: Phaser.Scene,
@@ -250,7 +249,7 @@ var BattleSceneEliot = new Phaser.Class({
 			this.units[this.index].attack(action, this.enemies[target]);
 		} else if (action === 'react') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} 
+		}
 		// next turn in 3 seconds
 		this.time.addEvent({
 			delay: 2000,

@@ -46,8 +46,7 @@ let battle = [{
 		Q: 'What should be called when a then function is called?',
 		S: 'catch',
 		A: 8
-	},
-]
+	}]
 var BattleSceneRussell = new Phaser.Class({
 
 	Extends: Phaser.Scene,
