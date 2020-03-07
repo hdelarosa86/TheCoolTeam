@@ -60,6 +60,8 @@ let player = {
   y: 364,
 };
 
+let toggle = ''
+
 let badges = [
   { badge: 'DOMBadge', points: 200 },
   { badge: 'StretchesBadge', points: 600 },
@@ -91,7 +93,7 @@ class playGame extends Phaser.Scene {
         health: 100,
         maxHp: 0,
         points: 0,
-        badge: 'default',
+        badge: 'none',
         notify: 'on',
         level: '',
       };
@@ -265,7 +267,8 @@ class playGame extends Phaser.Scene {
     });
 
       badges.forEach( obj => {
-      if ( this.player.points === obj.points){
+      if ( this.player.points === obj.points && toggle !== obj.badge ){
+        toggle = obj.badge
         this.player.badge = obj.badge
         this.dialogue = this.add
               .text(130, 500, `You just got ${obj.badge} and 100 more health`, {
