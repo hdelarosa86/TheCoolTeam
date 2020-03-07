@@ -50,11 +50,11 @@ export const config = {
     UISceneProf,
     BattleSceneEliot,
     UISceneEliot,
-    BattleSceneRyan, 
-    UISceneRyan, 
-    BattleSceneRussell, 
-    UISceneRussell, 
-    BattleSceneMark, 
+    BattleSceneRyan,
+    UISceneRyan,
+    BattleSceneRussell,
+    UISceneRussell,
+    BattleSceneMark,
     UISceneMark
   ],
 }

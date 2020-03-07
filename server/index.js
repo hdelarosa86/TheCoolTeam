@@ -13,11 +13,12 @@ const PORT = process.env.PORT || 3000;
 // body parsing middleware
 app.use(express.json());
 
-//adding this middleware just to keep track of api calls as our app gets larger
-app.use((req, res, next) => {
-  console.log(chalk.magenta(`${req.method} ${req.path}`));
-  next();
-});
+//Adding this middleware just to keep track of api calls as our app gets larger
+//Uncomment to use:
+// app.use((req, res, next) => {
+//   console.log(chalk.magenta(`${req.method} ${req.path}`));
+//   next();
+// });
 
 // static middleware
 app.use(express.static(path.join(__dirname, '../dist')));

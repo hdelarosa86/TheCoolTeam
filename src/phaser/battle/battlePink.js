@@ -46,8 +46,7 @@ let battle = [{
 		Q: `function addElement(element){ }. \nWhat method do I use`,
 		S: 'push',
 		A: 8
-	}
-]
+	}]
 var BattleScenePink = new Phaser.Class({
 
 	Extends: Phaser.Scene,
