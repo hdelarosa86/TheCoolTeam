@@ -6,7 +6,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
   mode: "development",
   devtool: "eval-source-map",
-  entry: "./src/index.js", //do we need this?
+  entry: ["./src/index.js"], //do we need this?
   output: {
     path: path.resolve("dist"),
     filename: "index_bundle.js"
@@ -15,7 +15,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [{ loader: "style-loader" }, { loader: "css-loader" }]
+        use: [ "style-loader", "css-loader" ]
       },
       {
         test: /\.js$/,
@@ -46,7 +46,7 @@ module.exports = {
       WEBGL_RENDERER: JSON.stringify(true)
     }),
     new HtmlWebpackPlugin({
-      template: "./index.html",
+      template: "./static/index.html",
       filename: "index.html",
       inject: "body"
     })
