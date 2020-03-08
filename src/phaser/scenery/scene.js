@@ -435,7 +435,6 @@ class playGame extends Phaser.Scene {
       this.physics.paused = true;
 
       this.input.keyboard.on('keydown_Y', () => {
-        music.stop();
         this.physics.resume();
         this.anims.resumeAll();
         this.physics.paused = false;
@@ -462,6 +461,7 @@ class playGame extends Phaser.Scene {
           });
           setTimeout(() => this.dialogue.destroy(), 2500);
         } else {
+          music.stop();
           this.scene.start(_spriteNPC.battleScene, this.player);
         }
       });
