@@ -295,8 +295,7 @@ var Unit = new Phaser.Class({
 					uppercut.play();
 					kaboom.anims.play('explode');
 				}
-			} else {
-                if(toggle){
+			} else if (toggle){
                 toggle = false
                 let damage = this.damage[random];
 				target.takeDamage(0)
@@ -304,7 +303,7 @@ var Unit = new Phaser.Class({
 				this.scene.events.emit('Message', 'Pink Guy: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 }
-                else{
+                else {
 				let damage = this.damage[random];
 				target.takeDamage(20)
 				uppercut.play();
@@ -318,7 +317,6 @@ var Unit = new Phaser.Class({
 				arr.push(damage)
                 boom.anims.play('explode');
              }
-			}
 		}
 	},
 	takeDamage: function (damage) {
