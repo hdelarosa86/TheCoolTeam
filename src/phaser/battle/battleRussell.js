@@ -266,7 +266,7 @@ var Unit = new Phaser.Class({
 	},
 	// attack the target unit is real to use
 	attack: function (action, target) {
-		let random = Math.floor(Math.random() * 8)
+		let random = Math.floor(Math.random() * 7)
 		console.log(this, target)
 		if (target.living) {
 			if (target.type === 'Russell') {
@@ -303,7 +303,7 @@ var Unit = new Phaser.Class({
                 let damage = this.damage[random];
 				target.takeDamage(0)
 				uppercut.play();
-				this.scene.events.emit('Message', 'Pink Guy: \n' + damage.Q + ' !!!')
+				this.scene.events.emit('Message', 'Russell: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 }
                 else {
@@ -316,7 +316,7 @@ var Unit = new Phaser.Class({
 					target.clearTint()
 					target.frame = target.texture.frames['student-right']
 				}, 2000)
-				this.scene.events.emit('Message', 'Pink Guy: \n' + damage.Q + ' !!!')
+				this.scene.events.emit('Message', 'Russell: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 boom.anims.play('explode');
              }
