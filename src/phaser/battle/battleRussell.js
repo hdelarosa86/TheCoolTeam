@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 let arr = []
 let player = []
 let music;
+let toggle = true
 let boom;
 let kaboom;
 let uppercut;
@@ -46,8 +47,7 @@ let battle = [{
 		Q: 'XXX let you use state and other React features \nwithout writing a class. With XXX,\nyou can extract stateful logic from a \ncomponent so it can be tested independently and reused.\nWhat is XXX here?',
 		S: 'React Hooks',
 		A: 8
-	},
-]
+	} ]
 var BattleSceneRussell = new Phaser.Class({
 
 	Extends: Phaser.Scene,
@@ -65,9 +65,9 @@ var BattleSceneRussell = new Phaser.Class({
 	create: function () {
         // change the background to green now
 		this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0)');
-		this.add.tileSprite(0, 0, 750, 600, 'battleScene').setOrigin(0);
+		this.add.tileSprite(0, 0, 750, 600, 'russellBattle').setOrigin(0);
 		this.startBattle();
-		music = this.sound.add('battleOne', {
+		music = this.sound.add('russellSong', {
 			loop: true
 		});
 		music.play();
@@ -126,22 +126,20 @@ var BattleSceneRussell = new Phaser.Class({
 		} while (!this.units[this.index].living);
 		// if its player hero
 		if (this.units[this.index] instanceof PlayerCharacter) {
-			// we need the player to select action and then enemy
+			this.units[this.index].attack('attack', this.heroes[0]);
 			this.events.emit('PlayerSelect', this.index);
-		} else { // else if its enemy unit
+			// we need the player to select action and then enemy
 			// pick random living hero to be attacked
-			var r;
-			do {
-				r = Math.floor(Math.random() * this.heroes.length);
-			} while (!this.heroes[r].living)
 			// call the enemy's attack function
-			this.units[this.index].attack('attack', this.heroes[r]);
-			// add timer for the next turn, so will have smooth gameplay
 			this.time.addEvent({
 				delay: 2000,
 				callback: this.nextTurn,
 				callbackScope: this
 			});
+			// add timer for the next turn, so will have smooth gameplay
+		}
+		else {
+			// helpful
 		}
 	},
 	// check for game over or victory
@@ -268,7 +266,7 @@ var Unit = new Phaser.Class({
 	},
 	// attack the target unit is real to use
 	attack: function (action, target) {
-		let random = Math.floor(Math.random() * 8)
+		let random = Math.floor(Math.random() * 7)
 		console.log(this, target)
 		if (target.living) {
 			if (target.type === 'Russell') {
@@ -300,7 +298,15 @@ var Unit = new Phaser.Class({
 					uppercut.play();
 					kaboom.anims.play('explode');
 				}
-			} else {
+			} else if (toggle){
+                toggle = false
+                let damage = this.damage[random];
+				target.takeDamage(0)
+				uppercut.play();
+				this.scene.events.emit('Message', 'Russell: \n' + damage.Q + ' !!!')
+				arr.push(damage)
+                }
+                else {
 				let damage = this.damage[random];
 				target.takeDamage(20)
 				uppercut.play();
@@ -313,7 +319,7 @@ var Unit = new Phaser.Class({
 				this.scene.events.emit('Message', 'Russell: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 boom.anims.play('explode');
-			}
+             }
 		}
 	},
 	takeDamage: function (damage) {
@@ -357,7 +363,7 @@ var MenuItem = new Phaser.Class({
 
 		function MenuItem(x, y, text, scene) {
 			Phaser.GameObjects.Text.call(this, scene, x, y, text, {
-				color: '#ffffff',
+				color: '#000000',
 				align: 'left',
 				fontSize: 15
 			});
@@ -366,7 +372,7 @@ var MenuItem = new Phaser.Class({
 		this.setColor('#fc0303');
 	},
 	deselect: function () {
-		this.setColor('#ffffff');
+		this.setColor('#000000');
 	},
 	unitKilled: function () {
 		this.active = false;
@@ -518,15 +524,14 @@ var UISceneRussell = new Phaser.Class({
 	create: function () {
 		// draw some background for the menu
 		this.graphics = this.add.graphics();
-		this.graphics.lineStyle(1, 0xffffff);
-		this.graphics.fillStyle(0x031f4c, 1);
-		this.graphics.strokeRect(15, 400, 255, 180);
-		this.graphics.fillRect(15, 400, 255, 180);
-		this.graphics.strokeRect(255, 400, 240, 180);
-		this.graphics.fillRect(255, 400, 240, 180);
-		this.graphics.strokeRect(495, 400, 240, 180);
-		this.graphics.fillRect(495, 400, 240, 180);
-
+		this.graphics.lineStyle(3, 0x000000);
+		this.graphics.fillStyle(0xffffff, 1);
+		this.graphics.strokeRect(15, 400, 255, 190);
+		this.graphics.fillRect(15, 400, 255, 190);
+		this.graphics.strokeRect(255, 400, 240, 190);
+		this.graphics.fillRect(255, 400, 240, 190);
+		this.graphics.strokeRect(495, 400, 240, 190);
+		this.graphics.fillRect(495, 400, 240, 190);
 		// basic container to hold all menus
 		this.menus = this.add.container();
 
@@ -628,7 +633,7 @@ var Message = new Phaser.Class({
 		var graphics = this.scene.add.graphics();
 		this.add(graphics);
 		graphics.lineStyle(2, 0xffffff, 0.8);
-		graphics.fillStyle(0x031f4c, 0.3);
+		graphics.fillStyle(0x000000, 0.8);
 		graphics.strokeRect(-60, -15, 500, 150);
 		graphics.fillRect(-60, -15, 500, 150);
 		this.text = new Phaser.GameObjects.Text(scene, 200, 40, '', {
@@ -636,13 +641,13 @@ var Message = new Phaser.Class({
 			align: 'center',
 			fontSize: 15,
 			padding: {
-				top: 10
+				top: 60
 			},
 			wordWrap: {
 				width: 400,
 				useAdvancedWrap: true
 			}
-		});
+		})
 		this.add(this.text);
 		this.text.setOrigin(0.5);
 		events.on('Message', this.showMessage, this);
