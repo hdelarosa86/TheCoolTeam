@@ -351,7 +351,7 @@ class playGame extends Phaser.Scene {
       .setDepth(30);
 
     this.gamePlayMenu = this.add
-      .text(600, 16, '--L to load previous save', {
+      .text(580, 16, '--L to load previous save', {
         wordWrap: {
           width: 180,
         },
@@ -363,7 +363,8 @@ class playGame extends Phaser.Scene {
         },
         align: 'left',
         //backgroundColor: '#c90000',
-        color: '#ffffff',
+        color: '#000000',
+        backgroundColor: '#ffffff'
       })
       .setScrollFactor(0)
       .setDepth(30);
