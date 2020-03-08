@@ -31,12 +31,15 @@ import PandaManJSON from '../assets/students/NPCcharacter/Panda_atlas.json';
 import shopImg from '../assets/tilesets/shop.png';
 import battleGround from '../assets/tilesets/BattleGround.png';
 import battleLevel from '../assets/tilesets/battleScene.png';
+import eliotLevel from '../assets/tilesets/eliotBattle.png';
+import ryanLevel from '../assets/tilesets/ryanBattle.png';
 import shopMap from '../assets/JSON/Shop.json';
 import gymOneImg from '../assets/tilesets/houseTwo.png';
 import gymOneMap from '../assets/JSON/pokeGym.json';
 import mansionImg from '../assets/tilesets/mansion.png';
 import mansionMap from '../assets/JSON/mansion.json';
 import pokeImg from '../assets/tilesets/poke.png';
+import markBackground from '../assets/tilesets/MarkBackground.png';
 import pokeMap from '../assets/JSON/pokeWorld.json';
 import pokeStudent from '../assets/students/mainCharacter/student.png';
 import pokeStudentJSON from '../assets/students/mainCharacter/student_atlas.json';
@@ -48,6 +51,9 @@ import Library from '../assets/Music/Library.mp3';
 import Mansion from '../assets/Music/mansion.mp3';
 import House from '../assets/Music/house.mp3';
 import Shop from '../assets/Music/shop.mp3';
+import California from '../assets/Music/california.mp3';
+import Tim from '../assets/Music/Tim.mp3';
+import Running from '../assets/Music/running.mp3';
 import explosion from '../assets/Attacks/explode.png'
 import uppercut from '../assets/Music/uppercut.mp3'
 import { shopObj } from '../components/App.jsx'
@@ -106,5 +112,11 @@ export {
   battleProf,
   battleGround,
   PandaManImg,
-  PandaManJSON
+  PandaManJSON,
+  markBackground,
+  California,
+  Tim,
+  Running,
+  ryanLevel,
+  eliotLevel
 };

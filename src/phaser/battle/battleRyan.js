@@ -71,9 +71,9 @@ var BattleSceneRyan = new Phaser.Class({
 	create: function () {
         // change the background to green now
 		this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0)');
-		this.add.tileSprite(0, 0, 750, 600, 'battleScene').setOrigin(0);
+		this.add.tileSprite(0, 0, 750, 600, 'ryanBattle').setOrigin(0);
 		this.startBattle();
-		music = this.sound.add('battleOne', {
+		music = this.sound.add('Running', {
 			loop: true
 		});
 		music.play();
@@ -535,19 +535,19 @@ var UISceneRyan = new Phaser.Class({
 		this.graphics = this.add.graphics();
 		this.graphics.lineStyle(3, 0x000000);
 		this.graphics.fillStyle(0xffffff, 1);
-		this.graphics.strokeRect(15, 400, 255, 190);
-		this.graphics.fillRect(15, 400, 255, 190);
-		this.graphics.strokeRect(255, 400, 240, 190);
-		this.graphics.fillRect(255, 400, 240, 190);
-		this.graphics.strokeRect(495, 400, 240, 190);
-		this.graphics.fillRect(495, 400, 240, 190);
+		this.graphics.strokeRect(15, 380, 255, 190);
+		this.graphics.fillRect(15, 380, 255, 190);
+		this.graphics.strokeRect(255, 380, 240, 190);
+		this.graphics.fillRect(255, 380, 240, 190);
+		this.graphics.strokeRect(495, 380, 240, 190);
+		this.graphics.fillRect(495, 380, 240, 190);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
 
-		this.heroesMenu = new HeroesMenu(520, 420, this);
-		this.actionsMenu = new ActionsMenu(280, 420, this);
-		this.enemiesMenu = new EnemiesMenu(35, 420, this);
+		this.heroesMenu = new HeroesMenu(520, 400, this);
+		this.actionsMenu = new ActionsMenu(280, 400, this);
+		this.enemiesMenu = new EnemiesMenu(35, 400, this);
 
 		// the currently selected menu
 		this.currentMenu = this.actionsMenu;
