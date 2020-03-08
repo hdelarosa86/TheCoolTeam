@@ -59,7 +59,9 @@ import {
   Tim,
   Running,
   ryanLevel,
-  eliotLevel
+  eliotLevel,
+  russellLevel,
+  RussellSong
 } from '../assets';
 
 let cursors;
@@ -125,6 +127,7 @@ class playGame extends Phaser.Scene {
     this.load.image('MarkBattle', markBackground);
     this.load.image('ryanBattle', ryanLevel);
     this.load.image('eliotBattle', eliotLevel);
+    this.load.image('russellBattle', russellLevel);
     this.load.image('battleScene', battleLevel);
     this.load.image('libraryLevel', gymOneImg);
     this.load.image('shopLevel', shopImg);
@@ -152,6 +155,7 @@ class playGame extends Phaser.Scene {
     this.load.atlas('steve', SteveImg, SteveJSON);
     this.load.audio('levelOne', [Home]);
     this.load.audio('battleOne', [battleOne]);
+    this.load.audio('russellSong', [RussellSong]);
     this.load.audio('lounge', [Lounge]);
     this.load.audio('Library', [Library]);
     this.load.audio('mansion', [Mansion]);
