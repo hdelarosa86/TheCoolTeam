@@ -378,7 +378,7 @@ class playGame extends Phaser.Scene {
       'greenman-right',
       'Hello Fullstacker, do you want to pair program?',
       'npcOne',
-      'BattleSceneRussell'
+      'BattleScene'
     );
     this.npcTwo = createNPC(
       1470,
