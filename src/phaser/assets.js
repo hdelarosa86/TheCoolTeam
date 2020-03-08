@@ -32,6 +32,7 @@ import shopImg from '../assets/tilesets/shop.png';
 import battleGround from '../assets/tilesets/BattleGround.png';
 import battleLevel from '../assets/tilesets/battleScene.png';
 import eliotLevel from '../assets/tilesets/eliotBattle.png';
+import russellLevel from '../assets/tilesets/russellBackground.png';
 import ryanLevel from '../assets/tilesets/ryanBattle.png';
 import shopMap from '../assets/JSON/Shop.json';
 import gymOneImg from '../assets/tilesets/houseTwo.png';
@@ -54,6 +55,7 @@ import Shop from '../assets/Music/shop.mp3';
 import California from '../assets/Music/california.mp3';
 import Tim from '../assets/Music/Tim.mp3';
 import Running from '../assets/Music/running.mp3';
+import RussellSong from '../assets/Music/russellSong.mp3';
 import explosion from '../assets/Attacks/explode.png'
 import uppercut from '../assets/Music/uppercut.mp3'
 import { shopObj } from '../components/App.jsx'
@@ -118,5 +120,7 @@ export {
   Tim,
   Running,
   ryanLevel,
-  eliotLevel
+  eliotLevel,
+  russellLevel,
+  RussellSong
 };
