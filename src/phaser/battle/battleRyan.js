@@ -316,7 +316,7 @@ var Unit = new Phaser.Class({
                 }
                 else {
 				let damage = this.damage[random];
-				target.takeDamage(20)
+				target.takeDamage(50)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
