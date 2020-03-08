@@ -102,7 +102,7 @@ class SceneThree extends Phaser.Scene {
     this.NPCs = this.physics.add.staticGroup();
 
       this.npcOne = createNPC(
-          400, 650, 'blu', 'blu-front', 'Nice to meet you, my name is Gin, if you ever need any help, just let me know?', 'npcOne'
+          400, 650, 'blu', 'blu-front', 'Meg Duffy: Be sure to add you final resume soon?', 'npcOne'
       );
       this.npcTwo = createNPC(
           1000, 650, 'kevin', 'kevin-left', 'I hear that Master Prof is in charge of DOM. You better practice your DOM.', 'npcTwo'
