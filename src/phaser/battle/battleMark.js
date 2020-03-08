@@ -77,9 +77,9 @@ var BattleSceneMark = new Phaser.Class({
 	create: function () {
         // change the background to green now
 		this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0)');
-		this.add.tileSprite(0, 0, 750, 600, 'battleScene').setOrigin(0);
+		this.add.tileSprite(0, 0, 750, 600, 'MarkBattle').setOrigin(0);
 		this.startBattle();
-		music = this.sound.add('battleOne', {
+		music = this.sound.add('MarkSong', {
 			loop: true
 		});
 		music.play();

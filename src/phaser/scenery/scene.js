@@ -52,6 +52,14 @@ import {
   BluJSON,
   battleProf,
   battleGround,
+  PandaManImg,
+  PandaManJSON,
+  markBackground,
+  California,
+  Tim,
+  Running,
+  ryanLevel,
+  eliotLevel
 } from '../assets';
 
 let cursors;
@@ -114,6 +122,9 @@ class playGame extends Phaser.Scene {
     });
     this.load.image('houseLevel', houseOneImg);
     this.load.image('battleGround', battleGround);
+    this.load.image('MarkBattle', markBackground);
+    this.load.image('ryanBattle', ryanLevel);
+    this.load.image('eliotBattle', eliotLevel);
     this.load.image('battleScene', battleLevel);
     this.load.image('libraryLevel', gymOneImg);
     this.load.image('shopLevel', shopImg);
@@ -129,6 +140,7 @@ class playGame extends Phaser.Scene {
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.atlas('mark', MarkImg, MarkJSON);
     this.load.atlas('pinkman', PinkManImg, PinkManJSON);
+    this.load.atlas('panda', PandaManImg, PandaManJSON);
     this.load.atlas('russell', RussellImg, RussellJSON);
     this.load.atlas('ryan', RyanImg, RyanJSON);
     this.load.atlas('prof', ProfImg, ProfJSON);
@@ -143,10 +155,13 @@ class playGame extends Phaser.Scene {
     this.load.audio('lounge', [Lounge]);
     this.load.audio('Library', [Library]);
     this.load.audio('mansion', [Mansion]);
+    this.load.audio('MarkSong', [California]);
     this.load.audio('house', [House]);
     this.load.audio('shop', [Shop]);
     this.load.audio('upperAttack', [uppercut]);
     this.load.audio('professor', [battleProf]);
+    this.load.audio('Tim', [Tim]);
+    this.load.audio('Running', [Running]);
   }
 
   create() {
@@ -381,8 +396,8 @@ class playGame extends Phaser.Scene {
     this.npcSave = createNPC(
       470,
       260,
-      'pinkman',
-      'pinkman-front',
+      'panda',
+      'panda-front',
       'You want to save your progress?',
       'npcSave',
       null

@@ -11,7 +11,10 @@ export class App extends React.Component {
 	}
 	render() {
 		return (
-			<div style={{ textAlign: 'center' }}>New Flag</div>
+			<div>
+			<div className="header" style={{ textAlign: 'center' }}>Fullstack Town</div>
+			<div className="subheader" style={{ textAlign: 'center' }}>This is for educational purposes. This is also a non-commercial parody.</div>
+			</div>
 		);
 	}
 }
