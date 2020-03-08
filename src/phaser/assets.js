@@ -26,6 +26,8 @@ import BluImg from '../assets/students/NPCcharacter/blu.png';
 import BluJSON from '../assets/students/NPCcharacter/blu_atlas.json';
 import PinkManImg from '../assets/students/NPCcharacter/pink.png';
 import PinkManJSON from '../assets/students/NPCcharacter/pink_atlas.json';
+import PandaManImg from '../assets/students/NPCcharacter/PandaMan.png';
+import PandaManJSON from '../assets/students/NPCcharacter/Panda_atlas.json';
 import shopImg from '../assets/tilesets/shop.png';
 import battleGround from '../assets/tilesets/BattleGround.png';
 import battleLevel from '../assets/tilesets/battleScene.png';
@@ -102,5 +104,7 @@ export {
   BluImg,
   BluJSON,
   battleProf,
-  battleGround
+  battleGround,
+  PandaManImg,
+  PandaManJSON
 };

@@ -52,6 +52,8 @@ import {
   BluJSON,
   battleProf,
   battleGround,
+  PandaManImg,
+  PandaManJSON
 } from '../assets';
 
 let cursors;
@@ -129,6 +131,7 @@ class playGame extends Phaser.Scene {
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.atlas('mark', MarkImg, MarkJSON);
     this.load.atlas('pinkman', PinkManImg, PinkManJSON);
+    this.load.atlas('panda', PandaManImg, PandaManJSON);
     this.load.atlas('russell', RussellImg, RussellJSON);
     this.load.atlas('ryan', RyanImg, RyanJSON);
     this.load.atlas('prof', ProfImg, ProfJSON);
@@ -363,8 +366,8 @@ class playGame extends Phaser.Scene {
     this.npcSave = createNPC(
       470,
       260,
-      'pinkman',
-      'pinkman-front',
+      'panda',
+      'panda-front',
       'You want to save your progress?',
       'npcSave',
       null
