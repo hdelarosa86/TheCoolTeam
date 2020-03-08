@@ -7,46 +7,47 @@ let kaboom;
 let uppercut;
 let battle = [{
 		id: 0,
-		Q: `What uses await`,
-		S: 'Async',
+		Q: `XXX is an in-memory representation of Real DOM,\nIt’s a step that happens between the \nrender function being called and the \ndisplaying of elements on the screen \n What is XXX?`,
+		S: 'VDOM',
 		A: 20
 	},
 	{
 		id: 1,
-		Q: 'await "".get("url").data. \nWhat is this?',
-		S: 'axios',
+		Q: 'These components allows you to use \nadditional features such as local state and \nlifecycle hooks. Also, to enable your component to have \ndirect access to your store and thus \nholds state.',
+		S: 'Class Components',
 		A: 8
 	},
 	{
 		id: 2,
-		Q: `catch(""){ } \nWhat is inside catch?`,
-		S: 'error',
+		Q: `What gets passed to the component similar to \nfunction parameters?`,
+		S: 'Props',
 		A: 8
 	},
 	{
 		id: 3,
-		Q: `var promise = new Promise(function(resolve, reject) {
-			(function() {
-			  console.log('in setTimeout callback');
-			}, 100);
-		  }); \nWhat is missing in this function?`,
-		S: 'setTimeout',
+		Q: `What is managed within the component similar to \nvariables declared within a function.`,
+		S: 'State',
 		A: 8
 	},
 	{
 		id: 4,
-		Q: `async function main() {
-			 asyncFunc();
-		} \nWhat is this async function missing?`,
-		S: 'await',
+		Q: `XXX is a function that takes a component \nand returns a new component.What is XXX here?`,
+		S: 'HOC',
 		A: 8
 	},
 	{
 		id: 5,
-		Q: 'What should be called when a then function is called?',
-		S: 'catch',
+		Q: 'A child class constructor cannot make use of "this" \nreference until XXX method has been called. The main \nreason of passing props parameter to XXX call \nis to access this.props in your child constructors.\nWhat is XXX here?',
+		S: 'super()',
 		A: 8
-	}]
+	},
+	{
+		id: 6,
+		Q: 'XXX let you use state and other React features \nwithout writing a class. With XXX,\nyou can extract stateful logic from a \ncomponent so it can be tested independently and reused.\nWhat is XXX here?',
+		S: 'React Hooks',
+		A: 8
+	},
+]
 var BattleSceneRussell = new Phaser.Class({
 
 	Extends: Phaser.Scene,
@@ -167,19 +168,19 @@ var BattleSceneRussell = new Phaser.Class({
 	},
 	// when the player have selected the enemy to be attacked
 	receivePlayerSelection: function (action, target) {
-		if (action === 'Async') {
+		if (action === 'VDOM') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'await') {
+		} else if (action === 'Class Components') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'axois') {
+		} else if (action === 'Props') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'setTimeout') {
+		} else if (action === 'State') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'promise') {
+		} else if (action === 'HOC') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'then') {
+		} else if (action === 'super()') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'catch') {
+		} else if (action === 'React Hooks') {
 			this.units[this.index].attack(action, this.enemies[target]);
 		}
 		// next turn in 3 seconds
@@ -472,12 +473,13 @@ var ActionsMenu = new Phaser.Class({
 
 		function ActionsMenu(x, y, scene) {
 			Menu.call(this, x, y, scene);
-			this.addMenuItem('Async');
-			this.addMenuItem('await');
-			this.addMenuItem('promise');
-			this.addMenuItem('setTimeout');
-			this.addMenuItem('then');
-			this.addMenuItem('catch');
+			this.addMenuItem('VDOM');
+			this.addMenuItem('Class Components');
+			this.addMenuItem('Props');
+			this.addMenuItem('State');
+			this.addMenuItem('HOC');
+			this.addMenuItem('super()');
+			this.addMenuItem('React Hooks');
 		},
 	confirm: function () {
 		// we select an action and go to the next menu and choose from the enemies to apply the action\
@@ -518,12 +520,12 @@ var UISceneRussell = new Phaser.Class({
 		this.graphics = this.add.graphics();
 		this.graphics.lineStyle(1, 0xffffff);
 		this.graphics.fillStyle(0x031f4c, 1);
-		this.graphics.strokeRect(15, 400, 255, 150);
-		this.graphics.fillRect(15, 400, 255, 150);
-		this.graphics.strokeRect(255, 400, 240, 150);
-		this.graphics.fillRect(255, 400, 240, 150);
-		this.graphics.strokeRect(495, 400, 240, 150);
-		this.graphics.fillRect(495, 400, 240, 150);
+		this.graphics.strokeRect(15, 400, 255, 180);
+		this.graphics.fillRect(15, 400, 255, 180);
+		this.graphics.strokeRect(255, 400, 240, 180);
+		this.graphics.fillRect(255, 400, 240, 180);
+		this.graphics.strokeRect(495, 400, 240, 180);
+		this.graphics.fillRect(495, 400, 240, 180);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
