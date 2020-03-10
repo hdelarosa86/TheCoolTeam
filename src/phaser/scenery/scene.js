@@ -84,7 +84,6 @@ let badges = [
   { badge: 'CapstoneBadge', points: 3000 },
   { badge: 'FullstackChampionBadge', points: 5000 },
 ];
-let showDebug = false;
 let yesOrNo = '(Y/N)';
 
 class playGame extends Phaser.Scene {
@@ -408,7 +407,7 @@ class playGame extends Phaser.Scene {
       null
     );
 
-    this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
+    this.physics.add.collider(player, this.NPCs, (userPlayer, spriteNPC) => {
       let _spriteNPC = spriteNPC;
       let directionObj = spriteNPC.body.touching;
       let direction = null;
@@ -508,7 +507,7 @@ class playGame extends Phaser.Scene {
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-    this.input.keyboard.once('keydown_D', event => {
+    this.input.keyboard.once('keydown_D', () => {
       // Turn on physics debugging to show player's hitbox
       this.physics.world.createDebugGraphic();
 
