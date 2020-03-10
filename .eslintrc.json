@@ -2,6 +2,7 @@
 //     "extends": "airbnb"
 // }
 {
-    "extends": "fullstack",
+    "extends": ["fullstack", "prettier"],
+    "parser": "babel-eslint",
     "root": true
 }
