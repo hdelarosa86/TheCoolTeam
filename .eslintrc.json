@@ -1,8 +1,4 @@
- // {
-//     "extends": "airbnb"
-// }
 {
-    "extends": ["fullstack", "prettier"],
-    "parser": "babel-eslint",
-    "root": true
+  "extends": ["fullstack", "prettier", "prettier/react"],
+  "root": true
 }
