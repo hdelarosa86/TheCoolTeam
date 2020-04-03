@@ -4,6 +4,7 @@ let player = []
 let music;
 let boom;
 let kaboom;
+let toggle = true
 let uppercut;
 let battle = [{
 		id: 0,
@@ -19,57 +20,40 @@ let battle = [{
 	},
 	{
 		id: 2,
-		Q: `catch(""){ } \nWhat is inside catch?`,
-		S: 'error',
+		Q: `What keyword finds all instances that match the search criteria.\n If no criteria are given, it returns all \nthe instances in the table.`,
+		S: 'Model.findAll',
 		A: 8
 	},
 	{
 		id: 3,
-		Q: `var promise = new Promise(function(resolve, reject) {
-			(function() {
-			  console.log('in setTimeout callback');
-			}, 100);
-		  }); \nWhat is missing in this function?`,
-		S: 'setTimeout',
+		Q: `What keyword finds a single instance that matches the \nsearch criteria (even if there are \nmore than one that match the search criteria \n- it will return the first it finds)`,
+		S: 'Model.findOne',
 		A: 8
 	},
 	{
 		id: 4,
-		Q: `async function main() {
-			 asyncFunc();
-		} \nWhat is this async function missing?`,
-		S: 'await',
+		Q: `What keyword finds the instance with the specified id.`,
+		S: 'Model.findById',
 		A: 8
 	},
 	{
 		id: 5,
-		Q: 'What should be called when a then function is called?',
-		S: 'catch',
+		Q: 'What keyword updates all instances that match a query.\nTakes two parameters:first contains info you want to update.\nSecond contains the query for which instances to update.',
+		S: 'Model.update',
 		A: 8
 	},
 	{
 		id: 6,
-		Q: `const p = new Promise(
-			function (resolve, reject) {
-				if (···) {
-					resolve(value); // success
-				}
-			}).then().(err) \nWhat will I get if I run this function`,
-		S: 'error',
+		Q: `What is the process of analyzing the given \nrelation schemas based on their functional \ndependencies and primary keys to minimize \nreducdancies and CRUD anomalies.`,
+		S: 'Normalization',
 		A: 8
 	},
 	{
 		id: 7,
-		Q: 'What Promise uses a then()?',
-		S: 'promise',
+		Q: 'XXX is a set of properties that guarantee \nthat database transactions are processed reliably.\n What is XXX?',
+		S: 'ACID',
 		A: 8
-	},
-	{
-		id: 8,
-		Q: 'what do we use before a catch is called?',
-		S: 'setTimeout',
-		A: 8
-	}]
+	} ]
 var BattleSceneRyan = new Phaser.Class({
 
 	Extends: Phaser.Scene,
@@ -87,9 +71,9 @@ var BattleSceneRyan = new Phaser.Class({
 	create: function () {
         // change the background to green now
 		this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0)');
-		this.add.tileSprite(0, 0, 750, 600, 'battleScene').setOrigin(0);
+		this.add.tileSprite(0, 0, 750, 600, 'ryanBattle').setOrigin(0);
 		this.startBattle();
-		music = this.sound.add('battleOne', {
+		music = this.sound.add('Running', {
 			loop: true
 		});
 		music.play();
@@ -148,22 +132,20 @@ var BattleSceneRyan = new Phaser.Class({
 		} while (!this.units[this.index].living);
 		// if its player hero
 		if (this.units[this.index] instanceof PlayerCharacter) {
-			// we need the player to select action and then enemy
+			this.units[this.index].attack('attack', this.heroes[0]);
 			this.events.emit('PlayerSelect', this.index);
-		} else { // else if its enemy unit
+			// we need the player to select action and then enemy
 			// pick random living hero to be attacked
-			var r;
-			do {
-				r = Math.floor(Math.random() * this.heroes.length);
-			} while (!this.heroes[r].living)
 			// call the enemy's attack function
-			this.units[this.index].attack('attack', this.heroes[r]);
-			// add timer for the next turn, so will have smooth gameplay
 			this.time.addEvent({
 				delay: 2000,
 				callback: this.nextTurn,
 				callbackScope: this
 			});
+			// add timer for the next turn, so will have smooth gameplay
+		}
+		else {
+			// helpful
 		}
 	},
 	// check for game over or victory
@@ -190,19 +172,21 @@ var BattleSceneRyan = new Phaser.Class({
 	},
 	// when the player have selected the enemy to be attacked
 	receivePlayerSelection: function (action, target) {
-		if (action === 'Async') {
+		if (action === 'Model.findAll') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'await') {
+		} else if (action === 'Inner-Join') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'axois') {
+		} else if (action === 'Outer-Join') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'setTimeout') {
+		} else if (action === 'Model.findOne') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'promise') {
+		} else if (action === 'Model.findById') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'then') {
+		} else if (action === 'Model.update') {
 			this.units[this.index].attack(action, this.enemies[target]);
-		} else if (action === 'catch') {
+		} else if (action === 'Normalization') {
+			this.units[this.index].attack(action, this.enemies[target]);
+		} else if (action === 'ACID') {
 			this.units[this.index].attack(action, this.enemies[target]);
 		}
 		// next turn in 3 seconds
@@ -322,9 +306,17 @@ var Unit = new Phaser.Class({
 					uppercut.play();
 					kaboom.anims.play('explode');
 				}
-			} else {
+			} else if (toggle){
+                toggle = false
+                let damage = this.damage[random];
+				target.takeDamage(0)
+				uppercut.play();
+				this.scene.events.emit('Message', 'Ryan: \n' + damage.Q + ' !!!')
+				arr.push(damage)
+                }
+                else {
 				let damage = this.damage[random];
-				target.takeDamage(20)
+				target.takeDamage(50)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
@@ -335,7 +327,7 @@ var Unit = new Phaser.Class({
 				this.scene.events.emit('Message', 'Ryan: \n' + damage.Q + ' !!!')
 				arr.push(damage)
                 boom.anims.play('explode');
-			}
+             }
 		}
 	},
 	takeDamage: function (damage) {
@@ -379,7 +371,7 @@ var MenuItem = new Phaser.Class({
 
 		function MenuItem(x, y, text, scene) {
 			Phaser.GameObjects.Text.call(this, scene, x, y, text, {
-				color: '#ffffff',
+				color: '#000000',
 				align: 'left',
 				fontSize: 15
 			});
@@ -388,7 +380,7 @@ var MenuItem = new Phaser.Class({
 		this.setColor('#fc0303');
 	},
 	deselect: function () {
-		this.setColor('#ffffff');
+		this.setColor('#000000');
 	},
 	unitKilled: function () {
 		this.active = false;
@@ -497,10 +489,12 @@ var ActionsMenu = new Phaser.Class({
 			Menu.call(this, x, y, scene);
 			this.addMenuItem('Outer-Join');
 			this.addMenuItem('Inner-Join');
-			this.addMenuItem('promise');
-			this.addMenuItem('setTimeout');
-			this.addMenuItem('then');
-			this.addMenuItem('catch');
+			this.addMenuItem('Model.findAll');
+			this.addMenuItem('Model.findOne');
+			this.addMenuItem('Model.findById');
+			this.addMenuItem('Model.update');
+			this.addMenuItem('Normalization');
+			this.addMenuItem('ACID');
 		},
 	confirm: function () {
 		// we select an action and go to the next menu and choose from the enemies to apply the action\
@@ -539,21 +533,21 @@ var UISceneRyan = new Phaser.Class({
 	create: function () {
 		// draw some background for the menu
 		this.graphics = this.add.graphics();
-		this.graphics.lineStyle(1, 0xffffff);
-		this.graphics.fillStyle(0x031f4c, 1);
-		this.graphics.strokeRect(15, 400, 255, 150);
-		this.graphics.fillRect(15, 400, 255, 150);
-		this.graphics.strokeRect(255, 400, 240, 150);
-		this.graphics.fillRect(255, 400, 240, 150);
-		this.graphics.strokeRect(495, 400, 240, 150);
-		this.graphics.fillRect(495, 400, 240, 150);
+		this.graphics.lineStyle(3, 0x000000);
+		this.graphics.fillStyle(0xffffff, 1);
+		this.graphics.strokeRect(15, 380, 255, 190);
+		this.graphics.fillRect(15, 380, 255, 190);
+		this.graphics.strokeRect(255, 380, 240, 190);
+		this.graphics.fillRect(255, 380, 240, 190);
+		this.graphics.strokeRect(495, 380, 240, 190);
+		this.graphics.fillRect(495, 380, 240, 190);
 
 		// basic container to hold all menus
 		this.menus = this.add.container();
 
-		this.heroesMenu = new HeroesMenu(520, 420, this);
-		this.actionsMenu = new ActionsMenu(280, 420, this);
-		this.enemiesMenu = new EnemiesMenu(35, 420, this);
+		this.heroesMenu = new HeroesMenu(520, 400, this);
+		this.actionsMenu = new ActionsMenu(280, 400, this);
+		this.enemiesMenu = new EnemiesMenu(35, 400, this);
 
 		// the currently selected menu
 		this.currentMenu = this.actionsMenu;
@@ -649,7 +643,7 @@ var Message = new Phaser.Class({
 		var graphics = this.scene.add.graphics();
 		this.add(graphics);
 		graphics.lineStyle(2, 0xffffff, 0.8);
-		graphics.fillStyle(0x031f4c, 0.3);
+		graphics.fillStyle(0x000000, 0.8);
 		graphics.strokeRect(-60, -15, 500, 150);
 		graphics.fillRect(-60, -15, 500, 150);
 		this.text = new Phaser.GameObjects.Text(scene, 200, 40, '', {
@@ -657,7 +651,7 @@ var Message = new Phaser.Class({
 			align: 'center',
 			fontSize: 15,
 			padding: {
-				top: 10
+				top: 60
 			},
 			wordWrap: {
 				width: 400,

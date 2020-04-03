@@ -12,5 +12,14 @@
   body{
       background: black;
       color: white;
+      font-family: 'Press Start 2P', cursive;
   } 
+  .header {
+    font-size: 4em;
+    padding: 1em 0em 0.2em
+  }
+  .subheader {
+    font-size: 0.78em;
+    padding: 0em 0em
+  }
 

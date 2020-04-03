@@ -52,6 +52,16 @@ import {
   BluJSON,
   battleProf,
   battleGround,
+  PandaManImg,
+  PandaManJSON,
+  markBackground,
+  California,
+  Tim,
+  Running,
+  ryanLevel,
+  eliotLevel,
+  russellLevel,
+  RussellSong
 } from '../assets';
 
 let cursors;
@@ -60,7 +70,7 @@ let player = {
   y: 364,
 };
 
-let toggle = ''
+let toggle = '';
 
 let badges = [
   { badge: 'DOMBadge', points: 200 },
@@ -114,6 +124,10 @@ class playGame extends Phaser.Scene {
     });
     this.load.image('houseLevel', houseOneImg);
     this.load.image('battleGround', battleGround);
+    this.load.image('MarkBattle', markBackground);
+    this.load.image('ryanBattle', ryanLevel);
+    this.load.image('eliotBattle', eliotLevel);
+    this.load.image('russellBattle', russellLevel);
     this.load.image('battleScene', battleLevel);
     this.load.image('libraryLevel', gymOneImg);
     this.load.image('shopLevel', shopImg);
@@ -129,6 +143,7 @@ class playGame extends Phaser.Scene {
     this.load.atlas('greenman', GreenManImg, GreenManJSON);
     this.load.atlas('mark', MarkImg, MarkJSON);
     this.load.atlas('pinkman', PinkManImg, PinkManJSON);
+    this.load.atlas('panda', PandaManImg, PandaManJSON);
     this.load.atlas('russell', RussellImg, RussellJSON);
     this.load.atlas('ryan', RyanImg, RyanJSON);
     this.load.atlas('prof', ProfImg, ProfJSON);
@@ -140,13 +155,17 @@ class playGame extends Phaser.Scene {
     this.load.atlas('steve', SteveImg, SteveJSON);
     this.load.audio('levelOne', [Home]);
     this.load.audio('battleOne', [battleOne]);
+    this.load.audio('russellSong', [RussellSong]);
     this.load.audio('lounge', [Lounge]);
     this.load.audio('Library', [Library]);
     this.load.audio('mansion', [Mansion]);
+    this.load.audio('MarkSong', [California]);
     this.load.audio('house', [House]);
     this.load.audio('shop', [Shop]);
     this.load.audio('upperAttack', [uppercut]);
     this.load.audio('professor', [battleProf]);
+    this.load.audio('Tim', [Tim]);
+    this.load.audio('Running', [Running]);
   }
 
   create() {
@@ -286,10 +305,10 @@ class playGame extends Phaser.Scene {
       repeat: -1,
     });
 
-      badges.forEach( obj => {
-      if ( this.player.points === obj.points && toggle !== obj.badge ){
-        toggle = obj.badge
-        this.player.badge = obj.badge
+    badges.forEach(obj => {
+      if (this.player.points === obj.points && toggle !== obj.badge) {
+        toggle = obj.badge;
+        this.player.badge = obj.badge;
         this.dialogue = this.add
           .text(130, 500, `You just got ${obj.badge} and 100 more health`, {
             wordWrap: {
@@ -331,6 +350,25 @@ class playGame extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(30);
 
+    this.gamePlayMenu = this.add
+      .text(580, 16, '--L to load previous save', {
+        wordWrap: {
+          width: 180,
+        },
+        padding: {
+          top: 15,
+          right: 15,
+          bottom: 15,
+          left: 15,
+        },
+        align: 'left',
+        //backgroundColor: '#c90000',
+        color: '#000000',
+        backgroundColor: '#ffffff'
+      })
+      .setScrollFactor(0)
+      .setDepth(30);
+
     this.NPCs = this.physics.add.staticGroup();
 
     this.npcOne = createNPC(
@@ -363,8 +401,8 @@ class playGame extends Phaser.Scene {
     this.npcSave = createNPC(
       470,
       260,
-      'pinkman',
-      'pinkman-front',
+      'panda',
+      'panda-front',
       'You want to save your progress?',
       'npcSave',
       null
@@ -417,7 +455,6 @@ class playGame extends Phaser.Scene {
       this.physics.paused = true;
 
       this.input.keyboard.on('keydown_Y', () => {
-        music.stop();
         this.physics.resume();
         this.anims.resumeAll();
         this.physics.paused = false;
@@ -444,6 +481,7 @@ class playGame extends Phaser.Scene {
           });
           setTimeout(() => this.dialogue.destroy(), 2500);
         } else {
+          music.stop();
           this.scene.start(_spriteNPC.battleScene, this.player);
         }
       });
@@ -486,46 +524,57 @@ class playGame extends Phaser.Scene {
       });
     });
 
-    this.input.keyboard.on('keydown_M', () => {
+    this.input.keyboard.on('keydown_L', () => {
       if (!this.menuBox) {
         this.menuBox = this.add
-          .text(150, 300, 'Do you wish to load from your last save?', {
-            wordWrap: {
-              width: 500,
-            },
-            padding: {
-              top: 15,
-              right: 15,
-              bottom: 15,
-              left: 15,
-            },
-            align: 'left',
-            backgroundColor: '#ffffff',
-            color: '#ff0000',
-          })
+          .text(
+            150,
+            300,
+            `Do you wish to load from your last save? ${yesOrNo}`,
+            {
+              wordWrap: {
+                width: 500,
+              },
+              padding: {
+                top: 15,
+                right: 15,
+                bottom: 15,
+                left: 15,
+              },
+              align: 'left',
+              backgroundColor: '#ffffff',
+              color: '#ff0000',
+            }
+          )
           .setScrollFactor(0)
           .setDepth(30);
-        return this.menuBox;
-      } else {
-        this.menuBox.destroy();
-        this.menuBox = null;
 
-        axios
-          .get('/api')
-          .then(response => response.data)
-          .then(returnedData => {
-            console.log(returnedData[0]);
-            player.x = returnedData[0].x;
-            player.y = returnedData[0].y;
-            returnedData[0].x = 600;
-            returnedData[0].y = 250;
-            delete returnedData[0].id;
-            delete returnedData[0].createdAt;
-            delete returnedData[0].updatedAt;
-            player.x = 523;
-            player.y = 310;
-            this.scene.restart(returnedData[0]);
-          });
+        this.input.keyboard.on('keydown_Y', () => {
+          this.menuBox.destroy();
+          this.menuBox = null;
+
+          axios
+            .get('/api')
+            .then(response => response.data)
+            .then(returnedData => {
+              console.log(returnedData[0]);
+              player.x = returnedData[0].x;
+              player.y = returnedData[0].y;
+              returnedData[0].x = 600;
+              returnedData[0].y = 250;
+              delete returnedData[0].id;
+              delete returnedData[0].createdAt;
+              delete returnedData[0].updatedAt;
+              player.x = 523;
+              player.y = 310;
+              this.scene.restart(returnedData[0]);
+            });
+        }); //end of Y keydown
+
+        this.input.keyboard.on('keydown_N', () => {
+          this.menuBox.destroy();
+          this.menuBox = null;
+        }); //end of N keydown
       }
     });
   }
