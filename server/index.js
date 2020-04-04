@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const { db } = require('./db');
-const seed = require('../seed');
 const chalk = require('chalk');
+//const seed = require('../seed');
 
 //if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 

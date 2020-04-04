@@ -9,10 +9,10 @@ const seed = () => {
       texture: 'atlas',
       frame: 3,
       name: 'Student',
-      health: 20,
+      health: 300,
       maxHp: 0,
       points: 0,
-      badge: 'Ultimate Badge',
+      badge: 'CapstoneBadge',
       notify: 'on',
       level: '',
     })
