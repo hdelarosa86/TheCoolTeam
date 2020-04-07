@@ -7,16 +7,8 @@ class SceneTwo extends Phaser.Scene {
   constructor() {
     super('scene2');
   }
-  
-  init(data){
-    if (data.level === 'NPC'){
-      this.player = data;
-    }
-    else {
-      data.x = 713.415713196034
-      data.y = 578.135774218154
-      this.player = data
-    }
+  init(data) {
+    this.player = data;
   }
   create() {
     const map = this.make.tilemap({ key: 'house' });
@@ -68,22 +60,16 @@ class SceneTwo extends Phaser.Scene {
         music.stop();
         this.scene.start('PlayGame');
       },
-      align: 'left',
-      backgroundColor: '#c90000',
-      color: '#ffffff',
-  })
-  .setScrollFactor(0)
-  .setDepth(30);
-
-    tile = map.setTileIndexCallback(405, () => {
-      this.player.level = ''
-      music.stop();
-      this.scene.start('PlayGame', this.player);
-    }, this);
+      this
+    );
 
     houseLayer.setCollisionByProperty({ collides: true });
+    const spawnPoint = map.findObject(
+      'SpawnPoint',
+      obj => obj.name === 'spawn'
+    );
     player = this.physics.add
-      .sprite(this.player.x, this.player.y, 'atlas', 'student-back')
+      .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'student-back')
       .setSize(30, 40)
       .setOffset(0, 24);
 
@@ -178,102 +164,72 @@ class SceneTwo extends Phaser.Scene {
           } else {
             direction = key;
           }
-          spriteNPC.destroy();
-          this[_spriteNPC.reference] = createNPC(
-              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference
-          );
+        }
+      }
+      spriteNPC.destroy();
+      this[_spriteNPC.reference] = createNPC(
+        _spriteNPC.x,
+        _spriteNPC.y,
+        _spriteNPC.texture.key,
+        `${_spriteNPC.texture.key}-${direction}`,
+        _spriteNPC.text,
+        _spriteNPC.reference
+      );
 
-          this.physics.pause();
-          this.anims.pauseAll();
-          this.dialogue = this.add
-              .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
-                  wordWrap: {
-                      width: 500
-                  },
-                  padding: {
-                      top: 15,
-                      right: 15,
-                      bottom: 15,
-                      left: 15
-                  },
-                  align: 'left',
-                  backgroundColor: '#ffffff',
-                  color: '#ff0000',
-              })
-              .setScrollFactor(0)
-              .setDepth(30);
-          this.physics.paused = true;
+      this.physics.pause();
+      this.anims.pauseAll();
+      this.dialogue = this.add
+        .text(130, 500, `${_spriteNPC.text} ${yesOrNo}`, {
+          wordWrap: {
+            width: 500,
+          },
+          padding: {
+            top: 15,
+            right: 15,
+            bottom: 15,
+            left: 15,
+          },
+          align: 'left',
+          backgroundColor: '#ffffff',
+          color: '#ff0000',
+        })
+        .setScrollFactor(0)
+        .setDepth(30);
+      this.physics.paused = true;
 
-          this.input.keyboard.on('keydown_Y', () => {
-            music.stop();
-            if (this.player.points < 200){
-              this.dialogue.destroy();
-              this.stat = this.add
-              .text(130, 500, `You can't be here without a DOM BADGE!!!`, {
-                  wordWrap: {
-                      width: 500
-                  },
-                  padding: {
-                      top: 15,
-                      right: 15,
-                      bottom: 15,
-                      left: 15
-                  },
-                  align: 'left',
-                  backgroundColor: '#c90000',
-                  color: '#ffffff',
-              })
-              .setScrollFactor(0)
-              .setDepth(30);
-              setTimeout(() => {
-                this.stat.destroy()
-                this.player.level = 'NPC';
-                this.player.x = player.x;
-                this.player.y = player.y;
-                this.scene.start('scene2', this.player);
-                this.dialogue.destroy();
-            this[_spriteNPC.reference].destroy();
-            this[_spriteNPC.reference] = createNPC(
-              _spriteNPC.x,
-              _spriteNPC.y,
-              _spriteNPC.texture.key,
-              _spriteNPC.frame.name,
-              _spriteNPC.text
-            );
-            this.physics.resume();
-            this.anims.resumeAll();
-            this.physics.paused = false;
-              }, 2000)
-            }
-            else {
-              this.player.x = player.x;
-              this.player.y = player.y;
-              this.scene.start(_spriteNPC.battleScene, this.player);
-              this.physics.resume();
-              this.anims.resumeAll();
-              this.physics.paused = false;
-            }
-          });
-
-          this.input.keyboard.on('keydown_N', () => {
-            this.player.level = 'NPC';
-            this.player.x = player.x;
-            this.player.y = player.y;
-            this.scene.start('scene2', this.player);
-            music.stop();
-            this.dialogue.destroy();
-            this[_spriteNPC.reference].destroy();
-            this[_spriteNPC.reference] = createNPC(
-              _spriteNPC.x,
-              _spriteNPC.y,
-              _spriteNPC.texture.key,
-              _spriteNPC.frame.name,
-              _spriteNPC.text
-            );
-            this.physics.resume();
-            this.anims.resumeAll();
-            this.physics.paused = false;
-          });
+      this.input.keyboard.on('keydown_Y', () => {
+        if (this.player.points < 200) {
+          this.dialogue.destroy();
+          this.stat = this.add
+            .text(130, 500, `You can't be here without a DOM BADGE!!!`, {
+              wordWrap: {
+                width: 500,
+              },
+              padding: {
+                top: 15,
+                right: 15,
+                bottom: 15,
+                left: 15,
+              },
+              align: 'left',
+              backgroundColor: '#c90000',
+              color: '#ffffff',
+            })
+            .setScrollFactor(0)
+            .setDepth(30);
+          setTimeout(() => {
+            this.stat.destroy();
+          }, 2000);
+          this.physics.resume();
+          this.anims.resumeAll();
+          this.physics.paused = false;
+        } else {
+          music.stop();
+          this.scene.start(_spriteNPC.battleScene, this.player);
+          this.physics.resume();
+          this.anims.resumeAll();
+          this.physics.paused = false;
+        }
       });
 
       this.input.keyboard.on('keydown_N', () => {

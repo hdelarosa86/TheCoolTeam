@@ -91,7 +91,7 @@ var BattleScenePink = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var main = new PlayerCharacter(this, 600, 250, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		var main = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
 		this.add.existing(main);
 
 
@@ -305,7 +305,7 @@ var Unit = new Phaser.Class({
                 }
                 else {
 				let damage = this.damage[random];
-				target.takeDamage(10)
+				target.takeDamage(20)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']

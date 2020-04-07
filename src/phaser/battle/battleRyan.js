@@ -97,15 +97,15 @@ var BattleSceneRyan = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var main = new PlayerCharacter(this, 600, 250, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing(main);
+		var player = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing(player);
 
 
-		var ryan = new Enemy(this, 150, 250, 'ryan', 2, 'Ryan', 500, battle);
+		var ryan = new Enemy(this, 150, 250, 'ryan', 2, 'Ryan', 100, battle);
 		this.add.existing(ryan);
 
 		// array with heroes
-		this.heroes = [main];
+		this.heroes = [player];
 		// array with enemies
 		this.enemies = [ryan];
 		// array with both parties, who will attack
@@ -220,7 +220,7 @@ var BattleSceneRyan = new Phaser.Class({
             maxHP: 100,
             points: this.player.points += 200,
             badge: this.player.badge,
-            level: 'NPC'
+            level: ''
 		});
 
 	},
