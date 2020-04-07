@@ -1,4 +1,4 @@
-{
-  "extends": ["fullstack", "prettier", "prettier/react"],
-  "root": true
-}
+// {
+//   "extends": ["fullstack", "prettier", "prettier/react"],
+//   "root": true
+// }
