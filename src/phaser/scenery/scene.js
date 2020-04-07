@@ -566,6 +566,7 @@ class playGame extends Phaser.Scene {
               delete returnedData[0].updatedAt;
               player.x = 523;
               player.y = 310;
+              music.stop();
               this.scene.restart(returnedData[0]);
             });
         }); //end of Y keydown

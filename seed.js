@@ -15,8 +15,7 @@ const seed = () => {
       badge: 'CapstoneBadge',
       notify: 'on',
       level: '',
-    })
-  );
+    }));
 };
 
 module.exports = seed;
@@ -24,11 +23,11 @@ module.exports = seed;
 if (require.main === module) {
   seed()
     .then(() => {
-      console.log(chalk.greenBright("Successful seeding FullStack Town."));
+      console.log(chalk.greenBright('Successful seeding FullStack Town.'));
       db.close();
     })
     .catch(err => {
-      console.error(chalk.redBright("Error with seeding FullStack Town"));
+      console.error(chalk.redBright('Error with seeding FullStack Town'));
       console.error(err);
       db.close();
     });
