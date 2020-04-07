@@ -1,7 +1,4 @@
- // {
-//     "extends": "airbnb"
+// {
+//   "extends": ["fullstack", "prettier", "prettier/react"],
+//   "root": true
 // }
-{
-    "extends": "fullstack",
-    "root": true
-}

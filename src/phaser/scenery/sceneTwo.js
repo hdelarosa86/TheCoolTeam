@@ -15,7 +15,14 @@ class SceneTwo extends Phaser.Scene {
     super('scene2');
   }
   init(data){
-    this.player = data
+    if (data.level === 'NPC'){
+      this.player = data;
+    }
+    else {
+      data.x = 713.415713196034
+      data.y = 578.135774218154
+      this.player = data
+    }
   }
   create() {
     const map = this.make.tilemap({ key: 'house' });
@@ -53,14 +60,14 @@ class SceneTwo extends Phaser.Scene {
   .setDepth(30);
 
     tile = map.setTileIndexCallback(405, () => {
+      this.player.level = ''
       music.stop();
-      this.scene.start('PlayGame');
+      this.scene.start('PlayGame', this.player);
     }, this);
 
     houseLayer.setCollisionByProperty({ collides: true });
-    const spawnPoint = map.findObject('SpawnPoint', (obj) => obj.name === 'spawn');
     player = this.physics.add
-      .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'student-back')
+      .sprite(this.player.x, this.player.y, 'atlas', 'student-back')
       .setSize(30, 40)
       .setOffset(0, 24);
 
@@ -166,6 +173,7 @@ class SceneTwo extends Phaser.Scene {
           this.physics.paused = true;
 
           this.input.keyboard.on('keydown_Y', () => {
+            music.stop();
             if (this.player.points < 200){
               this.dialogue.destroy();
               this.stat = this.add
@@ -185,13 +193,29 @@ class SceneTwo extends Phaser.Scene {
               })
               .setScrollFactor(0)
               .setDepth(30);
-              setTimeout(() => { this.stat.destroy() }, 2000)
-              this.physics.resume();
-              this.anims.resumeAll();
-              this.physics.paused = false;
+              setTimeout(() => {
+                this.stat.destroy()
+                this.player.level = 'NPC';
+                this.player.x = player.x;
+                this.player.y = player.y;
+                this.scene.start('scene2', this.player);
+                this.dialogue.destroy();
+            this[_spriteNPC.reference].destroy();
+            this[_spriteNPC.reference] = createNPC(
+              _spriteNPC.x,
+              _spriteNPC.y,
+              _spriteNPC.texture.key,
+              _spriteNPC.frame.name,
+              _spriteNPC.text
+            );
+            this.physics.resume();
+            this.anims.resumeAll();
+            this.physics.paused = false;
+              }, 2000)
             }
             else {
-              music.stop();
+              this.player.x = player.x;
+              this.player.y = player.y;
               this.scene.start(_spriteNPC.battleScene, this.player);
               this.physics.resume();
               this.anims.resumeAll();
@@ -200,14 +224,23 @@ class SceneTwo extends Phaser.Scene {
           });
 
           this.input.keyboard.on('keydown_N', () => {
-              this.physics.resume();
-              this.anims.resumeAll();
-              this.physics.paused = false;
-              this.dialogue.destroy();
-              this[_spriteNPC.reference].destroy();
-              this[_spriteNPC.reference] = createNPC(
-                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
-              );
+            this.player.level = 'NPC';
+            this.player.x = player.x;
+            this.player.y = player.y;
+            this.scene.start('scene2', this.player);
+            music.stop();
+            this.dialogue.destroy();
+            this[_spriteNPC.reference].destroy();
+            this[_spriteNPC.reference] = createNPC(
+              _spriteNPC.x,
+              _spriteNPC.y,
+              _spriteNPC.texture.key,
+              _spriteNPC.frame.name,
+              _spriteNPC.text
+            );
+            this.physics.resume();
+            this.anims.resumeAll();
+            this.physics.paused = false;
           });
       });
   }

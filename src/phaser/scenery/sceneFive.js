@@ -1,19 +1,13 @@
-import React from 'react';
 import Phaser from 'phaser';
 
-let controls;
-let cursors;
-let player;
-let music;
-let tile;
-const showDebug = false;
+let cursors, player, music;
 
 class SceneFive extends Phaser.Scene {
   constructor() {
     super('scene5');
   }
-  init(data){
-    this.player = data
+  init(data) {
+    this.player = data;
   }
   create() {
     const map = this.make.tilemap({ key: 'home' });
@@ -23,69 +17,87 @@ class SceneFive extends Phaser.Scene {
 
     music.play();
 
-    tile = map.setTileIndexCallback(435, () => {
-      music.stop();
-      this.scene.start('PlayGame', this.player);
-    }, this);
+    map.setTileIndexCallback(
+      435,
+      () => {
+        music.stop();
+        this.scene.start('PlayGame', this.player);
+      },
+      this
+    );
 
     shopLayer.setCollisionByProperty({ collides: true });
-    const spawnPoint = map.findObject('SpawnPoint', (obj) => obj.name === 'spawn');
+    const spawnPoint = map.findObject(
+      'SpawnPoint',
+      obj => obj.name === 'spawn'
+    );
     player = this.physics.add
       .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'student-back')
       .setSize(30, 40)
       .setOffset(0, 24);
 
-      this.stat = this.add.text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
+    this.stat = this.add
+      .text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
         wordWrap: { width: 500 },
         padding: { top: 15, right: 15, bottom: 15, left: 15 },
         align: 'left',
         backgroundColor: '#c90000',
         color: '#ffffff',
-    })
-    .setScrollFactor(0)
-    .setDepth(30);
+      })
+      .setScrollFactor(0)
+      .setDepth(30);
 
-    if (this.player.health === 0){
-      this.stat.destroy()
-      this.dialouge = this.add.text(130, 500, `You didn't do so good. You must start junior phase again.`, {
-        wordWrap: {
-            width: 500
-        },
-        padding: {
-            top: 15,
-            right: 15,
-            bottom: 15,
-            left: 15
-        },
-        align: 'left',
-        backgroundColor: '#ffffff',
-        color: '#c90000',
-    })
-    .setScrollFactor(0)
-    .setDepth(30);
+    if (this.player.health === 0) {
+      this.stat.destroy();
+      this.dialouge = this.add
+        .text(
+          130,
+          500,
+          `You didn't do so good. You must start junior phase again.`,
+          {
+            wordWrap: {
+              width: 500,
+            },
+            padding: {
+              top: 15,
+              right: 15,
+              bottom: 15,
+              left: 15,
+            },
+            align: 'left',
+            backgroundColor: '#ffffff',
+            color: '#c90000',
+          }
+        )
+        .setScrollFactor(0)
+        .setDepth(30);
 
-    this.player.health = 100
+      this.player.health = 100;
 
-      setTimeout( () => {
-        this.dialouge.destroy()
-      }, 7000)
+      setTimeout(() => {
+        this.dialouge.destroy();
+      }, 7000);
       // health
-      this.speech = this.add.text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
-        wordWrap: { width: 500 },
-        padding: { top: 15, right: 15, bottom: 15, left: 15 },
-        align: 'left',
-        backgroundColor: '#c90000',
-        color: '#ffffff',
-    })
-    .setScrollFactor(0)
-    .setDepth(30);
+      this.speech = this.add
+        .text(16, 16, `HP: ${this.player.health} Badge: ${this.player.badge}`, {
+          wordWrap: { width: 500 },
+          padding: { top: 15, right: 15, bottom: 15, left: 15 },
+          align: 'left',
+          backgroundColor: '#c90000',
+          color: '#ffffff',
+        })
+        .setScrollFactor(0)
+        .setDepth(30);
     }
 
     const { anims } = this;
     anims.create({
       key: 'student-left-walk',
       frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-left-walk.', start: 0, end: 4, zeroPad: 3,
+        prefix: 'student-left-walk.',
+        start: 0,
+        end: 4,
+        zeroPad: 3,
       }),
       frameRate: 10,
       repeat: -1,
@@ -93,7 +105,10 @@ class SceneFive extends Phaser.Scene {
     anims.create({
       key: 'student-right-walk',
       frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-right-walk.', start: 0, end: 4, zeroPad: 3,
+        prefix: 'student-right-walk.',
+        start: 0,
+        end: 4,
+        zeroPad: 3,
       }),
       frameRate: 10,
       repeat: -1,
@@ -101,7 +116,10 @@ class SceneFive extends Phaser.Scene {
     anims.create({
       key: 'student-front-walk',
       frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-front-walk.', start: 0, end: 4, zeroPad: 3,
+        prefix: 'student-front-walk.',
+        start: 0,
+        end: 4,
+        zeroPad: 3,
       }),
       frameRate: 10,
       repeat: -1,
@@ -109,7 +127,10 @@ class SceneFive extends Phaser.Scene {
     anims.create({
       key: 'student-back-walk',
       frames: anims.generateFrameNames('atlas', {
-        prefix: 'student-back-walk.', start: 0, end: 4, zeroPad: 3,
+        prefix: 'student-back-walk.',
+        start: 0,
+        end: 4,
+        zeroPad: 3,
       }),
       frameRate: 10,
       repeat: -1,
@@ -125,16 +146,16 @@ class SceneFive extends Phaser.Scene {
 
     // Help text that has a "fixed" position on the screen
 
-      this.input.keyboard.once('keydown_D', (event) => {
+    this.input.keyboard.once('keydown_D', () => {
       // Turn on physics debugging to show player's hitbox
-        this.physics.world.createDebugGraphic();
+      this.physics.world.createDebugGraphic();
 
-        // Create worldLayer collision graphic above the player, but below the help text
-        const graphics = this.add
-          .graphics()
-          .setAlpha(0.75)
-          .setDepth(20);
-      });
+      // Create worldLayer collision graphic above the player, but below the help text
+      this.add
+        .graphics()
+        .setAlpha(0.75)
+        .setDepth(20);
+    });
   }
 
   update(time, delta) {
@@ -157,7 +178,15 @@ class SceneFive extends Phaser.Scene {
     player.body.velocity.normalize().scale(speed);
 
     // Update the animation last and give left/right animations precedence over up/down animations
-    if (cursors.left.isDown) { player.anims.play('student-left-walk', true); } else if (cursors.right.isDown) { player.anims.play('student-right-walk', true); } else if (cursors.up.isDown) { player.anims.play('student-back-walk', true); } else if (cursors.down.isDown) { player.anims.play('student-front-walk', true); } else {
+    if (cursors.left.isDown) {
+      player.anims.play('student-left-walk', true);
+    } else if (cursors.right.isDown) {
+      player.anims.play('student-right-walk', true);
+    } else if (cursors.up.isDown) {
+      player.anims.play('student-back-walk', true);
+    } else if (cursors.down.isDown) {
+      player.anims.play('student-front-walk', true);
+    } else {
       player.anims.stop();
       // If we were moving, pick and idle frame to use
       if (prevVelocity.x < 0) player.setTexture('atlas', 'student-left');

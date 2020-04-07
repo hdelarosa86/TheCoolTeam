@@ -97,9 +97,8 @@ var BattleScene = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var main = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing( main);
-
+		var main = new PlayerCharacter(this, 600, 250, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing(main);
 
 		var GreenMan = new Enemy(this, 150, 250, 'greenman', 2, 'GreenMan', 60, battle);
 		this.add.existing(GreenMan);
@@ -152,14 +151,14 @@ var BattleScene = new Phaser.Class({
 	checkEndBattle: function () {
 		var victory = true;
 		// if all enemies are dead we have victory
-		for (var i = 0; i < this.enemies.length; i++) {
+		for (let i = 0; i < this.enemies.length; i++) {
 			if (this.enemies[i].living) {
 				victory = false;
 			}
 		}
 		var gameOver = true;
 		// if all heroes are dead we have game over
-		for (var i = 0; i < this.heroes.length; i++) {
+		for (let i = 0; i < this.heroes.length; i++) {
 			if (this.heroes[i].living) {
 				gameOver = false;
 			}
@@ -192,7 +191,7 @@ var BattleScene = new Phaser.Class({
 		// clear state, remove sprites
 		this.heroes.length = 0;
 		this.enemies.length = 0;
-		for (var i = 0; i < this.units.length; i++) {
+		for (let i = 0; i < this.units.length; i++) {
 			// link item
 			this.units[i].destroy();
 		}
@@ -220,7 +219,7 @@ var BattleScene = new Phaser.Class({
 		// clear state, remove sprites
 		this.heroes.length = 0;
 		this.enemies.length = 0;
-		for (var i = 0; i < this.units.length; i++) {
+		for (let i = 0; i < this.units.length; i++) {
 			// link item
 			this.units[i].destroy();
 		}
@@ -307,7 +306,7 @@ var Unit = new Phaser.Class({
                 }
                 else {
 				let damage = this.damage[random];
-				target.takeDamage(20)
+				target.takeDamage(10)
 				uppercut.play();
 				target.tint = 0xFF6347;
 				target.frame = target.texture.frames['student-front']
@@ -429,7 +428,7 @@ var Menu = new Phaser.Class({
 			if (this.menuItemIndex >= this.menuItems.length) {
 				this.menuItemIndex = 0;
 			}
-			if (this.menuItemIndex == index) {
+			if (this.menuItemIndex === index) {
 				return;
 			}
 		}
@@ -445,7 +444,7 @@ var Menu = new Phaser.Class({
 	},
 	confirm: function () {},
 	clear: function () {
-		for (var i = 0; i < this.menuItems.length; i++) {
+		for (let i = 0; i < this.menuItems.length; i++) {
 			this.menuItems[i].destroy();
 		}
 		this.menuItems.length = 0;
@@ -453,7 +452,7 @@ var Menu = new Phaser.Class({
 	},
 	remap: function (units) {
 		this.clear();
-		for (var i = 0; i < units.length; i++) {
+		for (let i = 0; i < units.length; i++) {
 			var unit = units[i];
 			unit.setMenuItem(this.addMenuItem(unit.type));
 		}

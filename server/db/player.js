@@ -1,11 +1,11 @@
-const { STRING, INTEGER, BIGINT, UUID, UUIDV4, BOOLEAN } = require('sequelize');
+const { STRING, INTEGER, FLOAT } = require('sequelize');
 const db = require('./database');
 const Player = db.define('player', {
   x: {
-    type: INTEGER,
+    type: FLOAT,
   },
   y: {
-    type: INTEGER,
+    type: FLOAT,
   },
   texture: {
     type: STRING,

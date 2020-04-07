@@ -61,7 +61,7 @@ import {
   ryanLevel,
   eliotLevel,
   russellLevel,
-  RussellSong
+  RussellSong,
 } from '../assets';
 
 let cursors;
@@ -84,7 +84,6 @@ let badges = [
   { badge: 'CapstoneBadge', points: 3000 },
   { badge: 'FullstackChampionBadge', points: 5000 },
 ];
-let showDebug = false;
 let yesOrNo = '(Y/N)';
 
 class playGame extends Phaser.Scene {
@@ -305,7 +304,7 @@ class playGame extends Phaser.Scene {
       repeat: -1,
     });
 
-    badges.forEach(obj => {
+    badges.forEach((obj) => {
       if (this.player.points === obj.points && toggle !== obj.badge) {
         toggle = obj.badge;
         this.player.badge = obj.badge;
@@ -364,7 +363,7 @@ class playGame extends Phaser.Scene {
         align: 'left',
         //backgroundColor: '#c90000',
         color: '#000000',
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
       })
       .setScrollFactor(0)
       .setDepth(30);
@@ -408,7 +407,7 @@ class playGame extends Phaser.Scene {
       null
     );
 
-    this.physics.add.collider(player, this.NPCs, (player, spriteNPC) => {
+    this.physics.add.collider(player, this.NPCs, (userPlayer, spriteNPC) => {
       let _spriteNPC = spriteNPC;
       let directionObj = spriteNPC.body.touching;
       let direction = null;
@@ -455,41 +454,60 @@ class playGame extends Phaser.Scene {
       this.physics.paused = true;
 
       this.input.keyboard.on('keydown_Y', () => {
-        this.physics.resume();
-        this.anims.resumeAll();
+        this.physics.pause();
+        this.anims.pauseAll();
         this.physics.paused = false;
         if (_spriteNPC.reference === 'npcSave') {
-          axios.post('/api', this.player).then(() => {
-            this.dialogue.destroy();
-            this.dialogue = this.add
-              .text(300, 500, 'Game Succesfully Saved', {
-                wordWrap: {
-                  width: 500,
-                },
-                padding: {
-                  top: 15,
-                  right: 15,
-                  bottom: 15,
-                  left: 15,
-                },
-                align: 'left',
-                backgroundColor: '#ffffff',
-                color: '#ff0000',
-              })
-              .setScrollFactor(0)
-              .setDepth(30);
-          });
-          setTimeout(() => this.dialogue.destroy(), 2500);
+          //music.stop()
+          axios
+            .post('/api', this.player)
+            .then(() => {
+              this.dialogue.destroy();
+              this.dialogue = this.add
+                .text(300, 500, 'Game Succesfully Saved', {
+                  wordWrap: {
+                    width: 500,
+                  },
+                  padding: {
+                    top: 15,
+                    right: 15,
+                    bottom: 15,
+                    left: 15,
+                  },
+                  align: 'left',
+                  backgroundColor: '#ffffff',
+                  color: '#ff0000',
+                })
+                .setScrollFactor(0)
+                .setDepth(30);
+            })
+            .then(() => {
+              music.stop();
+              this.scene.start('PlayGame', this.player);
+              this.dialogue.destroy();
+              this[_spriteNPC.reference].destroy();
+              this[_spriteNPC.reference] = createNPC(
+                _spriteNPC.x,
+                _spriteNPC.y,
+                _spriteNPC.texture.key,
+                _spriteNPC.frame.name,
+                _spriteNPC.text
+              );
+              this.physics.resume();
+              this.anims.resumeAll();
+              this.physics.paused = false;
+            });
         } else {
           music.stop();
           this.scene.start(_spriteNPC.battleScene, this.player);
+          this.physics.resume();
+          this.anims.resumeAll();
         }
       });
 
       this.input.keyboard.on('keydown_N', () => {
-        this.physics.resume();
-        this.anims.resumeAll();
-        this.physics.paused = false;
+        music.stop();
+        this.scene.start('PlayGame', this.player);
         this.dialogue.destroy();
         this[_spriteNPC.reference].destroy();
         this[_spriteNPC.reference] = createNPC(
@@ -499,6 +517,9 @@ class playGame extends Phaser.Scene {
           _spriteNPC.frame.name,
           _spriteNPC.text
         );
+        this.physics.resume();
+        this.anims.resumeAll();
+        this.physics.paused = false;
       });
     });
 
@@ -508,15 +529,12 @@ class playGame extends Phaser.Scene {
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-    this.input.keyboard.once('keydown_D', event => {
+    this.input.keyboard.once('keydown_D', () => {
       // Turn on physics debugging to show player's hitbox
       this.physics.world.createDebugGraphic();
 
       // Create worldLayer collision graphic above the player, but below the help text
-      const graphics = this.add
-        .graphics()
-        .setAlpha(0.75)
-        .setDepth(20);
+      const graphics = this.add.graphics().setAlpha(0.75).setDepth(20);
       worldLayer.renderDebug(graphics, {
         tileColor: null, // Color of non-colliding tiles
         collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
@@ -526,6 +544,8 @@ class playGame extends Phaser.Scene {
 
     this.input.keyboard.on('keydown_L', () => {
       if (!this.menuBox) {
+        this.physics.pause();
+        this.anims.pauseAll();
         this.menuBox = this.add
           .text(
             150,
@@ -555,9 +575,8 @@ class playGame extends Phaser.Scene {
 
           axios
             .get('/api')
-            .then(response => response.data)
-            .then(returnedData => {
-              console.log(returnedData[0]);
+            .then((response) => response.data)
+            .then((returnedData) => {
               player.x = returnedData[0].x;
               player.y = returnedData[0].y;
               returnedData[0].x = 600;
@@ -567,13 +586,16 @@ class playGame extends Phaser.Scene {
               delete returnedData[0].updatedAt;
               player.x = 523;
               player.y = 310;
-              this.scene.restart(returnedData[0]);
+              this.scene.start('PlayGame', returnedData[0]);
+              music.stop();
             });
         }); //end of Y keydown
 
         this.input.keyboard.on('keydown_N', () => {
           this.menuBox.destroy();
           this.menuBox = null;
+          this.physics.resume();
+          this.anims.resumeAll();
         }); //end of N keydown
       }
     });
