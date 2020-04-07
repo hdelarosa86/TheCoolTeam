@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const { body } = req;
   Player.create(body)
-    .then(games => res.status(200).send('Success'))
+    .then( () => res.status(200).send('Success'))
     .catch(err => {
       res.status(404);
       chalk.red(console.error(err));

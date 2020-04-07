@@ -1,25 +1,17 @@
-# Phaser 3 React Webpack Project Template
+# Fullstack Town
 
-Built from the [https://github.com/photonstorm/phaser3-project-template](Phaser 3 Template), this boilerplate gives you Phaser and React out of the box. Full details on [Integrating React and Phaser 3 Tutorial](https://medium.com/@Tnodes/integrating-react-and-phaser-3-tutorial-eb96717d4a9d). 
+This is a videogame simulation of our time in Fullstack Academy…not drawn to scale, is only for educational purposes, non-commercial use.
 
-ES6 support via [Babel 7](https://babeljs.io/) and [Webpack 4](https://webpack.js.org/). Includes hot-reloading for development and production-ready builds.
+“Fullstack Town” is a fun Pokemon style code competition game that allows you to improve coding abilities in interactive ways by completing a series of coding challenges. Get trained with fellows and instructors in their themed arena/gym. Beat their challenges in order to face off against the Master Trainer.
 
-Loading images via JavaScript module `import` is also supported.
+# Tech Specifications
+HTML/CSS/Javascript
+Node 
+Express 
+Sequalize
+React
+Phaser 3
+Canvas
+Axios
+Postgres
 
-## Quickstart
-
-`git clone https://github.com/nodes777/phaser3-react-template`
-`npm install`
-`npm start`
-
-## Requirements
-
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
-
-## Available Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm start` | Build project and open web server running project |
-| `npm run build` | Builds code bundle with production settings (minification, uglification, etc..) |
