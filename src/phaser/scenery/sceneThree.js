@@ -161,24 +161,6 @@ class SceneThree extends Phaser.Scene {
               .setDepth(30);
           this.physics.paused = true;
 
-          this.input.keyboard.on('keydown_Y', () => {
-              music.stop();
-              this.scene.start(_spriteNPC.battleScene, this.player);
-              this.physics.resume();
-              this.anims.resumeAll();
-              this.physics.paused = false;
-          });
-
-          this.input.keyboard.on('keydown_N', () => {
-              this.physics.resume();
-              this.anims.resumeAll();
-              this.physics.paused = false;
-              this.dialogue.destroy();
-              this[_spriteNPC.reference].destroy();
-              this[_spriteNPC.reference] = createNPC(
-                  _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
-              );
-          });
           this.input.keyboard.on('keydown_SPACE', () => {
             this.physics.resume();
             this.anims.resumeAll();

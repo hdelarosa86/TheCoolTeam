@@ -91,15 +91,14 @@ var BattleSceneRussell = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var player = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing(player);
+		var main = new PlayerCharacter(this, 600, 250, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing(main);
 
-
-		var russell = new Enemy(this, 150, 250, 'russell', 2, 'Russell', 100, battle);
+		var russell = new Enemy(this, 150, 250, 'russell', 2, 'Russell', 1000, battle);
 		this.add.existing(russell);
 
 		// array with heroes
-		this.heroes = [player];
+		this.heroes = [main];
 		// array with enemies
 		this.enemies = [russell];
 		// array with both parties, who will attack
@@ -212,7 +211,7 @@ var BattleSceneRussell = new Phaser.Class({
             maxHP: 100,
             points: this.player.points += 200,
             badge: this.player.badge,
-            level: ''
+            level: 'NPC'
 		});
 
 	},

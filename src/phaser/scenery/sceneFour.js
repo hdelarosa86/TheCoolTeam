@@ -1,5 +1,6 @@
 import React from 'react';
 import Phaser from 'phaser';
+import { thisExpression } from '@babel/types';
 
 let controls;
 let cursors;
@@ -14,7 +15,14 @@ class SceneFour extends Phaser.Scene {
     super('scene4');
   }
   init(data){
-    this.player = data
+    if (data.level === 'NPC'){
+      this.player = data;
+    }
+    else {
+      data.x = 660.740655987795
+      data.y = 621.623188405797
+      this.player = data
+    }
   }
   create() {
     const createNPC = (x, y, spriteName, spriteFrame, text, reference, battleScene, url) => {
@@ -54,17 +62,16 @@ class SceneFour extends Phaser.Scene {
     music.play();
 
     tile = map.setTileIndexCallback(434, () => {
+      this.player.level = '';
       music.stop();
-      this.scene.start('PlayGame');
+      this.scene.start('PlayGame', this.player);
     }, this);
 
     shopLayer.setCollisionByProperty({ collides: true });
-    const spawnPoint = map.findObject('SpawnPoint', (obj) => obj.name === 'spawn');
     player = this.physics.add
-      .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'student-back')
+      .sprite(this.player.x, this.player.y, 'atlas', 'student-back')
       .setSize(30, 40)
       .setOffset(0, 24);
-
     this.physics.add.collider(player, shopLayer);
 
     const camera = this.cameras.main;
@@ -128,22 +135,46 @@ class SceneFour extends Phaser.Scene {
               .setScrollFactor(0)
               .setDepth(30);
               this.input.keyboard.on('keydown_Y', () => {
-              window.open(spriteNPC.url, '_new')
-              this.physics.resume();
-              this.anims.resumeAll();
-              this.physics.paused = false;
-              this.dialogue.destroy()
+                this.player.level = 'NPC';
+                this.player.x = player.x;
+                this.player.y = player.y;
+                window.open(spriteNPC.url, '_new')
+                setTimeout(() => {
+                this.scene.start('scene4', this.player);
+                music.stop();
+                }, 2000)
+                this.dialogue.destroy();
+                this[_spriteNPC.reference].destroy();
+                this[_spriteNPC.reference] = createNPC(
+                  _spriteNPC.x,
+                  _spriteNPC.y,
+                  _spriteNPC.texture.key,
+                  _spriteNPC.frame.name,
+                  _spriteNPC.text
+                );
+                this.physics.resume();
+                this.anims.resumeAll();
+                this.physics.paused = false;
               })
 
           this.input.keyboard.on('keydown_N', () => {
-              this.physics.resume();
-              this.anims.resumeAll();
-              this.physics.paused = false;
-              this.dialogue.destroy()
-              spriteNPC.destroy();
-              this[_spriteNPC.reference] = createNPC(
-              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference, _spriteNPC.battleScene, _spriteNPC.url
-              );
+            this.player.level = 'NPC';
+            this.player.x = player.x;
+            this.player.y = player.y;
+            this.scene.start('scene4', this.player);
+            music.stop();
+            this.dialogue.destroy();
+            this[_spriteNPC.reference].destroy();
+            this[_spriteNPC.reference] = createNPC(
+              _spriteNPC.x,
+              _spriteNPC.y,
+              _spriteNPC.texture.key,
+              _spriteNPC.frame.name,
+              _spriteNPC.text
+            );
+            this.physics.resume();
+            this.anims.resumeAll();
+            this.physics.paused = false;
       });
     })
   }
