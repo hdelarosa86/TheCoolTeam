@@ -113,15 +113,14 @@ var BattleSceneKevin = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var player = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing(player);
-
+		var main = new PlayerCharacter(this, 600, 250, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing(main);
 
 		var kevin = new Enemy(this, 150, 250, 'kevin', 2, 'Kevin', 100, battle);
 		this.add.existing(kevin);
 
 		// array with heroes
-		this.heroes = [player];
+		this.heroes = [main];
 		// array with enemies
 		this.enemies = [kevin];
 		// array with both parties, who will attack

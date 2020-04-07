@@ -115,9 +115,8 @@ var BattleSceneProf = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var main = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		var main = new PlayerCharacter(this, 600, 250, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
 		this.add.existing(main);
-
 
 		var Prof = new Enemy(this, 150, 250, 'prof', 2, 'Prof', 160, battle);
 		this.add.existing(Prof);
@@ -238,7 +237,7 @@ var BattleSceneProf = new Phaser.Class({
             maxHP: 100,
             points: this.player.points += 400,
             badge: this.player.badge,
-            level: ''
+            level: 'NPC'
 		});
 
 	},
