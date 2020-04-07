@@ -61,7 +61,7 @@ import {
   ryanLevel,
   eliotLevel,
   russellLevel,
-  RussellSong
+  RussellSong,
 } from '../assets';
 
 let cursors;
@@ -304,7 +304,7 @@ class playGame extends Phaser.Scene {
       repeat: -1,
     });
 
-    badges.forEach(obj => {
+    badges.forEach((obj) => {
       if (this.player.points === obj.points && toggle !== obj.badge) {
         toggle = obj.badge;
         this.player.badge = obj.badge;
@@ -363,7 +363,7 @@ class playGame extends Phaser.Scene {
         align: 'left',
         //backgroundColor: '#c90000',
         color: '#000000',
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
       })
       .setScrollFactor(0)
       .setDepth(30);
@@ -458,31 +458,45 @@ class playGame extends Phaser.Scene {
         this.anims.pauseAll();
         this.physics.paused = false;
         if (_spriteNPC.reference === 'npcSave') {
-          axios.post('/api', this.player).then(() => {
-            this.dialogue.destroy();
-            this.dialogue = this.add
-              .text(300, 500, 'Game Succesfully Saved', {
-                wordWrap: {
-                  width: 500,
-                },
-                padding: {
-                  top: 15,
-                  right: 15,
-                  bottom: 15,
-                  left: 15,
-                },
-                align: 'left',
-                backgroundColor: '#ffffff',
-                color: '#ff0000',
-              })
-              .setScrollFactor(0)
-              .setDepth(30);
-          });
-          setTimeout(() => {
-            this.dialogue.destroy()
-            music.stop();
-            this.scene.start('PlayGame', this.player);
-          }, 2500);
+          //music.stop()
+          axios
+            .post('/api', this.player)
+            .then(() => {
+              this.dialogue.destroy();
+              this.dialogue = this.add
+                .text(300, 500, 'Game Succesfully Saved', {
+                  wordWrap: {
+                    width: 500,
+                  },
+                  padding: {
+                    top: 15,
+                    right: 15,
+                    bottom: 15,
+                    left: 15,
+                  },
+                  align: 'left',
+                  backgroundColor: '#ffffff',
+                  color: '#ff0000',
+                })
+                .setScrollFactor(0)
+                .setDepth(30);
+            })
+            .then(() => {
+              music.stop();
+              this.scene.start('PlayGame', this.player);
+              this.dialogue.destroy();
+              this[_spriteNPC.reference].destroy();
+              this[_spriteNPC.reference] = createNPC(
+                _spriteNPC.x,
+                _spriteNPC.y,
+                _spriteNPC.texture.key,
+                _spriteNPC.frame.name,
+                _spriteNPC.text
+              );
+              this.physics.resume();
+              this.anims.resumeAll();
+              this.physics.paused = false;
+            });
         } else {
           music.stop();
           this.scene.start(_spriteNPC.battleScene, this.player);
@@ -506,7 +520,7 @@ class playGame extends Phaser.Scene {
         this.physics.resume();
         this.anims.resumeAll();
         this.physics.paused = false;
-      })
+      });
     });
 
     const camera = this.cameras.main;
@@ -520,10 +534,7 @@ class playGame extends Phaser.Scene {
       this.physics.world.createDebugGraphic();
 
       // Create worldLayer collision graphic above the player, but below the help text
-      const graphics = this.add
-        .graphics()
-        .setAlpha(0.75)
-        .setDepth(20);
+      const graphics = this.add.graphics().setAlpha(0.75).setDepth(20);
       worldLayer.renderDebug(graphics, {
         tileColor: null, // Color of non-colliding tiles
         collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
@@ -564,9 +575,8 @@ class playGame extends Phaser.Scene {
 
           axios
             .get('/api')
-            .then(response => response.data)
-            .then(returnedData => {
-              console.log(returnedData[0]);
+            .then((response) => response.data)
+            .then((returnedData) => {
               player.x = returnedData[0].x;
               player.y = returnedData[0].y;
               returnedData[0].x = 600;
