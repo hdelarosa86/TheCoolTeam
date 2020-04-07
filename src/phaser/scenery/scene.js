@@ -101,7 +101,7 @@ class playGame extends Phaser.Scene {
         name: 'Student',
         health: 100,
         maxHp: 0,
-        points: 3000,
+        points: 0,
         badge: 'none',
         notify: 'on',
         level: '',
@@ -454,8 +454,8 @@ class playGame extends Phaser.Scene {
       this.physics.paused = true;
 
       this.input.keyboard.on('keydown_Y', () => {
-        this.physics.pause();
-        this.anims.pauseAll();
+        this.physics.resume();
+        this.anims.resumeAll();
         this.physics.paused = false;
         if (_spriteNPC.reference === 'npcSave') {
           axios.post('/api', this.player).then(() => {
@@ -478,22 +478,17 @@ class playGame extends Phaser.Scene {
               .setScrollFactor(0)
               .setDepth(30);
           });
-          setTimeout(() => {
-            this.dialogue.destroy()
-            music.stop();
-            this.scene.start('PlayGame', this.player);
-          }, 2500);
+          setTimeout(() => this.dialogue.destroy(), 2500);
         } else {
           music.stop();
           this.scene.start(_spriteNPC.battleScene, this.player);
-          this.physics.resume();
-          this.anims.resumeAll();
         }
       });
 
       this.input.keyboard.on('keydown_N', () => {
-        music.stop();
-        this.scene.start('PlayGame', this.player);
+        this.physics.resume();
+        this.anims.resumeAll();
+        this.physics.paused = false;
         this.dialogue.destroy();
         this[_spriteNPC.reference].destroy();
         this[_spriteNPC.reference] = createNPC(
@@ -503,10 +498,7 @@ class playGame extends Phaser.Scene {
           _spriteNPC.frame.name,
           _spriteNPC.text
         );
-        this.physics.resume();
-        this.anims.resumeAll();
-        this.physics.paused = false;
-      })
+      });
     });
 
     const camera = this.cameras.main;
@@ -533,8 +525,6 @@ class playGame extends Phaser.Scene {
 
     this.input.keyboard.on('keydown_L', () => {
       if (!this.menuBox) {
-        this.physics.pause();
-        this.anims.pauseAll();
         this.menuBox = this.add
           .text(
             150,
@@ -576,16 +566,14 @@ class playGame extends Phaser.Scene {
               delete returnedData[0].updatedAt;
               player.x = 523;
               player.y = 310;
-              this.scene.start('PlayGame', returnedData[0]);
               music.stop();
+              this.scene.restart(returnedData[0]);
             });
         }); //end of Y keydown
 
         this.input.keyboard.on('keydown_N', () => {
           this.menuBox.destroy();
           this.menuBox = null;
-          this.physics.resume();
-          this.anims.resumeAll();
         }); //end of N keydown
       }
     });

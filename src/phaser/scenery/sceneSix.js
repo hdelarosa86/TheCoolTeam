@@ -7,16 +7,8 @@ class SceneSix extends Phaser.Scene {
   constructor() {
     super('scene6');
   }
-
-  init(data){
-    if (data.level === 'NPC'){
-      this.player = data;
-    }
-    else {
-      data.x = 706.544622425629
-      data.y = 876.796338672769
-      this.player = data
-    }
+  init(data) {
+    this.player = data;
   }
   create() {
     const createNPC = (
@@ -64,15 +56,22 @@ class SceneSix extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(30);
 
-    tile = map.setTileIndexCallback(585, () => {
-      this.player.level = '';
-      music.stop();
-      this.scene.start('PlayGame', this.player);
-    }, this);
+    map.setTileIndexCallback(
+      585,
+      () => {
+        music.stop();
+        this.scene.start('PlayGame');
+      },
+      this
+    );
 
     mansionLayer.setCollisionByProperty({ collides: true });
+    const spawnPoint = map.findObject(
+      'SpawnPoint',
+      obj => obj.name === 'spawn'
+    );
     player = this.physics.add
-      .sprite(this.player.x, this.player.y, 'atlas', 'student-back')
+      .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'student-back')
       .setSize(30, 40)
       .setOffset(0, 24);
 
@@ -213,76 +212,52 @@ class SceneSix extends Phaser.Scene {
         .setScrollFactor(0)
         .setDepth(30);
       this.physics.paused = true;
-          this.input.keyboard.on('keydown_Y', () => {
-            music.stop();
-            if ( this.player.points < 2000 ){
-                  this.stat = this.add
-                  .text(130, 500, `You can't be here without a better badge`, {
-                      wordWrap: {
-                          width: 500
-                      },
-                      padding: {
-                          top: 15,
-                          right: 15,
-                          bottom: 15,
-                          left: 15
-                      },
-                      align: 'left',
-                      backgroundColor: '#c90000',
-                      color: '#ffffff',
-                  })
-                  .setScrollFactor(0)
-                  .setDepth(30);
-                  this.dialogue.destroy();
-                  setTimeout(() => {
-                    this.stat.destroy()
-                    this.player.level = 'NPC';
-                    this.player.x = player.x;
-                    this.player.y = player.y;
-                    this.scene.start('scene6', this.player);
-                this[_spriteNPC.reference].destroy();
-                this[_spriteNPC.reference] = createNPC(
-                  _spriteNPC.x,
-                  _spriteNPC.y,
-                  _spriteNPC.texture.key,
-                  _spriteNPC.frame.name,
-                  _spriteNPC.text
-                );
-                this.physics.resume();
-                this.anims.resumeAll();
-                this.physics.paused = false;
-                  }, 2000)
-              }
-              else {
-                this.player.x = player.x;
-                this.player.y = player.y;
-                this.scene.start(_spriteNPC.battleScene, this.player);
-                this.physics.resume();
-                this.anims.resumeAll();
-                music.stop();
-                this.physics.paused = false;
-              }
-            })
 
-          this.input.keyboard.on('keydown_N', () => {
-            this.player.level = 'NPC';
-            this.player.x = player.x;
-            this.player.y = player.y;
-            this.scene.start('scene6', this.player);
-            music.stop();
-            this.dialogue.destroy();
-            this[_spriteNPC.reference].destroy();
+      this.input.keyboard.on('keydown_Y', () => {
+        if (this.player.points < 2000) {
+          this.stat = this.add
+            .text(130, 500, `You can't be here without a better badge`, {
+              wordWrap: {
+                width: 500,
+              },
+              padding: {
+                top: 15,
+                right: 15,
+                bottom: 15,
+                left: 15,
+              },
+              align: 'left',
+              backgroundColor: '#c90000',
+              color: '#ffffff',
+            })
+            .setScrollFactor(0)
+            .setDepth(30);
+          this.dialogue.destroy();
+          setTimeout(() => {
+            this.physics.resume();
+            this.anims.resumeAll();
+            this.stat.destroy();
             this[_spriteNPC.reference] = createNPC(
               _spriteNPC.x,
               _spriteNPC.y,
               _spriteNPC.texture.key,
-              _spriteNPC.frame.name,
-              _spriteNPC.text
+              `${_spriteNPC.texture.key}-${direction}`,
+              _spriteNPC.text,
+              _spriteNPC.reference,
+              _spriteNPC.battleScene,
+              _spriteNPC.url
             );
-            this.physics.resume();
-            this.anims.resumeAll();
-            this.physics.paused = false;
-          });
+          }, 2000);
+          this.physics.paused();
+          this.anims.pauseAll();
+          this.physics.paused = true;
+        } else {
+          this.scene.start(_spriteNPC.battleScene, this.player);
+          this.physics.resume();
+          this.anims.resumeAll();
+          music.stop();
+          this.physics.paused = false;
+        }
       });
 
       this.input.keyboard.on('keydown_N', () => {
