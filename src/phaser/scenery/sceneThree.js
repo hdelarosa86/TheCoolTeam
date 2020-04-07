@@ -185,74 +185,42 @@ class SceneThree extends Phaser.Scene {
           } else {
             direction = key;
           }
-        }
-      }
-      spriteNPC.destroy();
-      this[_spriteNPC.reference] = createNPC(
-        _spriteNPC.x,
-        _spriteNPC.y,
-        _spriteNPC.texture.key,
-        `${_spriteNPC.texture.key}-${direction}`,
-        _spriteNPC.text,
-        _spriteNPC.reference
-      );
+          spriteNPC.destroy();
+          this[_spriteNPC.reference] = createNPC(
+              _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, `${_spriteNPC.texture.key}-${direction}`, _spriteNPC.text, _spriteNPC.reference
+          );
 
-      this.physics.pause();
-      this.anims.pauseAll();
-      this.dialogue = this.add
-        .text(130, 450, `${_spriteNPC.text} \n[Space]`, {
-          wordWrap: {
-            width: 500,
-          },
-          padding: {
-            top: 15,
-            right: 15,
-            bottom: 15,
-            left: 15,
-          },
-          align: 'left',
-          backgroundColor: '#ffffff',
-          color: '#ff0000',
-        })
-        .setScrollFactor(0)
-        .setDepth(30);
-      this.physics.paused = true;
+          this.physics.pause();
+          this.anims.pauseAll();
+          this.dialogue = this.add
+              .text(130, 450, `${_spriteNPC.text} \n[Space]`, {
+                  wordWrap: {
+                      width: 500
+                  },
+                  padding: {
+                      top: 15,
+                      right: 15,
+                      bottom: 15,
+                      left: 15
+                  },
+                  align: 'left',
+                  backgroundColor: '#ffffff',
+                  color: '#ff0000',
+              })
+              .setScrollFactor(0)
+              .setDepth(30);
+          this.physics.paused = true;
 
-      this.input.keyboard.on('keydown_Y', () => {
-        music.stop();
-        this.scene.start(_spriteNPC.battleScene, this.player);
-        this.physics.resume();
-        this.anims.resumeAll();
-        this.physics.paused = false;
-      });
-
-      this.input.keyboard.on('keydown_N', () => {
-        this.physics.resume();
-        this.anims.resumeAll();
-        this.physics.paused = false;
-        this.dialogue.destroy();
-        this[_spriteNPC.reference].destroy();
-        this[_spriteNPC.reference] = createNPC(
-          _spriteNPC.x,
-          _spriteNPC.y,
-          _spriteNPC.texture.key,
-          _spriteNPC.frame.name,
-          _spriteNPC.text
-        );
-      });
-      this.input.keyboard.on('keydown_SPACE', () => {
-        this.physics.resume();
-        this.anims.resumeAll();
-        this.physics.paused = false;
-        this.dialogue.destroy();
-        this[_spriteNPC.reference].destroy();
-        this[_spriteNPC.reference] = createNPC(
-          _spriteNPC.x,
-          _spriteNPC.y,
-          _spriteNPC.texture.key,
-          _spriteNPC.frame.name,
-          _spriteNPC.text
-        );
+          this.input.keyboard.on('keydown_SPACE', () => {
+            this.physics.resume();
+            this.anims.resumeAll();
+            this.physics.paused = false;
+            this.dialogue.destroy();
+            this[_spriteNPC.reference].destroy();
+            this[_spriteNPC.reference] = createNPC(
+                _spriteNPC.x, _spriteNPC.y, _spriteNPC.texture.key, _spriteNPC.frame.name, _spriteNPC.text
+            );
+        });
       });
     });
 

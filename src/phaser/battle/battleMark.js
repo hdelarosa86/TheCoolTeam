@@ -103,15 +103,15 @@ var BattleSceneMark = new Phaser.Class({
 	},
 	startBattle: function () {
 		// player character - warrior
-		var player = new PlayerCharacter(this, this.player.x, this.player.y, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
-		this.add.existing(player);
+		var main = new PlayerCharacter(this, 600, 250, this.player.texture, this.player.frame, this.player.name, this.player.health, battle);
+		this.add.existing(main);
 
 
-		var mark = new Enemy(this, 150, 250, 'mark', 2, 'Mark', 100, battle);
+		var mark = new Enemy(this, 150, 250, 'mark', 2, 'Mark', 10, battle);
 		this.add.existing(mark);
 
 		// array with heroes
-		this.heroes = [player];
+		this.heroes = [main];
 		// array with enemies
 		this.enemies = [mark];
 		// array with both parties, who will attack
@@ -228,7 +228,7 @@ var BattleSceneMark = new Phaser.Class({
             maxHP: 100,
             points: this.player.points += 200,
             badge: this.player.badge,
-            level: ''
+            level: 'NPC'
 		});
 
 	},
