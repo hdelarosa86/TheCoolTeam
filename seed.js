@@ -9,14 +9,13 @@ const seed = () => {
       texture: 'atlas',
       frame: 3,
       name: 'Student',
-      health: 20,
+      health: 100,
       maxHp: 0,
-      points: 0,
-      badge: 'Ultimate Badge',
+      points: 1000,
+      badge: '',
       notify: 'on',
       level: '',
-    })
-  );
+    }));
 };
 
 module.exports = seed;
@@ -24,11 +23,11 @@ module.exports = seed;
 if (require.main === module) {
   seed()
     .then(() => {
-      console.log(chalk.greenBright("Successful seeding FullStack Town."));
+      console.log(chalk.greenBright('Successful seeding FullStack Town.'));
       db.close();
     })
     .catch(err => {
-      console.error(chalk.redBright("Error with seeding FullStack Town"));
+      console.error(chalk.redBright('Error with seeding FullStack Town'));
       console.error(err);
       db.close();
     });
