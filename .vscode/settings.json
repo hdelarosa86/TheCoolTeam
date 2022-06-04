@@ -1,8 +1,10 @@
 {
     "git.ignoreLimitWarning": true,
-    "eslint.autoFixOnSave": true,
     "eslint.run": "onSave",
     "eslint.alwaysShowStatus": true,
     "eslint.lintTask.enable": true,
-    "prettier.singleQuote": true
+    "prettier.singleQuote": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
 }
